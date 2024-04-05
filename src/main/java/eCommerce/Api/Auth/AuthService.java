@@ -41,7 +41,7 @@ public class AuthService {
                     .lastname(request.getLastname())
                     .dni(request.getDni())
                     .cellphone(request.getCellphone())
-                    .adress(request.getAdress())
+                    .address(request.getAddress())
                     .email(request.getEmail())
                     .role(Role.USUARIO) // Establecer el rol como usuario normal
                     .build();
@@ -75,7 +75,7 @@ public class AuthService {
         if (request.getLastname() == null || request.getLastname().isEmpty()) {
             throw new IllegalArgumentException("El apellido es obligatorio");
         }
-        if (request.getAdress() == null || request.getAdress().isEmpty()) {
+        if (request.getAddress() == null || request.getAddress().isEmpty()) {
             throw new IllegalArgumentException("La dirección es obligatoria");
         }
         if (request.getEmail() == null || request.getEmail().isEmpty()) {
@@ -92,7 +92,7 @@ public class AuthService {
                 .lastname(request.getLastname())
                 .dni(request.getDni())
                 .cellphone(request.getCellphone())
-                .adress(request.getAdress())
+                .address(request.getAddress())
                 .email(request.getEmail())
                 .role(Role.ADMIN) // Establecer el rol como administrador
                 .build();

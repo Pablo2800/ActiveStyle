@@ -28,4 +28,16 @@ public class UsuarioController{
     public ResponseEntity<UsuarioResponse> updateUsuario(@RequestBody UsuarioRequest usuarioRequest){
         return ResponseEntity.ok(usuarioService.updateUsuario(usuarioRequest));
     }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
+        // Llama al servicio para eliminar el usuario por su ID
+        boolean deleted = usuarioService.deleteUsuario(id);
+        if (deleted) {
+            // Si se eliminó correctamente, devuelve un ResponseEntity con estado 204 No Content
+            return ResponseEntity.noContent().build();
+        } else {
+            // Si no se encontró el usuario, devuelve un ResponseEntity con estado 404 Not Found
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

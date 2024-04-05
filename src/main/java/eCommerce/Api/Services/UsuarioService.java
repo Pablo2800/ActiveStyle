@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
@@ -23,11 +25,11 @@ public class UsuarioService {
                 .username(usuarioRequest.getUsername())
                 .dni(usuarioRequest.getDni())
                 .cellphone(usuarioRequest.getCellphone())
-                .adress(usuarioRequest.getAdress())
+                .address(usuarioRequest.getAddress())
                 .email(usuarioRequest.getEmail())
                 .role(Role.USUARIO)
                 .build();
-        usuarioRepository.updateUsuario(usuario.getId(), usuario.getFirstname(), usuario.getLastname(),usuario.getDni(), usuario.getCellphone(),  usuario.getAdress(), usuario.getEmail());
+        usuarioRepository.updateUsuario(usuario.getId(), usuario.getFirstname(), usuario.getLastname(),usuario.getDni(), usuario.getCellphone(),  usuario.getAddress(), usuario.getEmail());
         return new UsuarioResponse("El usuario se modificó satisfactoriamente");
     }
     public UsuarioDTO getUsuario(Long id){
@@ -40,12 +42,24 @@ public class UsuarioService {
                     .username(usuario.getUsername())
                     .dni(usuario.getDni())
                     .cellphone(usuario.getCellphone())
-                    .adress(usuario.getAdress())
+                    .address(usuario.getAddress())
                     .email(usuario.getEmail())
                     .build();
             return usuarioDTO;
         }
         return null;
+    }
+    public boolean deleteUsuario(Long id) {
+        // Verificar si el usuario existe
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+        if (usuarioOptional.isPresent()) {
+            // Si el usuario existe, eliminarlo
+            usuarioRepository.deleteById(id);
+            return true; // Indica que la eliminación fue exitosa
+        } else {
+            // Si el usuario no existe, no se puede eliminar
+            return false; // Indica que no se pudo eliminar el usuario
+        }
     }
 
 }
