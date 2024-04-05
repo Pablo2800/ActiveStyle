@@ -15,5 +15,12 @@ public class RegisterRequest {
     String firstname;
     String lastname;
     String country;
+    String direction;
+    String department;
+    int direction_number;
+    String floor_number;
+    String email;
+    Long cellphone;
+    Long dni;
     private boolean isAdmin;
 }

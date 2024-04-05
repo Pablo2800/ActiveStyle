@@ -29,6 +29,13 @@ public class Usuario implements UserDetails {
     private String lastname;
     private String firstname;
     private String country;
+    private String direction;
+    private String department;
+    private int direction_number;
+    private String floor_number;
+    private String email;
+    private Long cellphone;
+    private Long dni;
     String password;
     @Enumerated(EnumType.STRING)
     Role role;
