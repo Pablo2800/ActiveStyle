@@ -14,11 +14,7 @@ public class RegisterRequest {
     String password;
     String firstname;
     String lastname;
-    String country;
-    String direction;
-    String department;
-    int direction_number;
-    String floor_number;
+    String adress;
     String email;
     Long cellphone;
     Long dni;

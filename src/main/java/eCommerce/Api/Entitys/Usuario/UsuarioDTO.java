@@ -14,12 +14,8 @@ public class UsuarioDTO {
     private String username;
     private String firstname;
     private String lastname;
-    private String country;
-    private String direction;
-    private String department;
-    private int direction_number;
+    private String adress;
     private String email;
-    private String floor_number;
     private Long cellphone;
     private Long dni;
 }

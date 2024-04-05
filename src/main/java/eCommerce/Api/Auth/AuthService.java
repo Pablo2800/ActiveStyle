@@ -39,13 +39,9 @@ public class AuthService {
                     .password(passwordEncoder.encode(request.getPassword()))
                     .firstname(request.getFirstname())
                     .lastname(request.getLastname())
-                    .country(request.getCountry())
                     .dni(request.getDni())
                     .cellphone(request.getCellphone())
-                    .department(request.getDepartment())
-                    .direction(request.getDirection())
-                    .direction_number(request.getDirection_number())
-                    .floor_number(request.getFloor_number() != null ? request.getFloor_number() : null)
+                    .adress(request.getAdress())
                     .email(request.getEmail())
                     .role(Role.USUARIO) // Establecer el rol como usuario normal
                     .build();
@@ -60,7 +56,7 @@ public class AuthService {
     private boolean isValidRequest(RegisterRequest request) {
         Long dni = request.getDni();
         if (dni == null || String.valueOf(dni).length() != 8) {
-            throw new IllegalArgumentException("El número de piso debe ser un número de 8 dígitos");
+            throw new IllegalArgumentException("El número de dni debe ser un número de 8 dígitos en total");
         }
         Long cellphone = request.getCellphone();
         int cellphoneLength = String.valueOf(cellphone).length();
@@ -79,13 +75,7 @@ public class AuthService {
         if (request.getLastname() == null || request.getLastname().isEmpty()) {
             throw new IllegalArgumentException("El apellido es obligatorio");
         }
-        if (request.getCountry() == null || request.getCountry().isEmpty()) {
-            throw new IllegalArgumentException("El país es obligatorio");
-        }
-        if (request.getDepartment() == null || request.getDepartment().isEmpty()) {
-            throw new IllegalArgumentException("El departamento es obligatorio");
-        }
-        if (request.getDirection() == null || request.getDirection().isEmpty()) {
+        if (request.getAdress() == null || request.getAdress().isEmpty()) {
             throw new IllegalArgumentException("La dirección es obligatoria");
         }
         if (request.getEmail() == null || request.getEmail().isEmpty()) {
@@ -100,13 +90,9 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
-                .country(request.getCountry())
                 .dni(request.getDni())
                 .cellphone(request.getCellphone())
-                .department(request.getDepartment())
-                .direction(request.getDirection())
-                .direction_number(request.getDirection_number())
-                .floor_number(request.getFloor_number())
+                .adress(request.getAdress())
                 .email(request.getEmail())
                 .role(Role.ADMIN) // Establecer el rol como administrador
                 .build();
