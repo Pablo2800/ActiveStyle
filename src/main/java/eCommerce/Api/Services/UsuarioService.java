@@ -10,7 +10,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +50,21 @@ public class UsuarioService {
             return usuarioDTO;
         }
         return null;
+    }
+    public List<UsuarioDTO> getAllUsuarios() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        return usuarios.stream()
+                .map(usuario -> UsuarioDTO.builder()
+                        .id(usuario.getId())
+                        .firstname(usuario.getFirstname())
+                        .lastname(usuario.getLastname())
+                        .username(usuario.getUsername())
+                        .dni(usuario.getDni())
+                        .cellphone(usuario.getCellphone())
+                        .address(usuario.getAddress())
+                        .email(usuario.getEmail())
+                        .build())
+                .collect(Collectors.toList());
     }
     public boolean deleteUsuario(Long id) {
         // Verificar si el usuario existe

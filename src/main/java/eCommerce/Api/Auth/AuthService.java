@@ -49,6 +49,15 @@ public class AuthService {
             usuarioRepository.save(usuario);
 
             return AuthResponse.builder()
+                    .username(request.getUsername())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .firstname(request.getFirstname())
+                    .lastname(request.getLastname())
+                    .dni(request.getDni())
+                    .cellphone(request.getCellphone())
+                    .address(request.getAddress())
+                    .email(request.getEmail())
+                    .role(Role.USUARIO)
                     .token(jwtService.getToken(usuario))
                     .build();
         }
@@ -100,6 +109,15 @@ public class AuthService {
         usuarioRepository.save(usuario);
 
         return AuthResponse.builder()
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .firstname(request.getFirstname())
+                .lastname(request.getLastname())
+                .dni(request.getDni())
+                .cellphone(request.getCellphone())
+                .address(request.getAddress())
+                .email(request.getEmail())
+                .role(Role.ADMIN)
                 .token(jwtService.getToken(usuario))
                 .build();
     }

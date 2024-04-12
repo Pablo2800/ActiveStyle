@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value= "/api/v1/usuario")
 @CrossOrigin("*")
@@ -15,7 +17,16 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController{
     private final UsuarioService usuarioService;
 
-    @GetMapping(value = "{id}")
+
+    @GetMapping(value = "/usuarios")
+    public ResponseEntity<List<UsuarioDTO>> getAllUsuarios() {
+        List<UsuarioDTO> usuarios = usuarioService.getAllUsuarios();
+        if (usuarios.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(usuarios);
+    }
+    @GetMapping("/{id}")
     public ResponseEntity<UsuarioDTO> getUsuario(@PathVariable Long id){
         UsuarioDTO usuarioDTO = usuarioService.getUsuario(id);
         if(usuarioDTO==null){
@@ -24,7 +35,7 @@ public class UsuarioController{
         return ResponseEntity.ok(usuarioDTO);
     }
 
-    @PutMapping()
+    @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponse> updateUsuario(@RequestBody UsuarioRequest usuarioRequest){
         return ResponseEntity.ok(usuarioService.updateUsuario(usuarioRequest));
     }
