@@ -6,10 +6,14 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import useNavigation from "../hooks/useNavigate";
+import { useSelector } from "react-redux";
+import { getAccess } from "../redux/userSlice";
+import MenuDesplegable from "./MenuDesplegabel";
 export default function Navbar() {
+  const access = useSelector(getAccess);
   const { goToLogin } = useNavigation();
   return (
-    <div className="flex items-center justify-center w-full p-2">
+    <div className="flex items-center  w-full p-2">
       <div className="flex w-2/12 justify-center">
         <img
           src="/LogoSinFondo.png"
@@ -17,7 +21,7 @@ export default function Navbar() {
           alt="logo"
         />
       </div>
-      <div className="flex w-6/12 items-center justify-center">
+      <div className="flex w-6/12 items-center justify-end">
         <Button
           type="text"
           className="text-black mx-2 text-lg flex items-center p-6"
@@ -43,7 +47,7 @@ export default function Navbar() {
           Contacto
         </Button>
       </div>
-      <div className="flex w-4/12 justify-center ">
+      <div className="flex w-4/12 justify-end ">
         <Button
           className="text-xl bg-transparent mx-2"
           size="large"
@@ -54,17 +58,21 @@ export default function Navbar() {
           className="text-xl bg-transparent mx-2"
           size="large"
           type="text"
-          icon={<ShoppingCartOutlined className="p-2" />}
+          icon={<ShoppingCartOutlined className="p-2 w-full h-full" />}
         />
-        <Button
-          className="bg-transparent text-black hover:text-gray-600"
-          size="large"
-          type="link"
-          icon={<UserOutlined />}
-          onClick={goToLogin}
-        >
-          Iniciar Sesion/Registrarse
-        </Button>
+        {access === true ? (
+          <MenuDesplegable />
+        ) : (
+          <Button
+            className="bg-transparent text-black hover:text-gray-600"
+            size="large"
+            type="link"
+            icon={<UserOutlined />}
+            onClick={goToLogin}
+          >
+            Iniciar Sesion/Registrarse
+          </Button>
+        )}
       </div>
     </div>
   );

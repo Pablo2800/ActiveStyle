@@ -18,12 +18,7 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
-      },
-      variants: {
-        backgroundColor: ({ after }) => after(["disabled"]),
-        borderColor: ({ after }) => after(["disabled"]),
-        textColor: ({ after }) => after(["disabled"]),
+        myfont: ["Roboto Condensed", "sans-serif"],
       },
     },
   },

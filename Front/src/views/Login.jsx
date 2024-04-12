@@ -4,16 +4,10 @@ import { UserOutlined } from "@ant-design/icons";
 import { RiLockPasswordFill } from "react-icons/ri";
 import useNavigation from "../hooks/useNavigate";
 import { FcGoogle } from "react-icons/fc";
+import useUser from "../hooks/useUser";
 export default function Login() {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-
-  const { goToHome, goToRegister } = useNavigation();
+  const { handleLogin } = useUser();
+  const { goToRegister } = useNavigation();
 
   return (
     <div className="flex justify-center items-center h-screen bg-primary-1">
@@ -28,8 +22,7 @@ export default function Login() {
       <div className="flex  relative z-10 bg-primary-3 p-8 rounded-xl">
         <Form
           name="basic"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
+          onFinish={handleLogin}
           autoComplete="off"
           className="flex items-center justify-center flex-col"
         >
@@ -49,7 +42,6 @@ export default function Login() {
               className="w-full"
             />
           </Form.Item>
-
           <Form.Item
             name="password"
             rules={[
@@ -65,25 +57,22 @@ export default function Login() {
               prefix={<RiLockPasswordFill />}
             />
           </Form.Item>
-
+          <div className="flex items-center justify-center w-full mb-5 ">
+            <button
+              type="submit"
+              className="bg-primary-2 text-white p-1 w-52 text-lg rounded-lg hover:bg-black flex items-center justify-center mx-1"
+            >
+              Ingresar
+            </button>
+          </div>
           <button
-            className="bg-transparent mb-5 text-xs text-white hover:text-black self-start"
+            className="bg-transparent text-xs text-white hover:text-black self-start"
             size="small"
             type="link"
             onClick={goToRegister}
           >
             No tienes cuenta? Regístrate aquí
           </button>
-
-          <div className="flex items-center justify-center w-full">
-            <button
-              type="submit" // Especifica el tipo de botón como "submit" para que funcione dentro de un formulario
-              className="bg-primary-2 text-white p-1 w-52 text-lg rounded-lg hover:bg-black flex items-center justify-center mx-1"
-              onClick={goToHome} // Maneja el evento de clic del botón
-            >
-              Ingresar
-            </button>
-          </div>
         </Form>
         <div className="flex items-center justify-center w-full ml-3">
           <div className="border border-white border-t-0 border-b-0 h-full border-l-0 flex items-center"></div>

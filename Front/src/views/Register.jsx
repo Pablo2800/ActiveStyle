@@ -48,7 +48,7 @@ export default function Register() {
               <Input
                 prefix={<FaUserCircle />}
                 type="text"
-                className="rounded-xl p-2 w-full"
+                className="rounded-xl font-myfont font-semibold p-2 w-full"
                 placeholder="Nombre de usuario"
               ></Input>
             </Form.Item>
