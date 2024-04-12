@@ -17,16 +17,16 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request){
+    public ResponseEntity<AuthResponseLogin> login(@RequestBody LoginRequest request){
         return ResponseEntity.ok(authService.login(request));
     }
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request){
+    public ResponseEntity<AuthResponseRegister> register(@RequestBody RegisterRequest request){
         return ResponseEntity.ok(authService.register(request));
     }
     @PostMapping("/admin/register")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<AuthResponse> registerAdmin(@RequestBody AdminRegisterRequest request) {
+    public ResponseEntity<AuthResponseRegister> registerAdmin(@RequestBody AdminRegisterRequest request) {
         // Lógica para registrar un nuevo administrador
         return ResponseEntity.ok(authService.registerAdmin(request));
     }

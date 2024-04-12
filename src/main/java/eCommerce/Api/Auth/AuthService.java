@@ -10,7 +10,7 @@ import eCommerce.Api.Repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 @Service
@@ -20,16 +20,32 @@ public class AuthService {
         private final JwtService jwtService;
         private final PasswordEncoder passwordEncoder;
         private final AuthenticationManager authenticationManager;
-        public AuthResponse login(LoginRequest request) {
+        public AuthResponseLogin login(LoginRequest request) {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-            UserDetails usuario = usuarioRepository.findByUsername(request.getUsername()).orElseThrow();
+            Usuario usuario = usuarioRepository.findByUsername(request.getUsername()).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+            String username = usuario.getUsername();
+            String firstname = usuario.getFirstname(); // Suponiendo que UserDetails no tiene un método getFirstname() y que User es la clase que implementa UserDetails y tiene un método getFirstname()
+            String lastname = usuario.getLastname(); // Suponiendo lo mismo para el apellido
+            String address = usuario.getAddress();
+            String email = usuario.getEmail();
+            Long cellphone = usuario.getCellphone();
+            Long dni = usuario.getDni();
+            Role role = usuario.getRole();
             String token= jwtService.getToken(usuario);
-            return AuthResponse.builder()
+            return AuthResponseLogin.builder()
+                    .username(username)
+                    .firstname(firstname)
+                    .lastname(lastname)
+                    .address(address)
+                    .email(email)
+                    .cellphone(cellphone)
+                    .dni(dni)
+                    .role(role)
                     .token(token)
                     .build();
         }
 
-        public AuthResponse register(RegisterRequest request) {
+        public AuthResponseRegister register(RegisterRequest request) {
             if (!isValidRequest(request)) {
                 // Aquí puedes lanzar una excepción, registrar un error, o manejar la situación según lo necesites
                 throw new IllegalArgumentException("Los datos proporcionados no son del tipo correcto");
@@ -48,16 +64,7 @@ public class AuthService {
 
             usuarioRepository.save(usuario);
 
-            return AuthResponse.builder()
-                    .username(request.getUsername())
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .firstname(request.getFirstname())
-                    .lastname(request.getLastname())
-                    .dni(request.getDni())
-                    .cellphone(request.getCellphone())
-                    .address(request.getAddress())
-                    .email(request.getEmail())
-                    .role(Role.USUARIO)
+            return AuthResponseRegister.builder()
                     .token(jwtService.getToken(usuario))
                     .build();
         }
@@ -93,7 +100,7 @@ public class AuthService {
         return true;
     }
 
-    public AuthResponse registerAdmin(AdminRegisterRequest request) {
+    public AuthResponseRegister registerAdmin(AdminRegisterRequest request) {
         Usuario usuario = Usuario.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -108,16 +115,7 @@ public class AuthService {
 
         usuarioRepository.save(usuario);
 
-        return AuthResponse.builder()
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
-                .dni(request.getDni())
-                .cellphone(request.getCellphone())
-                .address(request.getAddress())
-                .email(request.getEmail())
-                .role(Role.ADMIN)
+        return AuthResponseRegister.builder()
                 .token(jwtService.getToken(usuario))
                 .build();
     }
