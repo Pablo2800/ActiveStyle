@@ -18,7 +18,7 @@ export default function Navbar() {
   const { goToLogin } = useNavigation();
 
   return (
-    <div className="flex items-center h-20 w-full p-2 sticky">
+    <div className="flex items-center h-20 w-full p-2 sticky z-50">
       <div className="w-full flex items-center justify-center">
         <div className="flex w-2/12 justify-center">
           <img
@@ -94,20 +94,64 @@ export default function Navbar() {
         </button>
       </div>
       {isMenuOpen && (
-        <div className="sm:hidden absolute right-0 top-20 bg-gray-400 w-full z-10">
-          <div className="flex flex-col items-center justify-center space-y-2 py-2 px-4">
-            <Button
-              className="text-xl bg-transparent mx-2"
-              size="large"
+        <div className="sm:hidden absolute right-0 top-20 bg-gray-300 w-full z-50">
+          <div className="flex flex-col items-center justify-center">
+            <div className="flex w-full justify-center p-2 bg-gray-400">
+              <Button
+                className="text-xl bg-transparent mx-2"
+                size="large"
+                type="text"
+                icon={<SearchOutlined className="p-2" />}
+              />
+              <Button
+                className="text-xl bg-transparent mx-2"
+                size="large"
+                type="text"
+                icon={<ShoppingCartOutlined className="p-2 w-full h-full" />}
+              />
+              {access === true ? (
+                <AccountMenu />
+              ) : (
+                <Button
+                  className="bg-transparent text-black hover:text-gray-600"
+                  size="large"
+                  type="link"
+                  icon={<UserOutlined />}
+                  onClick={goToLogin}
+                >
+                  Iniciar Sesion/Registrarse
+                </Button>
+              )}
+            </div>
+            <button
               type="text"
-              icon={<SearchOutlined className="p-2" />}
-            />
-            <Button
-              className="text-xl bg-transparent mx-2"
-              size="large"
+              className="text-black my-3 text-lg flex items-center p-2  "
+            >
+              Productos
+            </button>
+            <button
               type="text"
-              icon={<ShoppingCartOutlined className="p-2 w-full h-full" />}
-            />
+              className="text-black my-3 text-lg flex items-center p-2 "
+            >
+              Locales
+            </button>
+            <div className="w-1/2 flex flex-col items-center">
+              <button
+                type="text"
+                className="text-black my-3 text-lg flex items-center p-2 "
+              >
+                Promos y cuotas
+              </button>
+              <button
+                type="text"
+                className="text-black my-3 text-lg flex items-center p-2 "
+              >
+                Contacto
+              </button>
+            </div>
+            <div className="bg-gray-400 w-full flex items-center justify-center p-2 font-myfont text-lg">
+              App creada por Pablo y Seviche
+            </div>
           </div>
         </div>
       )}

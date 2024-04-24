@@ -4,11 +4,11 @@ import { Carousel } from "antd";
 export default function CarrouselHome() {
   return (
     <Carousel autoplay>
-      <div className="relative lg:h-[calc(100vh-5rem)] items-center justify-center flex ">
+      <div className="relative lg:h-[calc(100vh-5rem)] h-72 items-center justify-center flex ">
         <img
           src="https://sydney.pe/wp-content/uploads/2023/09/ropa-de-otono.png"
           alt=""
-          className="w-full h-full"
+          className="object-cover w-full h-full"
         />
         <div className="flex flex-col w-72 absolute top-20 lg:right-72 right-0 items-center justify-center">
           <h1 className="lg:text-[50px] font-myfont font-bold mb-3">
@@ -22,11 +22,11 @@ export default function CarrouselHome() {
           </button>
         </div>
       </div>
-      <div className="relative lg:h-[calc(100vh-5rem)] items-center justify-center flex">
+      <div className="relative lg:h-[calc(100vh-5rem)] h-72 items-center justify-center flex">
         <img
           src="https://images.pexels.com/photos/248547/pexels-photo-248547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
           alt=""
-          className="w-full h-full"
+          className="object-cover w-full h-full"
         />
         <div className="text-black bg-opacity-50 bg-gray-300 absolute lg:top-20 top-32 left-36 flex flex-col items-center justify-center lg:p-7 p-1 rounded-xl">
           <h1 className="lg:text-5xl font-bold font-myfont mb-1">
@@ -40,7 +40,7 @@ export default function CarrouselHome() {
           </button>
         </div>
       </div>
-      <div className="relative lg:h-[calc(100vh-5rem)] h-64 items-center justify-center flex">
+      <div className="relative lg:h-[calc(100vh-5rem)] h-72 items-center justify-center flex">
         <div className="w-full h-full">
           <img
             src="https://statics-cuidateplus.marca.com/cms/2022-12/running-consejos-principiantes.jpg"
@@ -48,7 +48,7 @@ export default function CarrouselHome() {
             className="object-cover w-full h-full"
           />
         </div>
-        <div className="absolute  lg:top-20 lg:right-56 top-10 left-56 flex flex-col items-center justify-center lg:p-7 rounded-xl">
+        <div className="absolute w-full lg:top-20 lg:right-0 top-10 left-20 flex flex-col items-center justify-center lg:p-7">
           <h1 className="lg:text-5xl font-bold mb-3 font-myfont">
             20% OFF EN RUNNING
           </h1>
