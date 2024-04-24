@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import CarrouselHome from "../components/CarrouselHome";
 import Popular from "../components/Popular";
+import HomeCategories from "../components/HomeCategories";
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
       <Navbar />
       <CarrouselHome />
       <Popular />
+      <HomeCategories />
     </div>
   );
 }

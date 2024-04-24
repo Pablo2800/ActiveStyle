@@ -24,7 +24,7 @@ export default function Register() {
             'url("https://images.pexels.com/photos/258356/pexels-photo-258356.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")',
         }}
       ></div>
-      <div className="flex flex-col relative z-10 bg-primary-2 bg-opacity-90 p-8 rounded-xl w-3/5 justify-around items-center">
+      <div className="flex flex-col relative z-10 bg-primary-2 bg-opacity-90 p-8 rounded-xl sm:w-3/5 justify-around items-center">
         <button onClick={handleGoBack} className="flex w-full">
           <ArrowLeftOutlined className="text-white" />
         </button>
@@ -33,9 +33,9 @@ export default function Register() {
           onFinish={handleSubmit}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
-          className="flex items-center justify-center flex-row p-2 w-full"
+          className="flex sm:flex-row flex-col items-center justify-center p-2 w-full"
         >
-          <div className="flex flex-col w-1/2 p-2">
+          <div className="flex flex-col w-full sm:w-1/2 sm:p-2 px-2">
             <Form.Item
               name="username"
               rules={[
@@ -117,8 +117,8 @@ export default function Register() {
               ></Input>
             </Form.Item>
           </div>
-          <div className="border border-white border-t-0 border-b-0 h-72 mx-2 border-l-0 flex items-center"></div>
-          <div className="flex flex-col w-1/2 p-2">
+          <div className="border border-white border-t-0 border-b-0 h-72 mx-2 border-l-0 hidden sm:flex items-center"></div>
+          <div className="flex flex-col w-full sm:w-1/2 sm:p-2 px-2">
             <Form.Item
               name="password"
               rules={[
