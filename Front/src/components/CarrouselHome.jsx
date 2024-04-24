@@ -4,13 +4,13 @@ import { Carousel } from "antd";
 export default function CarrouselHome() {
   return (
     <Carousel autoplay>
-      <div className="relative lg:h-[calc(100vh-5rem)] items-center justify-center flex">
+      <div className="relative lg:h-[calc(100vh-5rem)] items-center justify-center flex ">
         <img
           src="https://sydney.pe/wp-content/uploads/2023/09/ropa-de-otono.png"
           alt=""
           className="w-full h-full"
         />
-        <div className="flex flex-col w-72 absolute top-20 lg:right-72 right-0 z-10 items-center justify-center">
+        <div className="flex flex-col w-72 absolute top-20 lg:right-72 right-0 items-center justify-center">
           <h1 className="lg:text-[50px] font-myfont font-bold mb-3">
             EXPLORA EL OTOÑO
           </h1>
@@ -28,11 +28,11 @@ export default function CarrouselHome() {
           alt=""
           className="w-full h-full"
         />
-        <div className="text-black bg-opacity-50 bg-gray-300 absolute top-20 left-36 z-10 flex flex-col items-center justify-center lg:p-7 p-2 rounded-xl">
-          <h1 className="lg:text-5xl font-bold font-myfont mb-3">
+        <div className="text-black bg-opacity-50 bg-gray-300 absolute lg:top-20 top-32 left-36 flex flex-col items-center justify-center lg:p-7 p-1 rounded-xl">
+          <h1 className="lg:text-5xl font-bold font-myfont mb-1">
             CONOCE LO ULTIMO EN
           </h1>
-          <h3 className="lg:mb-8 mb-3 lg:text-3xl">
+          <h3 className="lg:mb-8 mb-2 lg:text-3xl">
             EQUIPAMIENTO DE BICICLETAS
           </h3>
           <button className="px-3 py-2 rounded-xl font-myfont bg-gray-700 text-white lg:text-3xl hover:bg-gray-800">
@@ -40,17 +40,19 @@ export default function CarrouselHome() {
           </button>
         </div>
       </div>
-      <div className="relative lg:h-[calc(100vh-5rem)] items-center justify-center flex">
-        <img
-          src="https://statics-cuidateplus.marca.com/cms/2022-12/running-consejos-principiantes.jpg"
-          alt=""
-          className="w-full h-full"
-        />
-        <div className="absolute top-20 right-56 z-10 flex flex-col items-center justify-center p-7 rounded-xl">
+      <div className="relative lg:h-[calc(100vh-5rem)] h-64 items-center justify-center flex">
+        <div className="w-full h-full">
+          <img
+            src="https://statics-cuidateplus.marca.com/cms/2022-12/running-consejos-principiantes.jpg"
+            alt=""
+            className="object-cover w-full h-full"
+          />
+        </div>
+        <div className="absolute  lg:top-20 lg:right-56 top-10 left-56 flex flex-col items-center justify-center lg:p-7 rounded-xl">
           <h1 className="lg:text-5xl font-bold mb-3 font-myfont">
             20% OFF EN RUNNING
           </h1>
-          <button className="px-3 py-2 rounded-xl bg-white opacity-85 text-black lg:text-3xl font-myfont">
+          <button className="lg:px-3 lg:py-2 p-1 rounded-xl bg-white opacity-85 text-black lg:text-3xl font-myfont">
             Conoce mas
           </button>
         </div>
