@@ -8,12 +8,12 @@ import {
 import useNavigation from "../hooks/useNavigate";
 import { useSelector } from "react-redux";
 import { getAccess } from "../redux/userSlice";
-import MenuDesplegable from "./MenuDesplegabel";
+import AccountMenu from "./MenuDesplegabel";
 export default function Navbar() {
   const access = useSelector(getAccess);
   const { goToLogin } = useNavigation();
   return (
-    <div className="flex items-center  w-full p-2">
+    <div className="flex items-center h-20 w-full p-2 sticky">
       <div className="flex w-2/12 justify-center">
         <img
           src="/LogoSinFondo.png"
@@ -47,7 +47,7 @@ export default function Navbar() {
           Contacto
         </Button>
       </div>
-      <div className="flex w-4/12 justify-end ">
+      <div className="flex w-4/12 justify-end p-2 ">
         <Button
           className="text-xl bg-transparent mx-2"
           size="large"
@@ -61,7 +61,7 @@ export default function Navbar() {
           icon={<ShoppingCartOutlined className="p-2 w-full h-full" />}
         />
         {access === true ? (
-          <MenuDesplegable />
+          <AccountMenu />
         ) : (
           <Button
             className="bg-transparent text-black hover:text-gray-600"
