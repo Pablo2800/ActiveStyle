@@ -7,10 +7,10 @@ import { FcGoogle } from "react-icons/fc";
 import useUser from "../hooks/useUser";
 export default function Login() {
   const { handleLogin } = useUser();
-  const { goToRegister } = useNavigation();
+  const { goToRegister, goToHome } = useNavigation();
 
   return (
-    <div className="flex justify-center items-center h-screen bg-primary-1">
+    <div className="flex justify-center items-center min-h-screen bg-primary-1">
       <div
         className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
         style={{
@@ -19,11 +19,11 @@ export default function Login() {
         }}
       ></div>
 
-      <div className="flex  relative z-10 bg-primary-3 p-8 rounded-xl">
+      <div className="flex flex-col sm:flex-row relative z-10 bg-gray-400 p-8 rounded-xl">
         <Form
           name="basic"
           onFinish={handleLogin}
-          autoComplete="off"
+          autoComplete="on"
           className="flex items-center justify-center flex-col"
         >
           <Form.Item
@@ -74,12 +74,22 @@ export default function Login() {
             No tienes cuenta? Regístrate aquí
           </button>
         </Form>
-        <div className="flex items-center justify-center w-full ml-3">
+        <div className="hidden sm:flex items-center justify-center w-full ml-3">
           <div className="border border-white border-t-0 border-b-0 h-full border-l-0 flex items-center"></div>
         </div>
-        <button className="flex items-center justify-center bg-primary-2 rounded-lg text-white p-1 mx-3  self-center min-w-44">
-          <FcGoogle className="mx-1 w-5 h-5" /> Sign in with Google
-        </button>
+        <div className="flex items-center justify-center flex-col">
+          <button className="flex items-center justify-center min-w-52 w-52 bg-primary-2 rounded-lg text-white p-1 sm:mx-3 my-5 self-center text-lg">
+            <FcGoogle className="mx-1 w-5 h-5" /> Sign in with Google
+          </button>
+          <button
+            className="sm:absolute sm:bottom-10 bg-transparent text-sm text-white hover:text-black self-center underline underline-offset-4"
+            size="small"
+            type="link"
+            onClick={goToHome}
+          >
+            Volver al home
+          </button>
+        </div>
       </div>
     </div>
   );
