@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Popular() {
   return (
-    <div className="flex flex-col w-full items-center justify-center py-3 bg-gray-300">
+    <div className="flex flex-col w-full items-center justify-center py-3  bg-gray-300">
       <h1 className="flex text-5xl my-3 font-myfont border-b-4 border-red-600 pb-3">
         Popular Ahora
       </h1>

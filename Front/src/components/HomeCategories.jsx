@@ -1,6 +1,4 @@
 import React from "react";
-import { Space, Typography } from "antd";
-const { Text, Link } = Typography;
 
 export default function HomeCategories() {
   const categories = [
@@ -43,7 +41,7 @@ export default function HomeCategories() {
   ];
 
   return (
-    <div className="flex flex-wrap items-center justify-center w-full h-full my-3">
+    <div className="flex flex-wrap items-center justify-center w-full h-full my-10">
       {categories.map((category) => (
         <div
           key={category.id}
