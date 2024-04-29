@@ -13,12 +13,12 @@ import { getAccess } from "../redux/userSlice";
 import AccountMenu from "./MenuDesplegabel";
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [ilgenuOpen, setIlgenuOpen] = useState(false);
   const access = useSelector(getAccess);
   const { goToLogin } = useNavigation();
 
   return (
-    <div className="flex items-center h-20 w-full p-2 sticky z-50">
+    <div className="flex items-center bg-gray-200 h-20 w-full p-2 sticky top-0 z-50">
       <div className="w-full flex items-center justify-center">
         <div className="flex w-2/12 justify-center">
           <img
@@ -27,7 +27,7 @@ export default function Navbar() {
             alt="logo"
           />
         </div>
-        <div className="hidden sm:flex w-6/12 items-center justify-end">
+        <div className="hidden lg:flex w-6/12 items-center justify-end">
           <Button
             type="text"
             className="text-black mx-2 text-lg flex items-center p-6"
@@ -53,7 +53,7 @@ export default function Navbar() {
             Contacto
           </Button>
         </div>
-        <div className="hidden sm:flex w-4/12 justify-end p-2 ">
+        <div className="hidden lg:flex w-4/12 justify-end p-2 ">
           <Button
             className="text-xl bg-transparent mx-2"
             size="large"
@@ -81,20 +81,20 @@ export default function Navbar() {
           )}
         </div>
       </div>
-      <div className="sm:hidden">
+      <div className="lg:hidden">
         <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={() => setIlgenuOpen(!ilgenuOpen)}
           className="block text-white focus:outline-none"
         >
-          {isMenuOpen ? (
+          {ilgenuOpen ? (
             <CloseOutlined className="text-4xl mr-5" />
           ) : (
             <MenuOutlined className="text-4xl mr-5" />
           )}
         </button>
       </div>
-      {isMenuOpen && (
-        <div className="sm:hidden absolute right-0 top-20 bg-gray-300 w-full z-50">
+      {ilgenuOpen && (
+        <div className="lg:hidden absolute right-0 top-20 bg-gray-300 w-full z-50">
           <div className="flex flex-col items-center justify-center">
             <div className="flex w-full justify-center p-2 bg-gray-400">
               <Button
