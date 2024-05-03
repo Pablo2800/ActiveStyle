@@ -1,9 +1,9 @@
-import { Button } from "antd";
+import { Button, ConfigProvider, Input, Avatar, Badge } from "antd";
+const { Search } = Input;
 import React, { useState } from "react";
 import {
   CloseOutlined,
   MenuOutlined,
-  SearchOutlined,
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -11,14 +11,17 @@ import useNavigation from "../hooks/useNavigate";
 import { useSelector } from "react-redux";
 import { getAccess } from "../redux/userSlice";
 import AccountMenu from "./MenuDesplegabel";
+import MobileMenu from "./navbarComponents/MobileMenu";
+import DropdownMenu from "./navbarComponents/DropdownMenu";
 
 export default function Navbar() {
   const [ilgenuOpen, setIlgenuOpen] = useState(false);
   const access = useSelector(getAccess);
   const { goToLogin } = useNavigation();
-
+  const onSearch = (value, _e, info) => console.log(info?.source, value);
   return (
     <div className="flex items-center bg-gray-200 h-20 w-full p-2 sticky top-0 z-50">
+      {/* Contenido del menu en desktop */}
       <div className="w-full flex items-center justify-center">
         <div className="flex w-2/12 justify-center">
           <img
@@ -27,60 +30,48 @@ export default function Navbar() {
             alt="logo"
           />
         </div>
-        <div className="hidden lg:flex w-6/12 items-center justify-end">
-          <Button
-            type="text"
-            className="text-black mx-2 text-lg flex items-center p-6"
-          >
-            Productos
-          </Button>
-          <Button
-            type="text"
-            className="text-black mx-2 text-lg flex items-center p-6"
-          >
-            Locales
-          </Button>
-          <Button
-            type="text"
-            className="text-black mx-2 text-lg flex items-center p-6"
-          >
-            Promos y cuotas
-          </Button>
-          <Button
-            type="text"
-            className="text-black mx-2 text-lg flex items-center p-6"
-          >
-            Contacto
-          </Button>
-        </div>
-        <div className="hidden lg:flex w-4/12 justify-end p-2 ">
-          <Button
-            className="text-xl bg-transparent mx-2"
-            size="large"
-            type="text"
-            icon={<SearchOutlined className="p-2" />}
+        <DropdownMenu />
+        <div className="hidden lg:flex w-4/12 justify-end p-2 items-center">
+          <Search
+            placeholder="Buscar..."
+            allowClear
+            onSearch={onSearch}
+            className="flex w-60 items-center justify-center mr-2"
           />
-          <Button
-            className="text-xl bg-transparent mx-2"
-            size="large"
-            type="text"
-            icon={<ShoppingCartOutlined className="p-2 w-full h-full" />}
-          />
+          <Badge
+            count={0}
+            showZero
+            onClick={goToLogin}
+            className="cursor-pointer"
+          >
+            <Avatar icon={<ShoppingCartOutlined />} size="default" />
+          </Badge>
           {access === true ? (
             <AccountMenu />
           ) : (
-            <Button
-              className="bg-transparent text-black hover:text-gray-600"
-              size="large"
-              type="link"
-              icon={<UserOutlined />}
-              onClick={goToLogin}
+            <ConfigProvider
+              theme={{
+                components: {
+                  Button: {
+                    colorLinkHover: "#f5222d",
+                  },
+                },
+              }}
             >
-              Iniciar Sesion/Registrarse
-            </Button>
+              <Button
+                className="bg-transparent text-black font-myfont"
+                size="large"
+                type="link"
+                icon={<UserOutlined />}
+                onClick={goToLogin}
+              >
+                Iniciar Sesión/Registrarse
+              </Button>
+            </ConfigProvider>
           )}
         </div>
       </div>
+      {/* Boton del menu mobile */}
       <div className="lg:hidden">
         <button
           onClick={() => setIlgenuOpen(!ilgenuOpen)}
@@ -93,68 +84,8 @@ export default function Navbar() {
           )}
         </button>
       </div>
-      {ilgenuOpen && (
-        <div className="lg:hidden absolute right-0 top-20 bg-gray-300 w-full z-50">
-          <div className="flex flex-col items-center justify-center">
-            <div className="flex w-full justify-center p-2 bg-gray-400">
-              <Button
-                className="text-xl bg-transparent mx-2"
-                size="large"
-                type="text"
-                icon={<SearchOutlined className="p-2" />}
-              />
-              <Button
-                className="text-xl bg-transparent mx-2"
-                size="large"
-                type="text"
-                icon={<ShoppingCartOutlined className="p-2 w-full h-full" />}
-              />
-              {access === true ? (
-                <AccountMenu />
-              ) : (
-                <Button
-                  className="bg-transparent text-black hover:text-gray-600"
-                  size="large"
-                  type="link"
-                  icon={<UserOutlined />}
-                  onClick={goToLogin}
-                >
-                  Iniciar Sesion/Registrarse
-                </Button>
-              )}
-            </div>
-            <button
-              type="text"
-              className="text-black my-3 text-lg flex items-center p-2  "
-            >
-              Productos
-            </button>
-            <button
-              type="text"
-              className="text-black my-3 text-lg flex items-center p-2 "
-            >
-              Locales
-            </button>
-            <div className="w-1/2 flex flex-col items-center">
-              <button
-                type="text"
-                className="text-black my-3 text-lg flex items-center p-2 "
-              >
-                Promos y cuotas
-              </button>
-              <button
-                type="text"
-                className="text-black my-3 text-lg flex items-center p-2 "
-              >
-                Contacto
-              </button>
-            </div>
-            <div className="bg-gray-400 w-full flex items-center justify-center p-2 font-myfont text-lg">
-              App creada por Pablo y Seviche
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Contenido del menu en mobile */}
+      {ilgenuOpen && <MobileMenu />}
     </div>
   );
 }

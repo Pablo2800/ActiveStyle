@@ -41,7 +41,7 @@ export default function HomeCategories() {
   ];
 
   return (
-    <div className="flex flex-wrap items-center justify-center w-full h-full my-10">
+    <div className="flex flex-wrap items-center justify-around w-full h-full my-10">
       {categories.map((category) => (
         <div
           key={category.id}

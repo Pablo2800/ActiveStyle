@@ -62,10 +62,7 @@ export default function FilterByDeporte() {
           </button>
         </div>
       </div>
-      <div
-        className="overflow-x-scroll bg-scroll flex max-w-screen-2xl "
-        ref={scrollContainer}
-      >
+      <div className="overflow-x-scroll bg-scroll flex " ref={scrollContainer}>
         <div className="flex">
           {products.map((product) => {
             return (
