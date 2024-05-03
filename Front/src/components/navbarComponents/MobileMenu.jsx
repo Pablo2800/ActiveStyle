@@ -1,0 +1,76 @@
+import { Button } from "antd";
+import {
+  SearchOutlined,
+  ShoppingCartOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { getAccess } from "../../redux/userSlice";
+import AccountMenu from "../MenuDesplegabel";
+
+export default function MobileMenu() {
+  const access = useSelector(getAccess);
+
+  return (
+    <div className="lg:hidden absolute right-0 top-20 bg-gray-300 w-full z-50">
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex w-full justify-center p-2 bg-gray-400">
+          <Button
+            className="text-xl bg-transparent mx-2"
+            size="large"
+            type="text"
+            icon={<SearchOutlined className="p-2" />}
+          />
+          <Button
+            className="text-xl bg-transparent mx-2"
+            size="large"
+            type="text"
+            icon={<ShoppingCartOutlined className="p-2 w-full h-full" />}
+          />
+          {access === true ? (
+            <AccountMenu />
+          ) : (
+            <Button
+              className="bg-transparent text-black hover:text-gray-600"
+              size="large"
+              type="link"
+              icon={<UserOutlined />}
+              onClick={goToLogin}
+            >
+              Iniciar Sesion/Registrarse
+            </Button>
+          )}
+        </div>
+        <button
+          type="text"
+          className="text-black my-3 text-lg flex items-center p-2  "
+        >
+          Productos
+        </button>
+        <button
+          type="text"
+          className="text-black my-3 text-lg flex items-center p-2 "
+        >
+          Locales
+        </button>
+        <div className="w-1/2 flex flex-col items-center">
+          <button
+            type="text"
+            className="text-black my-3 text-lg flex items-center p-2 "
+          >
+            Promos y cuotas
+          </button>
+          <button
+            type="text"
+            className="text-black my-3 text-lg flex items-center p-2 "
+          >
+            Contacto
+          </button>
+        </div>
+        <div className="bg-gray-400 w-full flex items-center justify-center p-2 font-myfont text-lg">
+          App creada por Pablo y Seviche
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -8,24 +8,28 @@ export default function Footer() {
       label: <h2 className="text-xl font-extrabold font-myfont mb-3">AYUDA</h2>,
       children: (
         <div className="flex flex-col w-full justify-start items-start px-10 py-2">
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Envios y entregas
           </button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Devoluciones
           </button>
-          <button className="text-gray-400 my-3 font-myfont">Cambios</button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
+            Cambios
+          </button>
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Autogestionar mi devolucion
           </button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Opciones de pago
           </button>
-          <button className="text-gray-400 my-3 font-myfont">Contactate</button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
+            Contactate
+          </button>
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Defensa al consumidor
           </button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Libro de quejas online
           </button>
         </div>
@@ -40,8 +44,12 @@ export default function Footer() {
       ),
       children: (
         <div className="flex flex-col w-full justify-start items-start px-10 py-2">
-          <button className="text-gray-400 my-3 font-myfont">Proposito</button>
-          <button className="text-gray-400 my-3 font-myfont">Noticias</button>
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
+            Proposito
+          </button>
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
+            Noticias
+          </button>
         </div>
       ),
     },
@@ -54,16 +62,16 @@ export default function Footer() {
       ),
       children: (
         <div className="flex flex-col w-full justify-start items-start px-10 py-2">
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Encontra tu calzado
           </button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             ¿Como elegir tu top?
           </button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Tips saludables
           </button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Promociones
           </button>
         </div>
@@ -96,55 +104,63 @@ export default function Footer() {
 
   return (
     <div className="bg-black flex flex-col items-center justify-center text-white w-full">
-      <div className="hidden lg:flex lg:w-3/4 w-full lg:flex-row flex-wrap">
-        <div className="flex flex-col w-1/4 justify-start items-start p-10 mt-4">
+      <div className="hidden lg:flex lg:w-3/4 w-full lg:flex-row flex-wrap justify-around">
+        <div className="flex flex-col  justify-start items-start p-10 mt-4">
           <h2 className="text-xl font-extrabold font-myfont mb-3">AYUDA</h2>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Envios y entregas
           </button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Devoluciones
           </button>
-          <button className="text-gray-400 my-3 font-myfont">Cambios</button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
+            Cambios
+          </button>
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Autogestionar mi devolucion
           </button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Opciones de pago
           </button>
-          <button className="text-gray-400 my-3 font-myfont">Contactate</button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
+            Contactate
+          </button>
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Defensa al consumidor
           </button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Libro de quejas online
           </button>
         </div>
-        <div className="flex flex-col w-1/4 justify-start items-start p-10 mt-4">
+        <div className="flex flex-col  justify-start items-start p-10 mt-4">
           <h2 className="text-xl font-extrabold font-myfont mb-3 uppercase">
             Acerca de ActiveStyle
           </h2>
-          <button className="text-gray-400 my-3 font-myfont">Proposito</button>
-          <button className="text-gray-400 my-3 font-myfont">Noticias</button>
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
+            Proposito
+          </button>
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
+            Noticias
+          </button>
         </div>
-        <div className="flex flex-col w-1/4 justify-start items-start p-10 mt-4">
+        <div className="flex flex-col  justify-start items-start p-10 mt-4">
           <h2 className="text-xl font-extrabold font-myfont mb-3 uppercase">
             Novedades
           </h2>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Encontra tu calzado
           </button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             ¿Como elegir tu top?
           </button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Tips saludables
           </button>
-          <button className="text-gray-400 my-3 font-myfont">
+          <button className="text-gray-400 my-3 font-myfont hover:text-gray-600">
             Promociones
           </button>
         </div>
-        <div className="flex flex-col w-1/4 justify-start items-start p-10 mt-4">
+        <div className="flex flex-col  justify-start items-start p-10 mt-4">
           <h2 className="text-xl font-extrabold font-myfont mb-3 uppercase">
             Redes
           </h2>
@@ -186,10 +202,10 @@ export default function Footer() {
           <FaMapMarkerAlt /> Mendoza, Argentina
         </div>
         <div className="flex flex-col lg:flex-row">
-          <p className="text-sm ml-3 my-2 lg:my-0 lg:m-2">
+          <p className="text-xs ml-3 my-2 lg:my-0 lg:m-2">
             Terminos y condiciones
           </p>
-          <p className="text-sm ml-3 my-1 lg:my-0 lg:m-2">
+          <p className="text-xs ml-3 my-1 lg:my-0 lg:m-2">
             Politicas de privacidad y cookies
           </p>
         </div>
