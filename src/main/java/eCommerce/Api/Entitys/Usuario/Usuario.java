@@ -1,6 +1,7 @@
 package eCommerce.Api.Entitys.Usuario;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import eCommerce.Api.Entitys.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
