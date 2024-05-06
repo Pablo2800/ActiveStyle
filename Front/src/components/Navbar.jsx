@@ -13,12 +13,14 @@ import { getAccess } from "../redux/userSlice";
 import AccountMenu from "./MenuDesplegabel";
 import MobileMenu from "./navbarComponents/MobileMenu";
 import DropdownMenu from "./navbarComponents/DropdownMenu";
+import { getCart } from "../redux/cartSlice";
 
 export default function Navbar() {
   const [ilgenuOpen, setIlgenuOpen] = useState(false);
   const access = useSelector(getAccess);
   const { goToLogin } = useNavigation();
   const onSearch = (value, _e, info) => console.log(info?.source, value);
+  const cart = useSelector(getCart);
   return (
     <div className="flex items-center bg-gray-200 h-20 w-full p-2 sticky top-0 z-50">
       {/* Contenido del menu en desktop */}
@@ -39,7 +41,7 @@ export default function Navbar() {
             className="flex w-60 items-center justify-center mr-2"
           />
           <Badge
-            count={0}
+            count={cart.length}
             showZero
             onClick={goToLogin}
             className="cursor-pointer"
