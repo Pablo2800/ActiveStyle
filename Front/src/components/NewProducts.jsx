@@ -8,27 +8,40 @@ export default function NewProducts() {
   const { filterProduct } = useProducts();
   const scrollContainer = useRef(null);
 
+  
   const handleScroll = (scrollOffset) => {
     if (scrollContainer.current) {
-      scrollContainer.current.scrollLeft += scrollOffset;
+      const currentScrollLeft = scrollContainer.current.scrollLeft;
+      const containerWidth = scrollContainer.current.clientWidth;
+      const scrollWidth = scrollContainer.current.scrollWidth;
+      let newScrollLeft = currentScrollLeft + scrollOffset;
+      if (newScrollLeft + containerWidth >= scrollWidth) {
+        newScrollLeft = 0;
+      } else if (newScrollLeft < 0) {
+        newScrollLeft = scrollWidth - containerWidth;
+      }
+      scrollContainer.current.scrollTo({
+        left: newScrollLeft,
+        behavior: "smooth",
+      });
     }
   };
   return (
-    <div className="w-full flex-col bg-white p-3">
+    <div className="w-full flex-col bg-white p-3 text-black">
       <div className="w-full flex flex-row justify-between items-center">
         <h2 className="text-2xl font-semibold font-myfont">
           Lo nuevo en ActiveStyle
         </h2>
-        <div className="flex mr-5">
+        <div className="flex mr-5 my-2">
           <button
             className="p-3 bg-gray-200 text-gray-700 rounded-full mr-2"
-            onClick={() => handleScroll(-100)}
+            onClick={() => handleScroll(-300)}
           >
             <FaChevronLeft />
           </button>
           <button
             className="p-3 bg-gray-200 text-gray-700 rounded-full mr-2"
-            onClick={() => handleScroll(100)}
+            onClick={() => handleScroll(300)}
           >
             <FaChevronRight />
           </button>

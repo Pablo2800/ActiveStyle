@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Descriptions from "../components/detailComponents/Descriptions";
 import Navbar from "../components/Navbar";
 import Compra from "../components/detailComponents/Compra";
@@ -7,6 +7,9 @@ import Images from "../components/detailComponents/Images";
 import NewProducts from "../components/NewProducts";
 import Footer from "../components/Footer";
 export default function DetailProduct() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="bg-white w-full min-h-screen h-full flex flex-col text-white">
       <div className="hidden lg:flex lg:flex-col">
@@ -26,8 +29,8 @@ export default function DetailProduct() {
             Productos recomendados
           </h3>
           <NewProducts />
-          <Footer />
         </div>
+        <Footer />
       </div>
       <div className="lg:hidden">
         <Navbar />
