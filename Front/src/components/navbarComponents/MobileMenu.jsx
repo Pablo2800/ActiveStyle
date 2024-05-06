@@ -7,13 +7,14 @@ import {
 import { useSelector } from "react-redux";
 import { getAccess } from "../../redux/userSlice";
 import AccountMenu from "../MenuDesplegabel";
+import useNavigation from "../../hooks/useNavigate";
 
 export default function MobileMenu() {
   const access = useSelector(getAccess);
-
+  const { goToLogin } = useNavigation;
   return (
-    <div className="lg:hidden absolute right-0 top-20 bg-gray-300 w-full z-50">
-      <div className="flex flex-col items-center justify-center">
+    <div className="lg:hidden absolute flex right-0 top-20 bg-gray-300 w-full z-50">
+      <div className="flex flex-col items-center justify-center w-full">
         <div className="flex w-full justify-center p-2 bg-gray-400">
           <Button
             className="text-xl bg-transparent mx-2"
@@ -41,31 +42,35 @@ export default function MobileMenu() {
             </Button>
           )}
         </div>
-        <button
-          type="text"
-          className="text-black my-3 text-lg flex items-center p-2  "
-        >
-          Productos
-        </button>
-        <button
-          type="text"
-          className="text-black my-3 text-lg flex items-center p-2 "
-        >
-          Locales
-        </button>
-        <div className="w-1/2 flex flex-col items-center">
-          <button
-            type="text"
-            className="text-black my-3 text-lg flex items-center p-2 "
-          >
-            Promos y cuotas
-          </button>
-          <button
-            type="text"
-            className="text-black my-3 text-lg flex items-center p-2 "
-          >
-            Contacto
-          </button>
+        <div className="w-full flex flex-col sm:flex-row items-center justify-center">
+          <div className="w-1/2 flex flex-col items-center justify-center">
+            <button
+              type="text"
+              className="text-black my-3 text-lg flex items-center p-2  "
+            >
+              Productos
+            </button>
+            <button
+              type="text"
+              className="text-black my-3 text-lg flex items-center p-2 "
+            >
+              Locales
+            </button>
+          </div>
+          <div className="w-1/2 flex flex-col items-center justify-center">
+            <button
+              type="text"
+              className="text-black my-3 text-lg flex items-center p-2 "
+            >
+              Promos y cuotas
+            </button>
+            <button
+              type="text"
+              className="text-black my-3 text-lg flex items-center p-2 "
+            >
+              Contacto
+            </button>
+          </div>
         </div>
         <div className="bg-gray-400 w-full flex items-center justify-center p-2 font-myfont text-lg">
           App creada por Pablo y Seviche
