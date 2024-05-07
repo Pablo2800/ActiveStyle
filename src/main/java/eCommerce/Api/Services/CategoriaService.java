@@ -30,13 +30,20 @@ public class CategoriaService {
                 throw new Exception("La categoria buscada no existe");
         }
     }
-    public Categoria createCategoria(Categoria categoria) throws Exception{
-        Categoria categoriaExistente = categoriaRepository.findByNameCategory(categoria.getNameCategory());
-        if (categoriaExistente!= null){
-            throw new Exception("Ya existe una categoria con ese nombre");
-        }else{
-            return categoriaRepository.save(categoria);
+    public Categoria createCategoria(Categoria categoria) {
+        // Validación de datos de entrada
+        if (categoria.getNameCategory() == null || categoria.getNameCategory().isEmpty()) {
+            throw new IllegalArgumentException("El nombre de la categoría no puede estar vacío");
         }
+
+        // Verificación de existencia de la categoría
+        Categoria categoriaExistente = categoriaRepository.findByNameCategory(categoria.getNameCategory());
+        if (categoriaExistente != null) {
+            throw new RuntimeException("Ya existe una categoría con ese nombre");
+        }
+
+        // Creación de la categoría
+        return categoriaRepository.save(categoria);
     }
     public Categoria updateCategoria(Long id, Categoria categoria) throws Exception{
         Optional<Categoria> categoriaOptional = categoriaRepository.findById(id);

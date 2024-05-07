@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -35,6 +36,10 @@ public class ClienteController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error en el servidor, porfavor vuelva a intentar");
         }
+    }
+    @GetMapping("/productos/categoria/{categoriaId}")
+    public List<Producto> getProductosPorCategoria(@PathVariable Long categoriaId) {
+        return productoService.buscarProductosPorCategoria(categoriaId);
     }
     @GetMapping("/producto/buscarPorTalle")
     public ResponseEntity<List<Producto>> buscarProductosPorTalle(@RequestParam int talle) {
@@ -66,7 +71,7 @@ public class ClienteController {
     @GetMapping("/producto/{id}")
     public ResponseEntity<?> findByIdProducto(@PathVariable Long id){
         try {
-            Producto producto = productoService.findByIdProducto(id);
+            Optional<Producto> producto = productoService.obtenerProducto(id);
             return new ResponseEntity<>(producto, HttpStatus.OK);
         }catch (Exception e){
             throw new RuntimeException("No se encontró ningún producto con el Id igual a "+id);

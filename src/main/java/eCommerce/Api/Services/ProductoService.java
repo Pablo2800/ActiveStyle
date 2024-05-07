@@ -4,17 +4,15 @@ import eCommerce.Api.Entitys.Categoria;
 import eCommerce.Api.Entitys.Producto;
 import eCommerce.Api.Repositories.CategoriaRepository;
 import eCommerce.Api.Repositories.ProductoRepository;
-import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class ProductoService {
@@ -32,21 +30,10 @@ public class ProductoService {
             throw new RuntimeException("No hay ningún producto en pantalla para mostrar");
         }
     }
-    public Producto findByIdProducto(Long id) {
-        try {
-            EntityGraph<Producto> graph = entityManager.createEntityGraph(Producto.class);
-            graph.addAttributeNodes("categorias"); // Cargamos explícitamente las categorías asociadas
-
-            TypedQuery<Producto> query = entityManager.createQuery(
-                    "SELECT p FROM Producto p WHERE p.id = :id", Producto.class);
-            query.setParameter("id", id);
-            query.setHint("javax.persistence.fetchgraph", graph);
-
-            return query.getSingleResult();
-        } catch (Exception e) {
-            throw new RuntimeException("Error al cargar el producto con el ID: " + id, e);
-        }
+    public Optional<Producto> obtenerProducto(Long id) {
+        return productoRepository.findById(id);
     }
+    @Transactional
     public Producto createProducto(Producto producto, List<Long> categoriaIds, int[] talles) throws Exception {
         // Verificar que las categorías existan
         List<Categoria> categorias = categoriaRepository.findAllById(categoriaIds);
@@ -65,6 +52,9 @@ public class ProductoService {
             return productoRepository.save(producto);
         }
     }
+    public List<Producto> buscarProductosPorCategoria(Long categoriaId) {
+        return productoRepository.findByCategoriaId(categoriaId);
+    }
 
     public List<Producto> buscarPorTalle(int talle) {
         return productoRepository.findByTallesContains(talle);
@@ -77,12 +67,12 @@ public class ProductoService {
 
     public Producto updatePorducto(Long id){
         try{
-          Optional<Producto> productoOptional = productoRepository.findById(id);
-          if (productoOptional.isPresent()){
-              return productoOptional.get();
-          }else{
-              throw new RuntimeException("No se encontró un producto para actualizar con el id igual a " +id);
-          }
+            Optional<Producto> productoOptional = productoRepository.findById(id);
+            if (productoOptional.isPresent()){
+                return productoOptional.get();
+            }else{
+                throw new RuntimeException("No se encontró un producto para actualizar con el id igual a " +id);
+            }
         }catch (Exception e){
             throw new RuntimeException("Error al procesar la solicitud en el servidor, vuelva a intenrar más tarde");
         }
