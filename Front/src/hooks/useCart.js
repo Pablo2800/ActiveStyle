@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, clearCart, getCart } from "../redux/cartSlice";
 import {
   getAllTalles,
   getCantidadSelect,
@@ -11,6 +10,7 @@ import {
   updateProductTalles,
 } from "../redux/productSlice";
 import { useCallback } from "react";
+import { addToCart, clearCart, getCart } from "../redux/cartSlice";
 
 const useCart = () => {
   const cart = useSelector(getCart);
@@ -21,6 +21,11 @@ const useCart = () => {
   const tallesDisp = product.talles;
   const contador = useSelector(getCantidadSelect);
   const allTalles = useSelector(getAllTalles);
+  const cuotas = Math.ceil(((product.price / 3) * 1.05) / 5000) * 5000;
+  const transformPorcentage = product.porcentaje / 100;
+  const discountPrice = Math.round(
+    product.price - product.price * transformPorcentage
+  );
 
   const handleAddToCart = () => {
     if (!product || !product.talles) {
@@ -30,7 +35,9 @@ const useCart = () => {
     const productosToAdd = cantidad > 1 ? cantidad : 1;
 
     for (let i = 0; i < productosToAdd; i++) {
-      dispatch(addToCart({ ...product, talle: select }));
+      dispatch(
+        addToCart({ ...product, talle: select, priceDiscount: discountPrice })
+      );
     }
     const indexToRemove = product.talles.indexOf(select);
 
@@ -76,6 +83,9 @@ const useCart = () => {
     contador,
     tallesDisp,
     product,
+    cart,
+    cuotas,
+    discountPrice,
   };
 };
 

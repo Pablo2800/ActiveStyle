@@ -2,12 +2,9 @@ import React from "react";
 import useCart from "../../hooks/useCart";
 
 export default function Descriptions() {
-  const { product, cantTalles } = useCart();
-  const cuotas = Math.ceil(((product.price / 3) * 1.05) / 5000) * 5000;
-  const transformPorcentage = product.porcentaje / 100;
-  const discountPrice = Math.round(
-    product.price - product.price * transformPorcentage
-  );
+  const { product, cantTalles, cuotas, handleClearCart, discountPrice } =
+    useCart();
+
   return (
     <div className="w-full h-full bg-white p-3 text-gray-600 pt-10 pb-6 ">
       <h1 className="text-3xl font-bold font-myfont text-black my-3">
@@ -43,6 +40,7 @@ export default function Descriptions() {
       )}
       <p className="my-3">Producto en stock: {product.talles.length}</p>
       {cantTalles.length > 0 ? <p>Talle en stock: {cantTalles.length}</p> : ""}
+      <button onClick={handleClearCart}>Vaciar carrito</button>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React from "react";
 import useCart from "../../hooks/useCart";
 
 export default function Compra() {
-  const { handleAddToCart, handleClearCart, cantTalles, select } = useCart();
+  const { handleAddToCart, cantTalles, select } = useCart();
 
   return (
     <div className="bg-white w-full text-black flex py-5 items-center justify-center">

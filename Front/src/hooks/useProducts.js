@@ -140,11 +140,25 @@ const useProducts = () => {
       console.log(error.message);
     }
   };
-
+  //const onSearch = (value, _e, info) => console.log(info?.source, value);
+  // const getCategoriesById = async (value) => {
+  //   try {
+  //     const response = await axios.get(
+  //       "https://activestyle.onrender.com/activeStyle/cliente/productos/categoria/" +
+  //         value
+  //     );
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.log(error.response);
+  //   }
+  // };
+  // getCategoriesById(1);
   return {
     allProducts,
     filterProduct,
     newProducts,
+    // onSearch,
+    // getCategoriesById,
   };
 };
 
