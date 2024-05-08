@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Button } from "antd";
 import {
   SearchOutlined,
@@ -8,12 +9,14 @@ import { useSelector } from "react-redux";
 import { getAccess } from "../../redux/userSlice";
 import AccountMenu from "../MenuDesplegabel";
 import useNavigation from "../../hooks/useNavigate";
+import Carrito from "../Carrito";
 
-export default function MobileMenu() {
+export default function MobileMenu({ setOpenCart, openCart }) {
   const access = useSelector(getAccess);
   const { goToLogin } = useNavigation;
+
   return (
-    <div className="lg:hidden absolute flex right-0 top-20 bg-gray-300 w-full z-50">
+    <div className="absolute flex right-0 top-20 bg-gray-300 w-full lg:hidden">
       <div className="flex flex-col items-center justify-center w-full">
         <div className="flex w-full justify-center p-2 bg-gray-400">
           <Button
@@ -27,7 +30,11 @@ export default function MobileMenu() {
             size="large"
             type="text"
             icon={<ShoppingCartOutlined className="p-2 w-full h-full" />}
+            onClick={() => {
+              setOpenCart(true);
+            }}
           />
+          {openCart === true ? <Carrito /> : ""}
           {access === true ? (
             <AccountMenu />
           ) : (

@@ -42,6 +42,10 @@ const productsSlice = createSlice({
     },
     setCantidadSelect: (state, action) => {
       state.cantidadSelect = action.payload;
+      // state.filteredProducts = {
+      //   ...state.filteredProducts,
+      //   cantidad: state.cantidadSelect,
+      // };
     },
   },
 });

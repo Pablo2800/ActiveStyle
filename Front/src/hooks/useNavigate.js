@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { getAccess } from "../redux/userSlice";
+import { useSelector } from "react-redux";
 
 const useNavigation = () => {
   const navigate = useNavigate();
@@ -9,6 +11,7 @@ const useNavigation = () => {
   const handleGoBack = () => {
     window.history.back();
   };
+  const access = useSelector(getAccess);
 
   return {
     goToProduct,
@@ -16,6 +19,7 @@ const useNavigation = () => {
     goToHome,
     goToRegister,
     handleGoBack,
+    access,
   };
 };
 export default useNavigation;
