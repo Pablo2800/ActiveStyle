@@ -13,6 +13,9 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     List<Producto> findByNameProduct(String nameProduct);
     List<Producto> findByTallesContains(int talle);
-    @Query("SELECT p FROM Producto p JOIN p.categorias c WHERE c.id = :categoriaId")
-    List<Producto> findByCategoriaId(@Param("categoriaId") Long categoriaId);
+    List<Producto> findByIndumentariaIgnoreCase(String indumentaria);
+    List<Producto> findByActividadIgnoreCase(String actividad);
+    List<Producto> findByGeneroIgnoreCase(String genero);
+    @Query("SELECT p FROM Producto p WHERE LOWER(p.nameProduct) LIKE LOWER(CONCAT('%', :nombre, '%'))")
+    List<Producto> findByNombreContainingIgnoreCase(String nombre);
 }

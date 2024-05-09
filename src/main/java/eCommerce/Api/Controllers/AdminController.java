@@ -1,15 +1,12 @@
 package eCommerce.Api.Controllers;
 
-import eCommerce.Api.Entitys.Categoria;
 import eCommerce.Api.Entitys.Producto;
-import eCommerce.Api.Services.CategoriaService;
 import eCommerce.Api.Services.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,73 +16,33 @@ import java.util.Optional;
 public class AdminController {
 
     @Autowired
-    private CategoriaService categoriaService;
-    @Autowired
     private ProductoService productoService;
-
-    @GetMapping("/getCategorias")
-    public ResponseEntity<?> findAllCategorias() {
-        try {
-            List<Categoria> categorias = categoriaService.findAllCategorias();
-            if (categorias.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron Categorias para mostrar en pantalla");
-            }
-            return ResponseEntity.ok(categorias);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error en el servidor, porfavor vuelva a intentar");
-        }
-    }
-
-    @GetMapping("/categoria/{id}")
-    public ResponseEntity<?> findByIdCategoria(@PathVariable Long id) {
-        try {
-            Categoria categoria = categoriaService.findByIdCategoria(id);
-            return new ResponseEntity<>(categoria, HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró una categoria con el id igual a " + id);
-        }
-    }
-
-    @PostMapping("/create/categoria")
-    public ResponseEntity<?> createCategoria(@RequestBody Categoria categoria) {
-        try {
-            Categoria nuevaCategoria = categoriaService.createCategoria(categoria);
-            return new ResponseEntity<>(nuevaCategoria, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("No se pudo crear la categoría: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PutMapping("/update/categoria/{id}")
-    public ResponseEntity<Categoria> updateCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
-        try {
-            Categoria categoriaExistente = categoriaService.updateCategoria(id, categoria);
-            return new ResponseEntity<>(categoriaExistente, HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
-
-    @DeleteMapping("/categoria/{id}")
-    public ResponseEntity<Void> deleteCategoria(@PathVariable Long id) {
-        try {
-            categoriaService.deleteCategoria(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
 
 
     @GetMapping("/getProductos")
-    public ResponseEntity<?> findAllProductos(){
+    public ResponseEntity<?> findAllProductos() {
         try {
             List<Producto> productos = productoService.findAllProductos();
             return new ResponseEntity<>(productos, HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("No se encontraron productos para mostrar en pantalla");
         }
+    }
+    @GetMapping("/buscarProducto")
+    public List<Producto> buscarProductosPorNombre(@RequestParam String nombre) {
+        return productoService.buscarProductosPorNombre(nombre);
+    }
+    @GetMapping("/buscarPorIndumentaria")
+    public List<Producto> buscarProductosPorIndumentaria(@RequestParam String indumentaria) {
+        return productoService.buscarProductosPorIndumentaria(indumentaria);
+    }
+    @GetMapping("/buscarPorActividad")
+    public List<Producto> buscarProductosPorActividad(@RequestParam String actividad) {
+        return productoService.buscarProductosPorActividad(actividad);
+    }
+    @GetMapping("/buscarPorGenero")
+    public List<Producto> buscarProductosPorGenero(@RequestParam String genero) {
+        return productoService.buscarProductosPorGenero(genero);
     }
     @GetMapping("/producto/{id}")
     public ResponseEntity<?> findByIdProducto(@PathVariable Long id) {
@@ -96,18 +53,21 @@ public class AdminController {
             throw new RuntimeException("No se encontró ningún producto con el Id igual a " + id);
         }
     }
-    @PostMapping("/create/producto")
-    public ResponseEntity<?> crearProducto(@RequestBody Producto producto, @RequestParam List<Long> categoriaIds, @RequestParam int[] talles) {
+
+    @PostMapping(value = "/create/producto")
+    public ResponseEntity<?> crearProducto(@RequestBody Producto producto,
+            /*@RequestParam("categoriaIds") List<Long> categoriaIds,*/
+                                           @RequestParam("talles") int[] talles
+    ) {
         try {
-            Producto nuevoProducto = productoService.createProducto(producto, categoriaIds, talles);
+            // Crear el producto
+            Producto nuevoProducto = productoService.createProducto(producto, /*categoriaIds,*/ talles);
+            // Devolver una respuesta exitosa con el nuevo producto creado
             return ResponseEntity.ok(nuevoProducto);
         } catch (Exception e) {
+            // Manejar cualquier otra excepción que pueda ocurrir durante el proceso
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-    }
-    @GetMapping("/productos/categoria/{categoriaId}")
-    public List<Producto> getProductosPorCategoria(@PathVariable Long categoriaId) {
-        return productoService.buscarProductosPorCategoria(categoriaId);
     }
     @GetMapping("/buscarPorTalle")
     public ResponseEntity<List<Producto>> buscarProductosPorTalle(@RequestParam int talle) {

@@ -1,8 +1,6 @@
 package eCommerce.Api.Services;
 
-import eCommerce.Api.Entitys.Categoria;
 import eCommerce.Api.Entitys.Producto;
-import eCommerce.Api.Repositories.CategoriaRepository;
 import eCommerce.Api.Repositories.ProductoRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -10,7 +8,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +15,6 @@ import java.util.Optional;
 public class ProductoService {
     @Autowired
     private ProductoRepository productoRepository;
-    @Autowired
-    private CategoriaRepository categoriaRepository;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -34,26 +29,27 @@ public class ProductoService {
         return productoRepository.findById(id);
     }
     @Transactional
-    public Producto createProducto(Producto producto, List<Long> categoriaIds, int[] talles) throws Exception {
-        // Verificar que las categorías existan
-        List<Categoria> categorias = categoriaRepository.findAllById(categoriaIds);
-        if (categorias.isEmpty()) {
-            throw new Exception("No se encontraron categorías con los ids proporcionados");
-        }
-
+    public Producto createProducto(Producto producto, int[] talles) throws Exception {
         // Verificar si ya existe un producto con el mismo nombre
         Producto productoExistente = productoRepository.nameProduct(producto.getNameProduct());
         if (productoExistente != null) {
             throw new Exception("Ya existe un producto con ese nombre");
         } else {
-            // Asignar las categorías al producto
-            producto.setCategorias(new HashSet<>(categorias));
             producto.setTalles(talles);
             return productoRepository.save(producto);
         }
     }
-    public List<Producto> buscarProductosPorCategoria(Long categoriaId) {
-        return productoRepository.findByCategoriaId(categoriaId);
+    public List<Producto> buscarProductosPorNombre(String nombre) {
+        return productoRepository.findByNombreContainingIgnoreCase(nombre);
+    }
+    public List<Producto> buscarProductosPorIndumentaria(String indumentaria) {
+        return productoRepository.findByIndumentariaIgnoreCase(indumentaria);
+    }
+    public List<Producto> buscarProductosPorActividad(String actividad) {
+        return productoRepository.findByActividadIgnoreCase(actividad);
+    }
+    public List<Producto> buscarProductosPorGenero(String genero) {
+        return productoRepository.findByGeneroIgnoreCase(genero);
     }
 
     public List<Producto> buscarPorTalle(int talle) {
