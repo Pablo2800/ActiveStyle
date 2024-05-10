@@ -55,6 +55,10 @@ public class ClienteController {
     public List<Producto> buscarProductosPorGenero(@RequestParam String genero) {
         return productoService.buscarProductosPorGenero(genero);
     }
+    @GetMapping("/buscarPorMarca")
+    public List<Producto> buscarProductoPorMarca(@RequestParam String marca) {
+        return productoService.buscarProductoPorMarca(marca);
+    }
     @GetMapping("/producto/{id}")
     public ResponseEntity<?> findByIdProducto(@PathVariable Long id){
         try {
