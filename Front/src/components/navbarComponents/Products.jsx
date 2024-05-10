@@ -1,6 +1,12 @@
 import { Dropdown, Space } from "antd";
+import useProducts from "../../hooks/useProducts";
 
 export default function Products() {
+  const {
+    handleProductsByGenre,
+    handleProductsByActivity,
+    handleProductsByIndumentaria,
+  } = useProducts();
   const items = [
     {
       key: "1",
@@ -8,23 +14,80 @@ export default function Products() {
       children: [
         {
           key: "1-1",
-          label: <p className="font-myfont w-96 text-xl">Zapatillas</p>,
+          label: (
+            <button
+              onClick={() => handleProductsByIndumentaria("zapatillas")}
+              className="font-myfont w-96 text-xl flex items-start justify-start"
+            >
+              Zapatillas
+            </button>
+          ),
         },
         {
           key: "1-2",
-          label: <p className="font-myfont w-96 text-xl">Camperas</p>,
+          label: (
+            <button
+              onClick={() => handleProductsByIndumentaria("Campera")}
+              className="font-myfont w-96 text-xl flex items-start justify-start"
+            >
+              Camperas
+            </button>
+          ),
         },
         {
           key: "1-3",
-          label: <p className="font-myfont w-96 text-xl">Pantalones</p>,
+          label: (
+            <button
+              onClick={() => handleProductsByIndumentaria("pantalones")}
+              className="font-myfont w-96 text-xl flex items-start justify-start"
+            >
+              Pantalones
+            </button>
+          ),
         },
         {
           key: "1-4",
-          label: <p className="font-myfont w-96 text-xl">Buzos</p>,
+          label: (
+            <button
+              onClick={() => handleProductsByIndumentaria("buzos")}
+              className="font-myfont w-96 text-xl flex items-start justify-start"
+            >
+              Buzos
+            </button>
+          ),
         },
         {
           key: "1-5",
-          label: <p className="font-myfont w-96 text-xl">Botines</p>,
+          label: (
+            <button
+              onClick={() => handleProductsByIndumentaria("botines")}
+              className="font-myfont w-96 text-xl flex items-start justify-start"
+            >
+              Botines
+            </button>
+          ),
+        },
+        {
+          key: "1-6",
+          label: (
+            <button
+              onClick={() => handleProductsByGenre("hombre")}
+              className="font-myfont w-96 text-xl flex items-start justify-start"
+            >
+              Hombre
+            </button>
+          ),
+        },
+        {
+          key: "1-7",
+          label: (
+            <button
+              onClick={() => handleProductsByGenre("mujer")}
+              className="font-myfont w-96 text-xl flex items-start justify-start"
+            >
+              Mujer
+            </button>
+          ),
         },
       ],
     },

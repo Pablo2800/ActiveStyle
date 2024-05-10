@@ -80,7 +80,7 @@ export default function NewProducts() {
                 )}
                 <div className="w-full">
                   <p className="text-lg font-bold">{product.description}</p>
-                  <p className="text-gray-600">{product.category}</p>
+                  <p className="text-gray-600 uppercase">{product.category}</p>
                   {product.discount === true ? (
                     <div className="font-bold flex">
                       <p className="font-bold line-through mr-4">

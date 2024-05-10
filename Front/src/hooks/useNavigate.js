@@ -8,6 +8,7 @@ const useNavigation = () => {
   const goToHome = () => navigate("/");
   const goToRegister = () => navigate("/register");
   const goToProduct = () => navigate("/product/:id");
+  const goToProductsByCategory = () => navigate("/:category/products");
   const handleGoBack = () => {
     window.history.back();
   };
@@ -19,6 +20,7 @@ const useNavigation = () => {
     goToHome,
     goToRegister,
     handleGoBack,
+    goToProductsByCategory,
     access,
   };
 };

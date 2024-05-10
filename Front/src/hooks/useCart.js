@@ -10,14 +10,20 @@ import {
   updateProductTalles,
 } from "../redux/productSlice";
 import { useCallback } from "react";
-import { addToCart, clearCart, getCart } from "../redux/cartSlice";
+import {
+  addToCart,
+  clearCart,
+  getCart,
+  removeFromCart,
+} from "../redux/cartSlice";
 
 const useCart = () => {
   const cart = useSelector(getCart);
   const dispatch = useDispatch();
   const select = useSelector(getSelectProduct);
   const product = useSelector(getFilteredProducts);
-  const cantTalles = product.talles.filter((talle) => talle === select);
+  const cantTalles =
+    product !== null ? product.talles.filter((talle) => talle === select) : "";
   const tallesDisp = product.talles;
   const contador = useSelector(getCantidadSelect);
   const allTalles = useSelector(getAllTalles);
@@ -26,7 +32,6 @@ const useCart = () => {
   const discountPrice = Math.round(
     product.price - product.price * transformPorcentage
   );
-
   const handleAddToCart = () => {
     if (!product || !product.talles) {
       return;
@@ -47,6 +52,10 @@ const useCart = () => {
 
       dispatch(updateProductTalles({ id: product.id, talles: updatedTalles }));
     }
+  };
+
+  const handleRemoveToCart = (id, talle) => {
+    dispatch(removeFromCart({ id, talle }));
   };
 
   const handleClearCart = () => {
@@ -77,6 +86,7 @@ const useCart = () => {
     handleSelect,
     aumentarContador,
     disminuirContador,
+    handleRemoveToCart,
     cantTalles,
     select,
     allTalles,

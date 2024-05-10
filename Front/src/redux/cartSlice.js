@@ -12,9 +12,15 @@ const cartSlice = createSlice({
       state.cart.push(action.payload);
     },
     removeFromCart: (state, action) => {
-      const { product } = action.payload;
-      state.cart = state.cart.filter((item) => item.id !== product.id);
+      const { id, talle } = action.payload;
+      const indexToRemove = state.cart.findIndex(
+        (item) => item.id === id && item.talle === talle
+      );
+      if (indexToRemove !== -1) {
+        state.cart.splice(indexToRemove, 1);
+      }
     },
+
     clearCart: (state) => {
       state.cart = [];
     },
@@ -23,6 +29,7 @@ const cartSlice = createSlice({
     },
   },
 });
+
 
 export const getCart = (state) => state.cart.cart;
 export const { addToCart, removeFromCart, clearCart, updateCart } =

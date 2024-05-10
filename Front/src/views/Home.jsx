@@ -10,11 +10,14 @@ import Footer from "../components/Footer";
 import useProducts from "../hooks/useProducts";
 
 export default function Home() {
-  const { allProducts, newProducts } = useProducts();
+  const { handleAllProducts, newProducts } = useProducts();
+
   useEffect(() => {
-    allProducts();
+    // Llamadas a las funciones solo una vez, después del montaje del componente
+    handleAllProducts();
     newProducts();
-  }, [allProducts]);
+  }, []); // Array vacío de dependencias
+
   return (
     <div className="flex flex-col bg-gray-200 w-full">
       <Navbar />
