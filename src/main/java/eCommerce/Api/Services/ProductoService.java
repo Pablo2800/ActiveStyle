@@ -51,6 +51,9 @@ public class ProductoService {
     public List<Producto> buscarProductosPorGenero(String genero) {
         return productoRepository.findByGeneroIgnoreCase(genero);
     }
+    public List<Producto> buscarProductoPorMarca(String marca) {
+        return productoRepository.findByMarcaIgnoreCase(marca);
+    }
 
     public List<Producto> buscarPorTalle(int talle) {
         return productoRepository.findByTallesContains(talle);
