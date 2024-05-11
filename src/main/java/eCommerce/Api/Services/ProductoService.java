@@ -1,5 +1,6 @@
 package eCommerce.Api.Services;
 
+import com.cloudinary.Cloudinary;
 import eCommerce.Api.Entitys.Producto;
 import eCommerce.Api.Repositories.ProductoRepository;
 import jakarta.persistence.EntityManager;
@@ -7,9 +8,10 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 
 @Service
 public class ProductoService {
@@ -17,6 +19,8 @@ public class ProductoService {
     private ProductoRepository productoRepository;
     @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
+    private Cloudinary cloudinary;
 
     public List<Producto> findAllProductos(){
         try {
@@ -29,16 +33,42 @@ public class ProductoService {
         return productoRepository.findById(id);
     }
     @Transactional
-    public Producto createProducto(Producto producto, int[] talles) throws Exception {
+    public Producto createProducto(Producto producto, List<MultipartFile> imageFiles, int[] talles) throws Exception {
         // Verificar si ya existe un producto con el mismo nombre
         Producto productoExistente = productoRepository.nameProduct(producto.getNameProduct());
         if (productoExistente != null) {
             throw new Exception("Ya existe un producto con ese nombre");
         } else {
+            // Subir los archivos a Cloudinary y obtener las URLs de las imágenes
+            List<String> imageUrls = new ArrayList<>();
+            int maxImages = 6; // Límite máximo de imágenes
+            for (int i = 0; i < Math.min(imageFiles.size(), maxImages); i++) {
+                MultipartFile file = imageFiles.get(i);
+                String imageUrl = uploadFile(file);
+                imageUrls.add(imageUrl);
+            }
+
+            // Establecer las URLs de las imágenes en el producto
+            producto.setImageUrls(imageUrls);
+
+            // Establecer los talles del producto
             producto.setTalles(talles);
+
+            // Guardar el producto en la base de datos
             return productoRepository.save(producto);
         }
     }
+
+    private String uploadFile(MultipartFile multipartFile) throws IOException {
+        // Subir el archivo a Cloudinary y devolver la URL de la imagen
+        return cloudinary.uploader()
+                .upload(multipartFile.getBytes(),
+                        Map.of("public_id",
+                                UUID.randomUUID().toString()))
+                .get("url")
+                .toString();
+    }
+
     public List<Producto> buscarProductosPorNombre(String nombre) {
         return productoRepository.findByNombreContainingIgnoreCase(nombre);
     }

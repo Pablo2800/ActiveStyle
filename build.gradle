@@ -43,6 +43,7 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	implementation 'org.springframework.security:spring-security-crypto:5.7.2'
+	implementation 'com.cloudinary:cloudinary-http44:1.28.0'
 }
 
 tasks.named('test') {

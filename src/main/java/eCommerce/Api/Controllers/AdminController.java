@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -58,19 +59,16 @@ public class AdminController {
         }
     }
 
-    @PostMapping(value = "/create/producto")
-    public ResponseEntity<?> crearProducto(@RequestBody Producto producto,
-            /*@RequestParam("categoriaIds") List<Long> categoriaIds,*/
-                                           @RequestParam("talles") int[] talles
-    ) {
+    @PostMapping("/crearProducto")
+    public ResponseEntity<?> crearProducto(
+            @ModelAttribute Producto producto,
+            @RequestParam("imagen") List<MultipartFile> imagen,
+            @RequestParam("talles") int[] talles) {
         try {
-            // Crear el producto
-            Producto nuevoProducto = productoService.createProducto(producto, /*categoriaIds,*/ talles);
-            // Devolver una respuesta exitosa con el nuevo producto creado
-            return ResponseEntity.ok(nuevoProducto);
+            Producto productoCreado = productoService.createProducto(producto, imagen, talles);
+            return ResponseEntity.status(HttpStatus.CREATED).body(productoCreado);
         } catch (Exception e) {
-            // Manejar cualquier otra excepción que pueda ocurrir durante el proceso
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el producto: " + e.getMessage());
         }
     }
     @GetMapping("/buscarPorTalle")

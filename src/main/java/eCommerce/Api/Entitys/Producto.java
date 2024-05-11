@@ -3,6 +3,8 @@ package eCommerce.Api.Entitys;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 
 @Data
 @NoArgsConstructor
@@ -28,4 +30,9 @@ public class Producto {
     @CollectionTable(name = "producto_talles", joinColumns = @JoinColumn(name = "producto_id"))
     @Column(name = "talle")
     private int[] talles;
+    private String imageUrl;
+    @ElementCollection
+    @CollectionTable(name = "producto_images", joinColumns = @JoinColumn(name = "producto_id"))
+    @Column(name = "image_url")
+    private List<String> imageUrls;
 }
