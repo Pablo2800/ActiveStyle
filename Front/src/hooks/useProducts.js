@@ -8,122 +8,72 @@ import {
   getProductsByCategory,
   setFilteredProductsByCategory,
   getFilteredProductsByCategory,
+  getFilteredProducts,
 } from "../redux/productSlice";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useMemo } from "react";
+import useNavigation from "./useNavigate";
 
 const useProducts = () => {
-  const products = [
-    {
-      id: 1,
-      url: "https://nikearprod.vtexassets.com/arquivos/ids/793832-1000-1000?v=638379223305770000&width=1000&height=1000&aspect=true",
-      description: "Nike Air Force 1 07 LV8",
-      category: "hombre",
-      price: 239999,
-      discount: false,
-      porcentaje: 0,
-      tallesDisp: [33, 37, 38, 39, 39, 42, 43],
-    },
-    {
-      id: 2,
-      url: "https://nikearprod.vtexassets.com/arquivos/ids/880628-1000-1000?v=638467320930270000&width=1000&height=1000&aspect=true",
-      description: "Nike Air Force 1 07 LV8",
-      category: "hombre",
-      price: 239999,
-      discount: true,
-      porcentaje: 40,
-    },
-    {
-      id: 3,
-      url: "https://nikearprod.vtexassets.com/arquivos/ids/794168-1000-1000?v=638379227989030000&width=1000&height=1000&aspect=true",
-      description: "Nike Air Force 1 07 LV8",
-      category: "hombre",
-      price: 239999,
-      discount: true,
-      porcentaje: 20,
-    },
-    {
-      id: 4,
-      url: "https://nikearprod.vtexassets.com/arquivos/ids/762481-1000-1000?v=638316091353670000&width=1000&height=1000&aspect=true",
-      description: "Nike Air Force 1 07 LV8",
-      category: "hombre",
-      price: 239999,
-      discount: false,
-      porcentaje: null,
-    },
-    {
-      id: 5,
-      url: "https://nikearprod.vtexassets.com/arquivos/ids/880628-1000-1000?v=638467320930270000&width=1000&height=1000&aspect=true",
-      description: "Nike Air Force 1 07 LV8",
-      category: "hombre",
-      price: 239999,
-      discount: true,
-      porcentaje: 25,
-    },
-    {
-      id: 6,
-      url: "https://nikearprod.vtexassets.com/arquivos/ids/762481-1000-1000?v=638316091353670000&width=1000&height=1000&aspect=true",
-      description: "Nike Air Force 1 07 LV8",
-      category: "hombre",
-      price: 239999,
-      discount: false,
-      porcentaje: null,
-    },
-    {
-      id: 7,
-      url: "https://nikearprod.vtexassets.com/arquivos/ids/794168-1000-1000?v=638379227989030000&width=1000&height=1000&aspect=true",
-      description: "Nike Air Force 1 07 LV8",
-      category: "hombre",
-      price: 239999,
-      discount: true,
-      porcentaje: 5,
-    },
-    {
-      id: 8,
-      url: "https://nikearprod.vtexassets.com/arquivos/ids/762481-1000-1000?v=638316091353670000&width=1000&height=1000&aspect=true",
-      description: "Nike Air Force 1 07 LV8",
-      category: "mujer",
-      price: 239999,
-      discount: false,
-      porcentaje: null,
-    },
-    {
-      id: 9,
-      url: "https://nikearprod.vtexassets.com/arquivos/ids/880628-1000-1000?v=638467320930270000&width=1000&height=1000&aspect=true",
-      description: "Nike Air Force 1 07 LV8",
-      category: "mujer",
-      price: 239999,
-      discount: true,
-      porcentaje: 10,
-    },
-    {
-      id: 10,
-      url: "https://nikearprod.vtexassets.com/arquivos/ids/794168-1000-1000?v=638379227989030000&width=1000&height=1000&aspect=true",
-      description: "Nike Air Force 1 07 LV8",
-      category: "mujer",
-      price: 239999,
-      discount: false,
-      porcentaje: null,
-    },
-    {
-      id: 11,
-      url: "https://nikearprod.vtexassets.com/arquivos/ids/762481-1000-1000?v=638316091353670000&width=1000&height=1000&aspect=true",
-      description: "Nike Air Force 1 07 LV8",
-      category: "mujer",
-      price: 239999,
-      discount: true,
-      porcentaje: 25,
-    },
-  ];
   const productsByCategory = useSelector(getProductsByCategory);
   const filteredProducts = useSelector(getFilteredProductsByCategory);
-  const navigate = useNavigate();
+  const product = useSelector(getFilteredProducts);
+  const { goToProductsByCategory } = useNavigation();
   const dispatch = useDispatch();
   const allProducts = useSelector(getAllProducts);
-
+  const filtered = allProducts.slice(-10);
+  const cuotas = Math.ceil(((product.price / 3) * 1.05) / 5000) * 5000;
+  const transformPorcentage = product.porcentaje / 100;
+  const discountPrice = Math.round(
+    product.price - product.price * transformPorcentage
+  );
   const newProducts = () => {
-    dispatch(setNewProducts(products));
+    dispatch(setNewProducts(filtered));
   };
+  const uniqueIndumentarias = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          productsByCategory.map(
+            (product) => product.indumentaria || product.indumentaria !== ""
+          )
+        )
+      ),
+    [productsByCategory]
+  );
+  const allIndumentarias = useMemo(
+    () =>
+      Array.from(new Set(allProducts.map((product) => product.indumentaria))),
+    [allProducts]
+  );
+  const uniqueGeneros = useMemo(
+    () =>
+      Array.from(new Set(productsByCategory.map((product) => product.genero))),
+    [productsByCategory]
+  );
+  const uniqueMarcas = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          productsByCategory.map((product) => product.marca.toUpperCase())
+        )
+      ),
+    [productsByCategory]
+  );
+  const allMarcas = useMemo(
+    () =>
+      Array.from(
+        new Set(allProducts.map((product) => product.marca.toUpperCase()))
+      ),
+    [allProducts]
+  );
+  const uniqueActividad = useMemo(
+    () =>
+      Array.from(
+        new Set(productsByCategory.map((product) => product.actividad))
+      ),
+    [productsByCategory]
+  );
   const handleAllProducts = async () => {
     try {
       const response = await axios.get(
@@ -157,8 +107,7 @@ const useProducts = () => {
       if (response) {
         dispatch(setProductsByCategory(response.data));
         dispatch(setFilteredProductsByCategory(response.data));
-
-        navigate(`/${value}/products`);
+        goToProductsByCategory(value);
       }
     } catch (error) {
       console.log(error.message);
@@ -173,8 +122,7 @@ const useProducts = () => {
       if (response) {
         dispatch(setProductsByCategory(response.data));
         dispatch(setFilteredProductsByCategory(response.data));
-
-        navigate(`/${value}/products`);
+        goToProductsByCategory(value);
       }
     } catch (error) {
       console.log(error.message);
@@ -189,7 +137,22 @@ const useProducts = () => {
       if (response) {
         dispatch(setProductsByCategory(response.data));
         dispatch(setFilteredProductsByCategory(response.data));
-        navigate(`/${value}/products`);
+        goToProductsByCategory(value);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  const handleProductsByMarca = async (value) => {
+    try {
+      const response = await axios.get(
+        "https://activestyle.onrender.com/activeStyle/cliente/buscarPorMarca?marca=" +
+          value
+      );
+      if (response) {
+        dispatch(setProductsByCategory(response.data));
+        dispatch(setFilteredProductsByCategory(response.data));
+        goToProductsByCategory(value);
       }
     } catch (error) {
       console.log(error.message);
@@ -203,8 +166,18 @@ const useProducts = () => {
     handleProductsByGenre,
     handleProductsByActivity,
     handleProductsByIndumentaria,
+    handleProductsByMarca,
     productsByCategory,
     filteredProducts,
+    filtered,
+    uniqueIndumentarias,
+    uniqueGeneros,
+    uniqueMarcas,
+    uniqueActividad,
+    allMarcas,
+    allIndumentarias,
+    cuotas,
+    discountPrice,
   };
 };
 

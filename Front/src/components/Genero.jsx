@@ -31,7 +31,7 @@ export default function Genero() {
           </div>
         </div>
         <div
-          onClick={() => handleProductsByGenre("niños")}
+          onClick={() => handleProductsByGenre("niño")}
           className="m-4 lg:mx-3 relative overflow-hidden rounded-lg cursor-pointer"
         >
           <div className="flex items-center justify-center hover:scale-105 w-full h-full z-10 relative duration-300">

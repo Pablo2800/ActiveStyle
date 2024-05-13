@@ -10,11 +10,10 @@ import Footer from "../components/Footer";
 import useProducts from "../hooks/useProducts";
 
 export default function Home() {
-  const { handleAllProducts, newProducts } = useProducts();
-
+  const { handleAllProducts, newProducts, discountPrice } = useProducts();
   useEffect(() => {
     // Llamadas a las funciones solo una vez, después del montaje del componente
-    handleAllProducts();
+    handleAllProducts({ priceDiscount: discountPrice });
     newProducts();
   }, []); // Array vacío de dependencias
 

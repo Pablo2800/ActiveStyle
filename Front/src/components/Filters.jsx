@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Checkbox, Collapse, ConfigProvider, Slider } from "antd";
 import useProducts from "../hooks/useProducts";
 import { useDispatch } from "react-redux";
@@ -14,21 +14,16 @@ export default function Filters({
   selectedActividad,
   setSelectedActividad,
 }) {
-  const { productsByCategory } = useProducts();
+  const {
+    productsByCategory,
+    uniqueIndumentarias,
+    uniqueGeneros,
+    uniqueMarcas,
+    uniqueActividad,
+  } = useProducts();
   const dispatch = useDispatch();
   const [priceRange, setPriceRange] = useState([20000, 500000]);
-  const uniqueIndumentarias = Array.from(
-    new Set(productsByCategory.map((product) => product.indumentaria))
-  );
-  const uniqueGeneros = Array.from(
-    new Set(productsByCategory.map((product) => product.genero))
-  );
-  const uniqueMarcas = Array.from(
-    new Set(productsByCategory.map((product) => product.marca.toUpperCase()))
-  );
-  const uniqueActividad = Array.from(
-    new Set(productsByCategory.map((product) => product.actividad))
-  );
+
   const handleIndumentariaChange = (indumentaria) => {
     setSelectedIndumentarias((prevSelectedIndumentarias) => {
       if (prevSelectedIndumentarias.includes(indumentaria)) {
@@ -98,8 +93,8 @@ export default function Filters({
     selectedMarcas,
     selectedGeneros,
     selectedActividad,
+    priceRange,
   ]);
-
   return (
     <div className="w-full sm:w-1/5 bg-gray-500 flex flex-col sticky top-10 z-10">
       <ConfigProvider
@@ -178,7 +173,7 @@ export default function Filters({
             <div className="text-base w-full flex flex-col items-center justify-center">
               <Slider
                 range
-                step={1}
+                step={1000}
                 defaultValue={[20000, 500000]}
                 onChangeComplete={handlePriceChange}
                 min={20000}
@@ -189,12 +184,6 @@ export default function Filters({
                 Precio: ${priceRange[0].toLocaleString()} - $
                 {priceRange[1].toLocaleString()}
               </p>
-              <button
-                onClick={applyFilters}
-                className="mt-3 mb-1 bg-black text-white px-3 py-1 rounded-xl"
-              >
-                Aplicar
-              </button>
             </div>
           </Collapse.Panel>
           <Collapse.Panel key="5" header="Marca" className="mb-2">

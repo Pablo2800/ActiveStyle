@@ -16,6 +16,7 @@ import {
   getCart,
   removeFromCart,
 } from "../redux/cartSlice";
+import useProducts from "./useProducts";
 
 const useCart = () => {
   const cart = useSelector(getCart);
@@ -27,11 +28,7 @@ const useCart = () => {
   const tallesDisp = product.talles;
   const contador = useSelector(getCantidadSelect);
   const allTalles = useSelector(getAllTalles);
-  const cuotas = Math.ceil(((product.price / 3) * 1.05) / 5000) * 5000;
-  const transformPorcentage = product.porcentaje / 100;
-  const discountPrice = Math.round(
-    product.price - product.price * transformPorcentage
-  );
+  const { cuotas, discountPrice } = useProducts();
   const handleAddToCart = () => {
     if (!product || !product.talles) {
       return;
