@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAllTalles,
+  getAllTallesCalzado,
   getCantidadSelect,
   getFilteredProducts,
   getSelectProduct,
@@ -27,30 +27,53 @@ const useCart = () => {
     product !== null ? product.talles.filter((talle) => talle === select) : "";
   const tallesDisp = product.talles;
   const contador = useSelector(getCantidadSelect);
-  const allTalles = useSelector(getAllTalles);
+  const allTalles = useSelector(getAllTallesCalzado);
   const { cuotas, discountPrice } = useProducts();
+
   const handleAddToCart = () => {
     if (!product || !product.talles) {
       return;
     }
-    const cantidad = contador;
-    const productosToAdd = cantidad > 1 ? cantidad : 1;
 
-    for (let i = 0; i < productosToAdd; i++) {
-      dispatch(
-        addToCart({ ...product, talle: select, priceDiscount: discountPrice })
+    const maxCantidad = 3;
+    let cantidadToAdd = contador > maxCantidad ? maxCantidad : contador;
+
+    // Verificar si ya hay productos de este tipo en el carrito
+    const totalCantidadInCart = cart.reduce((total, item) => {
+      if (item.id === product.id && item.talle === select) {
+        return total + item.cantidad;
+      }
+      return total;
+    }, 0);
+
+    // Verificar si la cantidad a agregar excede el máximo permitido
+    if (totalCantidadInCart + cantidadToAdd > maxCantidad) {
+      cantidadToAdd = maxCantidad - totalCantidadInCart;
+      console.log(
+        `Solo puedes agregar ${cantidadToAdd} unidades de este producto al carrito`
       );
     }
+
+    for (let i = 0; i < cantidadToAdd; i++) {
+      dispatch(
+        addToCart({
+          ...product,
+          talle: select,
+          priceDiscount: discountPrice,
+          cantidad: 1, // Agregar una unidad del producto por iteración
+        })
+      );
+    }
+
     const indexToRemove = product.talles.indexOf(select);
 
     if (indexToRemove !== -1) {
       const updatedTalles = [...product.talles];
-      updatedTalles.splice(indexToRemove, productosToAdd);
+      updatedTalles.splice(indexToRemove, cantidadToAdd);
 
       dispatch(updateProductTalles({ id: product.id, talles: updatedTalles }));
     }
   };
-
   const handleRemoveToCart = (id, talle) => {
     dispatch(removeFromCart({ id, talle }));
   };
@@ -60,10 +83,18 @@ const useCart = () => {
     dispatch(resetProductTalles({ id: product.id }));
   };
 
+  // const handleSelect = useCallback(
+  //   (value) => {
+  //     dispatch(setCantidadSelect(0));
+  //     const newSelect = select === value ? 0 : value;
+  //     dispatch(setSelectProduct(newSelect));
+  //   },
+  //   [dispatch, select, contador, cantTalles]
+  // );
   const handleSelect = useCallback(
     (value) => {
-      dispatch(setCantidadSelect(0));
-      const newSelect = select === value ? 0 : value;
+      dispatch(setCantidadSelect());
+      const newSelect = select === value ? 1 : value;
       dispatch(setSelectProduct(newSelect));
     },
     [dispatch, select, contador, cantTalles]

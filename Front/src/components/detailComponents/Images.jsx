@@ -1,40 +1,45 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import useProducts from "../../hooks/useProducts";
 
 export default function Images() {
   const [verMas, setVerMas] = useState(false);
-
+  const { product } = useProducts();
   return (
     <div className="flex flex-col items-center w-[98%] h-full mt-10 ">
       <div className="flex w-full">
         <div className="flex w-1/2 overflow-hidden">
           <img
+            // src={product.imageUrls[1]}
             src="https://nikearprod.vtexassets.com/arquivos/ids/793392-800-800?width=800&height=800&aspect=true"
-            alt=""
             className="w-full h-full ml-1 border-[1px] border-gray-400"
+            alt=""
           />
         </div>
         <div className="flex w-1/2 overflow-hidden">
           <img
+            // src={product.imageUrls[5]}
             src="https://nikearprod.vtexassets.com/arquivos/ids/796524-800-800?width=800&height=800&aspect=true"
-            alt=""
             className="w-full h-full mr-1 border-[1px] border-gray-400"
+            alt=""
           />
         </div>
       </div>
       <div className="flex w-full">
         <div className="flex w-1/2">
           <img
+            // src={product.imageUrls[3]}
             src="https://nikearprod.vtexassets.com/arquivos/ids/797856-800-800?width=800&height=800&aspect=true"
-            alt=""
             className="w-full h-full ml-1 border-[1px] border-gray-400"
+            alt=""
           />
         </div>
         <div className="flex w-1/2">
           <img
+            // src={product.imageUrls[4]}
             src="https://nikearprod.vtexassets.com/arquivos/ids/800968-800-800?width=800&height=800&aspect=true"
-            alt=""
             className="w-full h-full mr-1 border-[1px] border-gray-400"
+            alt=""
           />
         </div>
       </div>
@@ -53,16 +58,18 @@ export default function Images() {
           <div className="flex w-full ">
             <div className="flex w-1/2">
               <img
+                // src={product.imageUrls[0]}
                 src="https://nikearprod.vtexassets.com/arquivos/ids/804070-800-800?width=800&height=800&aspect=true"
+                className="w-full h-full ml-1 border-[1px] border-gray-400"
                 alt=""
-                className="w-full h-full ml-1 border-[1px] border-gray-400  object-cover"
               />
             </div>
-            <div className="flex w-1/2">
+            <div className="flex w-1/2 bg-gray-100">
               <img
+                // src={product.imageUrls[2]}
                 src="https://nikearprod.vtexassets.com/arquivos/ids/805340-800-800?width=800&height=800&aspect=true"
-                alt=""
                 className="w-full h-full mr-1 border-[1px] border-gray-400"
+                alt=""
               />
             </div>
           </div>

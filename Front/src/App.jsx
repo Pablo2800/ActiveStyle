@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { getAccess } from "./redux/userSlice";
 import DetailProduct from "./views/DetailProduct";
 import ProductsByCategory from "./views/ProductsByCategory";
+import AboutUs from "./views/AboutUs";
 
 function App() {
   const access = useSelector(getAccess);
@@ -18,6 +19,7 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/product/:id" element={<DetailProduct />} />
       <Route path="/:category/products" element={<ProductsByCategory />} />
+      <Route path="/aboutUs" element={<AboutUs />} />
     </Routes>
   );
 }

@@ -40,7 +40,7 @@ const RenderProducts = memo(
             return (
               <div
                 key={product.id}
-                className="flex flex-row m-3 w-full sm:w-1/4 items-center justify-center shadow-sm shadow-gray-300 hover:scale-105 hover:border-black"
+                className="relative flex flex-row m-3 w-full sm:w-1/4 items-center justify-center shadow-sm shadow-gray-300 hover:scale-105 hover:border-black"
               >
                 <div className="w-full flex flex-col justify-center items-center">
                   <img
@@ -48,6 +48,14 @@ const RenderProducts = memo(
                     src="https://nikearprod.vtexassets.com/arquivos/ids/794168-1000-1000?v=638379227989030000&width=1000&height=1000&aspect=true"
                     className="w-full h-full"
                   />
+                  {product.discount === true && (
+                    <div className="absolute top-4 right-4 flex flex-col items-center z-20">
+                      <div className="p-1 w-12 h-12 rounded-full bg-red-600 text-sm text-white flex flex-col items-center justify-center">
+                        <p>{product.porcentaje}%</p>
+                        <p>OFF</p>
+                      </div>
+                    </div>
+                  )}
                   <div className="flex px-3 py-1 w-full flex-col">
                     <p className="w-full text-xl font-myfont overflow-hidden whitespace-nowrap overflow-ellipsis">
                       {product.indumentaria} {product.marca}{" "}

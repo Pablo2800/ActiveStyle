@@ -9,6 +9,7 @@ import { PiRuler } from "react-icons/pi";
 import TallesButton from "./TallesButton";
 import ModalTablaTalles from "./ModalTablaTalles";
 import useCart from "../../hooks/useCart";
+import useProducts from "../../hooks/useProducts";
 export default function Talles() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -27,21 +28,37 @@ export default function Talles() {
     aumentarContador,
     disminuirContador,
   } = useCart();
+  const { product, allTallesIndumentaria } = useProducts();
   return (
     <div className="w-full h-full bg-white flex items-center justify-center flex-col">
       <h1 className="text-black text-xl mb-4 font-myfont">
         Seleccionar talle argentino
       </h1>
       <div className="flex flex-wrap w-[90%] self-center items-center justify-center">
-        {allTalles.map((talle) => (
-          <TallesButton
-            key={talle}
-            talle={talle}
-            onClick={() => handleSelect(talle)}
-            isSelected={talle === select}
-            isDisabled={!tallesDisp.includes(talle) || !cantTalles.length === 0}
-          />
-        ))}
+        {product.indumentaria === "Zapatillas" ||
+        product.indumentaria === "Botines"
+          ? allTalles.map((talle) => (
+              <TallesButton
+                key={talle}
+                talle={talle}
+                onClick={() => handleSelect(talle)}
+                isSelected={talle === select}
+                isDisabled={
+                  !tallesDisp.includes(talle) || !cantTalles.length === 0
+                }
+              />
+            ))
+          : allTallesIndumentaria.map((talle) => (
+              <TallesButton
+                key={talle}
+                talle={talle}
+                onClick={() => handleSelect(talle)}
+                isSelected={talle === select}
+                isDisabled={
+                  !tallesDisp.includes(talle) || !cantTalles.length === 0
+                }
+              />
+            ))}
       </div>
 
       <button
@@ -75,7 +92,7 @@ export default function Talles() {
               <IoIosRemoveCircleOutline className="w-7 h-7" />
             </button>
           )}
-          <p>{contador < cantTalles.length ? contador : cantTalles.length}</p>
+          <p>{contador}</p>
           {select && contador < cantTalles.length ? (
             <button
               className="rounded-full p-1 flex items-center justify-center"

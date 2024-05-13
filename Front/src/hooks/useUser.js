@@ -1,7 +1,8 @@
 import axios from "axios";
 import useNavigation from "./useNavigate";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  getAccess,
   login,
   logout,
   setAddress,
@@ -18,7 +19,7 @@ import {
 const useUser = () => {
   const { goToLogin, goToHome } = useNavigation();
   const dispatch = useDispatch();
-
+  const access = useSelector(getAccess);
   const handleSubmit = async (values) => {
     const { dni, cellphone, ...rest } = values;
     const numericDNI = parseInt(dni);
@@ -28,9 +29,7 @@ const useUser = () => {
         "https://activestyle.onrender.com/auth/register",
         { ...rest, dni: numericDNI, cellphone: numericCellphone }
       );
-      console.log(response);
       if (response.data) {
-        console.log(response);
         goToLogin();
       }
     } catch (error) {
@@ -43,7 +42,11 @@ const useUser = () => {
         "https://activestyle.onrender.com/auth/login",
         values
       );
-      if (response) {
+      const { token } = response.data;
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+      if (token) {
         dispatch(setUsername(response.data.username));
         dispatch(setPassword(response.data.password));
         dispatch(setEmail(response.data.email));
@@ -57,9 +60,11 @@ const useUser = () => {
         goToHome();
       }
     } catch (error) {
+      dispatch(logout());
       console.log(error);
     }
   };
+
   const handleLogout = () => {
     dispatch(setUsername(""));
     dispatch(setPassword(""));

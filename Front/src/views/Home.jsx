@@ -12,10 +12,9 @@ import useProducts from "../hooks/useProducts";
 export default function Home() {
   const { handleAllProducts, newProducts, discountPrice } = useProducts();
   useEffect(() => {
-    // Llamadas a las funciones solo una vez, después del montaje del componente
     handleAllProducts({ priceDiscount: discountPrice });
     newProducts();
-  }, []); // Array vacío de dependencias
+  }, []);
 
   return (
     <div className="flex flex-col bg-gray-200 w-full">

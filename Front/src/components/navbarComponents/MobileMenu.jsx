@@ -10,6 +10,9 @@ import { getAccess } from "../../redux/userSlice";
 import AccountMenu from "../MenuDesplegabel";
 import useNavigation from "../../hooks/useNavigate";
 import Carrito from "../Carrito";
+import Promos from "./Promos";
+import Marcas from "./Marcas";
+import Products from "./Products";
 
 export default function MobileMenu({ setOpenCart, openCart }) {
   const access = useSelector(getAccess);
@@ -51,26 +54,11 @@ export default function MobileMenu({ setOpenCart, openCart }) {
         </div>
         <div className="w-full flex flex-col sm:flex-row items-center justify-center">
           <div className="w-1/2 flex flex-col items-center justify-center">
-            <button
-              type="text"
-              className="text-black my-3 text-lg flex items-center p-2  "
-            >
-              Productos
-            </button>
-            <button
-              type="text"
-              className="text-black my-3 text-lg flex items-center p-2 "
-            >
-              Locales
-            </button>
+            <Products />
+            <Marcas />
           </div>
           <div className="w-1/2 flex flex-col items-center justify-center">
-            <button
-              type="text"
-              className="text-black my-3 text-lg flex items-center p-2 "
-            >
-              Promos y cuotas
-            </button>
+            <Promos />
             <button
               type="text"
               className="text-black my-3 text-lg flex items-center p-2 "

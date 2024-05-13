@@ -10,6 +10,7 @@ const initialState = {
   tallesCopiaOriginal: [],
   cantidadSelect: 1,
   filteredProductsByCategory: [],
+  filteredProductsByDiscount: [],
 };
 
 const productsSlice = createSlice({
@@ -51,20 +52,26 @@ const productsSlice = createSlice({
     setFilteredProductsByCategory: (state, action) => {
       state.filteredProductsByCategory = action.payload;
     },
+    setFilteredProductsByDiscount: (state, action) => {
+      state.filteredProductsByDiscount = action.payload;
+    },
   },
 });
 
 export const getAllProducts = (state) => state.products.allProducts;
 export const getFilteredProducts = (state) => state.products.filteredProducts;
 export const getNewProducts = (state) => state.products.newProducts;
-export const getAllTalles = (state) => state.products.allTalles;
+export const getAllTallesCalzado = (state) => state.products.allTalles;
+export const getAllTallesIndumentaria = (state) =>
+  state.products.allTallesIndumentaria;
 export const getSelectProduct = (state) => state.products.selectProduct;
 export const getCantidadSelect = (state) => state.products.cantidadSelect;
 export const getProductsByCategory = (state) =>
   state.products.productsByCategory;
 export const getFilteredProductsByCategory = (state) =>
   state.products.filteredProductsByCategory;
-
+export const getFilteredProductsByDiscount = (state) =>
+  state.products.filteredProductsByDiscount;
 export const {
   setAllProducts,
   setFilteredProducts,
@@ -75,6 +82,7 @@ export const {
   setCantidadSelect,
   setProductsByCategory,
   setFilteredProductsByCategory,
+  setFilteredProductsByDiscount,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

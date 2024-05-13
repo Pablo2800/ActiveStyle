@@ -9,18 +9,21 @@ import {
   setFilteredProductsByCategory,
   getFilteredProductsByCategory,
   getFilteredProducts,
+  getFilteredProductsByDiscount,
 } from "../redux/productSlice";
 import axios from "axios";
 import { useMemo } from "react";
 import useNavigation from "./useNavigate";
 
 const useProducts = () => {
+  const { goToProductsByCategory } = useNavigation();
+  const dispatch = useDispatch();
   const productsByCategory = useSelector(getProductsByCategory);
   const filteredProducts = useSelector(getFilteredProductsByCategory);
   const product = useSelector(getFilteredProducts);
-  const { goToProductsByCategory } = useNavigation();
-  const dispatch = useDispatch();
   const allProducts = useSelector(getAllProducts);
+  const discountProducts = useSelector(getFilteredProductsByDiscount);
+  const allTallesIndumentaria = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
   const filtered = allProducts.slice(-10);
   const cuotas = Math.ceil(((product.price / 3) * 1.05) / 5000) * 5000;
   const transformPorcentage = product.porcentaje / 100;
@@ -74,6 +77,7 @@ const useProducts = () => {
       ),
     [productsByCategory]
   );
+
   const handleAllProducts = async () => {
     try {
       const response = await axios.get(
@@ -158,7 +162,12 @@ const useProducts = () => {
       console.log(error.message);
     }
   };
-
+  const handleDiscountProducts = (value) => {
+    const discProd = allProducts.filter((product) => product.discount === true);
+    dispatch(setProductsByCategory(discProd));
+    dispatch(setFilteredProductsByCategory(discProd));
+    goToProductsByCategory(value);
+  };
   return {
     handleAllProducts,
     filterProduct,
@@ -167,6 +176,7 @@ const useProducts = () => {
     handleProductsByActivity,
     handleProductsByIndumentaria,
     handleProductsByMarca,
+    handleDiscountProducts,
     productsByCategory,
     filteredProducts,
     filtered,
@@ -178,6 +188,9 @@ const useProducts = () => {
     allIndumentarias,
     cuotas,
     discountPrice,
+    allTallesIndumentaria,
+    product,
+    discountProducts,
   };
 };
 
