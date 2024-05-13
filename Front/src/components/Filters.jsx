@@ -107,7 +107,6 @@ export default function Filters({
             Collapse: {
               contentPadding: 10,
               contentBg: "white",
-              margin: 10,
               colorText: "black",
               fontSize: 18,
               colorBorder: "transparent",
@@ -122,7 +121,7 @@ export default function Filters({
           },
         }}
       >
-        <Collapse className="flex flex-col mt-10 bg-transparent">
+        <Collapse className="flex flex-col lg:mt-10 bg-transparent">
           <Collapse.Panel key="1" header="Tipo de Producto" className="mb-2">
             <div className="flex flex-col text-black pl-8 py-1 ">
               {uniqueIndumentarias.map((indumentaria, index) => (

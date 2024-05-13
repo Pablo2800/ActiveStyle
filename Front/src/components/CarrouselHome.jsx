@@ -54,7 +54,7 @@ export default function CarrouselHome() {
         alt=""
         className="object-cover w-full h-full"
       />
-      <div className="flex flex-col w-72 absolute top-20 lg:right-72 right-0 items-center justify-center">
+      <div className="flex flex-col absolute top-20 lg:right-[170px] right-0 items-center justify-center">
         <h1 className="lg:text-[50px] font-myfont font-bold mb-3">
           EXPLORA EL OTOÑO
         </h1>

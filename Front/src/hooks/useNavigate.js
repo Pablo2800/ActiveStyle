@@ -12,6 +12,7 @@ const useNavigation = () => {
   const handleGoBack = () => {
     window.history.back();
   };
+  const goToAboutUs = () => navigate("/aboutUs");
   const access = useSelector(getAccess);
 
   return {
@@ -21,6 +22,7 @@ const useNavigation = () => {
     goToRegister,
     handleGoBack,
     goToProductsByCategory,
+    goToAboutUs,
     access,
   };
 };

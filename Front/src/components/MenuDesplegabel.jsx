@@ -29,7 +29,7 @@ export default function AccountMenu() {
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-        <Tooltip title="Account settings">
+        <Tooltip title="Perfil de usuario">
           <IconButton
             onClick={handleClick}
             size="small"
@@ -80,23 +80,20 @@ export default function AccountMenu() {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
+          <Avatar /> Mi Perfil
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <IoSettingsSharp />
           </ListItemIcon>
-          Settings
+          Configuracion
         </MenuItem>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <IoLogOutOutline />
           </ListItemIcon>
-          Logout
+          Cerrar Sesion
         </MenuItem>
       </Menu>
     </React.Fragment>
