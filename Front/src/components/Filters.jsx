@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { Checkbox, Collapse, ConfigProvider, Slider } from "antd";
 import useProducts from "../hooks/useProducts";
 import { useDispatch } from "react-redux";
@@ -122,48 +122,54 @@ export default function Filters({
         }}
       >
         <Collapse className="flex flex-col lg:mt-10 bg-transparent">
-          <Collapse.Panel key="1" header="Tipo de Producto" className="mb-2">
-            <div className="flex flex-col text-black pl-8 py-1 ">
-              {uniqueIndumentarias.map((indumentaria, index) => (
-                <Checkbox
-                  key={index}
-                  className="text-black text-xl font-myfont py-2"
-                  checked={selectedIndumentarias.includes(indumentaria)}
-                  onChange={() => handleIndumentariaChange(indumentaria)}
-                >
-                  {indumentaria}
-                </Checkbox>
-              ))}
-            </div>
-          </Collapse.Panel>
-          <Collapse.Panel key="2" header="Genero" className="mb-2">
-            <div className="flex flex-col text-black pl-8 py-1">
-              {uniqueGeneros.map((genero, index) => (
-                <Checkbox
-                  key={index}
-                  className="text-black text-xl font-myfont py-2"
-                  checked={selectedGeneros.includes(genero)}
-                  onChange={() => handleGeneroChange(genero)}
-                >
-                  {genero}
-                </Checkbox>
-              ))}
-            </div>
-          </Collapse.Panel>
-          <Collapse.Panel key="3" header="Actividad" className="mb-2">
-            <div className="flex flex-col text-black pl-8 py-1 ">
-              {uniqueActividad.map((actividad, index) => (
-                <Checkbox
-                  key={index}
-                  className="text-black text-xl font-myfont py-2"
-                  checked={selectedActividad.includes(actividad)}
-                  onChange={() => handleActividadChange(actividad)}
-                >
-                  {actividad}
-                </Checkbox>
-              ))}
-            </div>
-          </Collapse.Panel>
+          {uniqueIndumentarias && (
+            <Collapse.Panel key="1" header="Tipo de Producto" className="mb-2">
+              <div className="flex flex-col text-black pl-8 py-1 ">
+                {uniqueIndumentarias.map((indumentaria, index) => (
+                  <Checkbox
+                    key={index}
+                    className="text-black text-xl font-myfont py-2"
+                    checked={selectedIndumentarias.includes(indumentaria)}
+                    onChange={() => handleIndumentariaChange(indumentaria)}
+                  >
+                    {indumentaria}
+                  </Checkbox>
+                ))}
+              </div>
+            </Collapse.Panel>
+          )}
+          {uniqueGeneros && (
+            <Collapse.Panel key="2" header="Genero" className="mb-2">
+              <div className="flex flex-col text-black pl-8 py-1">
+                {uniqueGeneros.map((genero, index) => (
+                  <Checkbox
+                    key={index}
+                    className="text-black text-xl font-myfont py-2"
+                    checked={selectedGeneros.includes(genero)}
+                    onChange={() => handleGeneroChange(genero)}
+                  >
+                    {genero}
+                  </Checkbox>
+                ))}
+              </div>
+            </Collapse.Panel>
+          )}
+          {uniqueActividad && (
+            <Collapse.Panel key="3" header="Actividad" className="mb-2">
+              <div className="flex flex-col text-black pl-8 py-1 ">
+                {uniqueActividad.map((actividad, index) => (
+                  <Checkbox
+                    key={index}
+                    className="text-black text-xl font-myfont py-2"
+                    checked={selectedActividad.includes(actividad)}
+                    onChange={() => handleActividadChange(actividad)}
+                  >
+                    {actividad}
+                  </Checkbox>
+                ))}
+              </div>
+            </Collapse.Panel>
+          )}
           <Collapse.Panel
             key="4"
             header="Precio"
@@ -185,20 +191,22 @@ export default function Filters({
               </p>
             </div>
           </Collapse.Panel>
-          <Collapse.Panel key="5" header="Marca" className="mb-2">
-            <div className="flex flex-col text-black pl-8 py-1">
-              {uniqueMarcas.map((marca, index) => (
-                <Checkbox
-                  key={index}
-                  className="text-black text-xl font-myfont py-2"
-                  checked={selectedMarcas.includes(marca)}
-                  onChange={() => handleMarcaChange(marca)}
-                >
-                  {marca}
-                </Checkbox>
-              ))}
-            </div>
-          </Collapse.Panel>
+          {uniqueMarcas && (
+            <Collapse.Panel key="5" header="Marca" className="mb-2">
+              <div className="flex flex-col text-black pl-8 py-1">
+                {uniqueMarcas.map((marca, index) => (
+                  <Checkbox
+                    key={index}
+                    className="text-black text-xl font-myfont py-2"
+                    checked={selectedMarcas.includes(marca)}
+                    onChange={() => handleMarcaChange(marca)}
+                  >
+                    {marca}
+                  </Checkbox>
+                ))}
+              </div>
+            </Collapse.Panel>
+          )}
         </Collapse>
       </ConfigProvider>
     </div>

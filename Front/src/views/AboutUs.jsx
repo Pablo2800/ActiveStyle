@@ -3,7 +3,6 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { MdComputer } from "react-icons/md";
-import { Link } from "react-router-dom";
 export default function AboutUs() {
   const creadores = [
     {
