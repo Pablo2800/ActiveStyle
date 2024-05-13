@@ -77,7 +77,14 @@ const useProducts = () => {
       ),
     [productsByCategory]
   );
-
+  console.log(
+    uniqueActividad,
+    uniqueGeneros,
+    uniqueIndumentarias,
+    uniqueMarcas,
+    productsByCategory,
+    allProducts
+  );
   const handleAllProducts = async () => {
     try {
       const response = await axios.get(
