@@ -16,3 +16,11 @@
 ::-webkit-scrollbar {
     background: transparent;
 }
+
+.menu-column {
+    flex: 1;
+}
+
+.menu-column:last-child {
+    margin-right: 0;
+}

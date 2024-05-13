@@ -1,14 +1,9 @@
 import React, { useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
-import { useSelector } from "react-redux";
-import { getNewProducts } from "../redux/productSlice";
 import useProducts from "../hooks/useProducts";
 export default function NewProducts() {
-  const products = useSelector(getNewProducts);
-  const { filterProduct } = useProducts();
+  const { filterProduct, filtered } = useProducts();
   const scrollContainer = useRef(null);
-
-  
   const handleScroll = (scrollOffset) => {
     if (scrollContainer.current) {
       const currentScrollLeft = scrollContainer.current.scrollLeft;
@@ -52,7 +47,7 @@ export default function NewProducts() {
         ref={scrollContainer}
       >
         <div className="flex">
-          {products.map((product) => {
+          {filtered.map((product) => {
             const transformPorcentage = product.porcentaje / 100;
             const discountPrice = Math.round(
               product.price - product.price * transformPorcentage
@@ -60,12 +55,12 @@ export default function NewProducts() {
             return (
               <div
                 key={product.id}
-                className="p-2 w-72 h-full flex flex-col relative hover:cursor-pointer mx-1"
+                className="p-2 w-80 h-[400px] mx-1 hover:shadow-md hover:shadow-gray-400 my-2 rounded-xl flex flex-col justify-center items-center cursor-pointer"
                 onClick={() => filterProduct(product.id)}
               >
                 <div className="flex items-center justify-center w-full h-full z-10 relative duration-300">
                   <img
-                    src={product.url}
+                    src="https://nikearprod.vtexassets.com/arquivos/ids/794168-1000-1000?v=638379227989030000&width=1000&height=1000&aspect=true"
                     alt=""
                     className="w-72 h-72 object-cover"
                   />
@@ -78,9 +73,9 @@ export default function NewProducts() {
                     </div>
                   </div>
                 )}
-                <div className="w-full">
-                  <p className="text-lg font-bold">{product.description}</p>
-                  <p className="text-gray-600">{product.category}</p>
+                <div className="w-full pl-3">
+                  <p className="text-lg font-bold">{product.nameProduct}</p>
+                  <p className="text-gray-600 uppercase">{product.genero}</p>
                   {product.discount === true ? (
                     <div className="font-bold flex">
                       <p className="font-bold line-through mr-4">

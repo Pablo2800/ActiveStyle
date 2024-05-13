@@ -2,12 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   allProducts: [],
-  filteredProducts: {},
+  filteredProducts: [],
   newProducts: [],
+  productsByCategory: [],
   allTalles: [37, 37.5, 38, 38.5, 39, 40, 40.5, 41, 42, 43, 44, 45],
   selectProduct: 0,
   tallesCopiaOriginal: [],
   cantidadSelect: 1,
+  filteredProductsByCategory: [],
 };
 
 const productsSlice = createSlice({
@@ -20,6 +22,9 @@ const productsSlice = createSlice({
     setFilteredProducts: (state, action) => {
       state.filteredProducts = action.payload;
       state.tallesCopiaOriginal = [...state.filteredProducts.talles];
+    },
+    setProductsByCategory: (state, action) => {
+      state.productsByCategory = action.payload;
     },
     setNewProducts: (state, action) => {
       state.newProducts = action.payload;
@@ -42,10 +47,9 @@ const productsSlice = createSlice({
     },
     setCantidadSelect: (state, action) => {
       state.cantidadSelect = action.payload;
-      // state.filteredProducts = {
-      //   ...state.filteredProducts,
-      //   cantidad: state.cantidadSelect,
-      // };
+    },
+    setFilteredProductsByCategory: (state, action) => {
+      state.filteredProductsByCategory = action.payload;
     },
   },
 });
@@ -56,6 +60,10 @@ export const getNewProducts = (state) => state.products.newProducts;
 export const getAllTalles = (state) => state.products.allTalles;
 export const getSelectProduct = (state) => state.products.selectProduct;
 export const getCantidadSelect = (state) => state.products.cantidadSelect;
+export const getProductsByCategory = (state) =>
+  state.products.productsByCategory;
+export const getFilteredProductsByCategory = (state) =>
+  state.products.filteredProductsByCategory;
 
 export const {
   setAllProducts,
@@ -65,6 +73,8 @@ export const {
   updateProductTalles,
   resetProductTalles,
   setCantidadSelect,
+  setProductsByCategory,
+  setFilteredProductsByCategory,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

@@ -1,36 +1,45 @@
 import React, { useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import useProducts from "../hooks/useProducts";
 
 export default function FilterByDeporte() {
+  const { handleProductsByActivity } = useProducts();
   const products = [
     {
       id: 1,
       title: "Entrenamiento",
+      value: "entrenamiento",
       url: "https://nikearprod.vtexassets.com/assets/vtex.file-manager-graphql/images/4541b76d-bb27-453b-a3c5-0a2367a9edd0___ec175361fbf9807422d50d9338c6c1bf.jpg",
     },
     {
       id: 2,
-      title: "Running",
-
-      url: "https://nikearprod.vtexassets.com/assets/vtex.file-manager-graphql/images/f9d609db-5867-474a-83ed-e570eb397ccb___f01d0e57cdcc3750c568295b36cccf67.jpg",
+      title: "Futbol",
+      value: "futbol",
+      url: "https://cdn.artphotolimited.com/images/60913d60bd40b85323893a87/1000x1000/argentinien-england-maradona.jpg",
     },
     {
       id: 3,
-      title: "Futbol",
-
-      url: "https://nikearprod.vtexassets.com/assets/vtex.file-manager-graphql/images/1932929e-a1d3-4cc1-9baf-c68b637e1308___837553211fb284f6dbdadf666b73f5a8.jpg",
+      title: "Basquet",
+      value: "basquet",
+      url: "./basquet.jpg",
     },
     {
       id: 4,
-      title: "Basquet",
-
-      url: "https://nikearprod.vtexassets.com/assets/vtex.file-manager-graphql/images/9ea32f03-412a-4ade-8c89-0464f7ebb9b2___9805db5e4131b651f6a3d3dc6f618784.jpg",
+      title: "Running",
+      value: "running",
+      url: "https://nikearprod.vtexassets.com/assets/vtex.file-manager-graphql/images/f9d609db-5867-474a-83ed-e570eb397ccb___f01d0e57cdcc3750c568295b36cccf67.jpg",
     },
     {
       id: 5,
+      title: "Tenis",
+      value: "tenis",
+      url: "https://cdn.artphotolimited.com/images/639b03b6bd40b8bcfdfb06bb/1000x1000/roger-federer-steady.jpg",
+    },
+    {
+      id: 6,
       title: "Skate",
-
-      url: "https://nikearprod.vtexassets.com/assets/vtex.file-manager-graphql/images/40e9fe1e-8614-4a58-ae01-540b4727dea5___b869ee808746d73cd772c4878350e5c1.jpg",
+      value: "skate",
+      url: "https://media.istockphoto.com/id/115086649/es/foto/truco.jpg?s=612x612&w=0&k=20&c=DJmkw8i4lGcZIplEObkw5vqHdCPLMKfOEv4c-q4fxp8=",
     },
   ];
   const scrollContainer = useRef(null);
@@ -47,7 +56,7 @@ export default function FilterByDeporte() {
         <h2 className="text-2xl font-semibold font-myfont">
           Filtrar por deporte
         </h2>
-        <div className="flex mr-5">
+        <div className="flex mr-5 mb-2">
           <button
             className="p-3 bg-gray-200 text-gray-700 rounded-full mr-2"
             onClick={() => handleScroll(-100)}
@@ -68,14 +77,17 @@ export default function FilterByDeporte() {
             return (
               <div
                 key={product.id}
-                className="p-2 w-80 gap-3 flex flex-col justify-center items-center"
+                onClick={() => handleProductsByActivity(product.value)}
+                className="p-2 w-80 h-[400px] mx-1 hover:shadow-md hover:shadow-gray-400 my-2 rounded-xl flex flex-col justify-center items-center cursor-pointer"
               >
                 <img
                   src={product.url}
                   alt=""
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover overflow-hidden rounded-xl"
                 />
-                <p className="text-xl font-myfont font-bold">{product.title}</p>
+                <p className="text-xl font-myfont font-bold pt-3">
+                  {product.title}
+                </p>
               </div>
             );
           })}

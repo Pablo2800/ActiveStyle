@@ -1,40 +1,79 @@
 import { Dropdown, Space } from "antd";
+import useProducts from "../../hooks/useProducts";
 
 export default function Products() {
-  const items = [
-    {
-      key: "1",
-      type: "group",
-      children: [
-        {
-          key: "1-1",
-          label: <p className="font-myfont w-96 text-xl">Zapatillas</p>,
-        },
-        {
-          key: "1-2",
-          label: <p className="font-myfont w-96 text-xl">Camperas</p>,
-        },
-        {
-          key: "1-3",
-          label: <p className="font-myfont w-96 text-xl">Pantalones</p>,
-        },
-        {
-          key: "1-4",
-          label: <p className="font-myfont w-96 text-xl">Buzos</p>,
-        },
-        {
-          key: "1-5",
-          label: <p className="font-myfont w-96 text-xl">Botines</p>,
-        },
-      ],
-    },
-  ];
+  const {
+    handleProductsByGenre,
+    handleProductsByActivity,
+    handleProductsByIndumentaria,
+    allIndumentarias,
+  } = useProducts();
 
+  const generoItems = [
+    { id: 1, name: "Hombre", value: "hombre" },
+    { id: 2, name: "Mujer", value: "mujer" },
+    { id: 3, name: "Niños", value: "niño" },
+  ];
+  const actividadItems = [
+    { id: 1, name: "Futbol", value: "futbol" },
+    { id: 2, name: "Basquet", value: "basquet" },
+    { id: 3, name: "Running", value: "running" },
+    { id: 4, name: "Entrenamiento", value: "entrenamiento" },
+    { id: 5, name: "Tenis", value: "tenis" },
+    { id: 6, name: "Skate", value: "skate" },
+  ];
   return (
     <Dropdown
-      menu={{
-        items,
-      }}
+      overlay={
+        <div className="flex bg-white p-3 w-full mt-3">
+          <div className="menu-column pl-10 pt-2 px-2">
+            <h2 className="text-gray-500 text-sm font-myfont p-2">
+              Indumentaria
+            </h2>
+            {allIndumentarias.map((item) => {
+              return (
+                <button
+                  key={item}
+                  onClick={() => handleProductsByIndumentaria(item)}
+                  className="font-myfont w-40 text-xl flex items-start justify-start my-1 hover:bg-gray-300 p-2 rounded-xl"
+                >
+                  {item}
+                </button>
+              );
+            })}
+          </div>
+          <div className="menu-column pl-10 pt-2">
+            <h2 className="text-gray-500 text-sm font-myfont flex flex-col p-2">
+              Genero
+            </h2>
+            {generoItems.map((item) => {
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleProductsByGenre(item.value)}
+                  className="font-myfont w-40 text-xl flex items-start justify-start my-1 hover:bg-gray-300 p-2 rounded-xl"
+                >
+                  {item.name}
+                </button>
+              );
+            })}
+          </div>
+          <div className="menu-column pl-10 pt-2">
+            <h2 className="text-gray-500 text-sm font-myfont p-2">Actividad</h2>
+            {actividadItems.map((item) => {
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleProductsByActivity(item.value)}
+                  className="font-myfont w-40 text-xl flex items-start justify-start my-1 hover:bg-gray-300 p-2 rounded-xl"
+                >
+                  {item.name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      }
       className="text-black mx-5 text-lg p-2 font-myfont"
     >
       <Space>Productos</Space>

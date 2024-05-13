@@ -103,7 +103,7 @@ export default function Footer() {
   ];
 
   return (
-    <div className="bg-black flex flex-col items-center justify-center text-white w-full">
+    <footer className="bg-black flex flex-col items-center justify-center text-white w-full">
       <div className="hidden lg:flex lg:w-3/4 w-full lg:flex-row flex-wrap justify-around">
         <div className="flex flex-col  justify-start items-start p-10 mt-4">
           <h2 className="text-xl font-extrabold font-myfont mb-3">AYUDA</h2>
@@ -210,6 +210,6 @@ export default function Footer() {
           </p>
         </div>
       </div>
-    </div>
+    </footer>
   );
 }

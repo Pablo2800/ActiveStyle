@@ -44,7 +44,6 @@ const useUser = () => {
         values
       );
       if (response) {
-        console.log(response.data);
         dispatch(setUsername(response.data.username));
         dispatch(setPassword(response.data.password));
         dispatch(setEmail(response.data.email));
