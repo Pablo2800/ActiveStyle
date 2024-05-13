@@ -15,11 +15,11 @@ function App() {
     <Routes>
       <Route path="*" element={<h1>404 Page Not Found</h1>} />
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
+      {/* <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/product/:id" element={<DetailProduct />} />
       <Route path="/:category/products" element={<ProductsByCategory />} />
-      <Route path="/aboutUs" element={<AboutUs />} />
+      <Route path="/aboutUs" element={<AboutUs />} /> */}
     </Routes>
   );
 }
