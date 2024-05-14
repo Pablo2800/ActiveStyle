@@ -24,7 +24,9 @@ const useCart = () => {
   const select = useSelector(getSelectProduct);
   const product = useSelector(getFilteredProducts);
   const cantTalles =
-    product !== null ? product.talles.filter((talle) => talle === select) : [];
+    product.length !== 0
+      ? product.talles.filter((talle) => talle === select)
+      : [];
   console.log(cantTalles);
   const tallesDisp = product.talles;
   const contador = useSelector(getCantidadSelect);
