@@ -11,6 +11,7 @@ import { IoLogOutOutline, IoSettingsSharp } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { getFirstName, getLastName } from "../redux/userSlice";
 import useUser from "../hooks/useUser";
+import useNavigation from "../hooks/useNavigate";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -21,6 +22,7 @@ export default function AccountMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const { goToPerfil } = useNavigation();
   const { handleLogout } = useUser();
   const name = useSelector(getFirstName);
   const lastname = useSelector(getLastName);
@@ -79,16 +81,10 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={goToPerfil}>
           <Avatar /> Mi Perfil
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <IoSettingsSharp />
-          </ListItemIcon>
-          Configuracion
-        </MenuItem>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <IoLogOutOutline />

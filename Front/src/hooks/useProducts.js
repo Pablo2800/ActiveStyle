@@ -14,10 +14,16 @@ import {
 import axios from "axios";
 import { useMemo } from "react";
 import useNavigation from "./useNavigate";
-
+import { toast } from "sonner";
 const useProducts = () => {
   const { goToProductsByCategory } = useNavigation();
   const dispatch = useDispatch();
+  const notifyWarning = (value) => {
+    toast.warning(value);
+  };
+  const notifyError = (value) => {
+    toast.error(value);
+  };
   const productsByCategory = useSelector(getProductsByCategory);
   const filteredProducts = useSelector(getFilteredProductsByCategory);
   const product = useSelector(getFilteredProducts);
@@ -167,6 +173,35 @@ const useProducts = () => {
     dispatch(setFilteredProductsByCategory(discProd));
     goToProductsByCategory(value);
   };
+  const renderAllProducts = (value) => {
+    dispatch(setProductsByCategory(allProducts));
+    dispatch(setFilteredProductsByCategory(allProducts));
+    goToProductsByCategory(value);
+  };
+  const onSearch = async (value) => {
+    if (value === "") {
+      notifyError("Ingrese un valor para realizar la busqueda");
+    } else {
+      try {
+        const response = await axios.get(
+          "https://activestyle.onrender.com/activeStyle/cliente/buscarProducto?nombre=" +
+            value
+        );
+        if (response.data.length === 0) {
+          notifyWarning("No se encontro un producto con la busqueda " + value);
+          notifyWarning(
+            "Recuerde que las marcas las puede encontrar en el menu"
+          );
+        } else {
+          dispatch(setProductsByCategory(response.data));
+          dispatch(setFilteredProductsByCategory(response.data));
+          goToProductsByCategory(value);
+        }
+      } catch (error) {
+        notifyError(error.message);
+      }
+    }
+  };
   return {
     handleAllProducts,
     filterProduct,
@@ -176,6 +211,8 @@ const useProducts = () => {
     handleProductsByIndumentaria,
     handleProductsByMarca,
     handleDiscountProducts,
+    renderAllProducts,
+    onSearch,
     productsByCategory,
     filteredProducts,
     filtered,

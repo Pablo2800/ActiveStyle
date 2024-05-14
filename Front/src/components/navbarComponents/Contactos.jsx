@@ -5,7 +5,7 @@ export default function Contactos() {
   return (
     <button
       onClick={goToAboutUs}
-      className="text-black mx-5 text-lg flex items-center p-2 font-myfont"
+      className="text-black mx-5 text-lg flex items-center p-2 font-myfont hover:text-white"
     >
       Contacto
     </button>

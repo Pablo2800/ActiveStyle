@@ -3,6 +3,13 @@ import useNavigation from "./useNavigate";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAccess,
+  getAddress,
+  getCellPhone,
+  getDni,
+  getEmail,
+  getFirstName,
+  getLastName,
+  getUsername,
   login,
   logout,
   setAddress,
@@ -12,6 +19,7 @@ import {
   setFirstName,
   setLastName,
   setPassword,
+  setRol,
   setToken,
   setUsername,
 } from "../redux/userSlice";
@@ -20,6 +28,13 @@ const useUser = () => {
   const { goToLogin, goToHome } = useNavigation();
   const dispatch = useDispatch();
   const access = useSelector(getAccess);
+  const name = useSelector(getFirstName);
+  const lastname = useSelector(getLastName);
+  const email = useSelector(getEmail);
+  const dni = useSelector(getDni);
+  const cellphone = useSelector(getCellPhone);
+  const direction = useSelector(getAddress);
+
   const handleSubmit = async (values) => {
     const { dni, cellphone, ...rest } = values;
     const numericDNI = parseInt(dni);
@@ -42,6 +57,7 @@ const useUser = () => {
         "https://activestyle.onrender.com/auth/login",
         values
       );
+      console.log(response);
       const { token } = response.data;
       if (token) {
         localStorage.setItem("token", token);
@@ -56,6 +72,7 @@ const useUser = () => {
         dispatch(setLastName(response.data.lastname));
         dispatch(setAddress(response.data.address));
         dispatch(setToken(response.data.token));
+        dispatch(setRol(response.data.role));
         dispatch(login());
         goToHome();
       }
@@ -64,7 +81,6 @@ const useUser = () => {
       console.log(error);
     }
   };
-
   const handleLogout = () => {
     dispatch(setUsername(""));
     dispatch(setPassword(""));
@@ -81,6 +97,13 @@ const useUser = () => {
     handleSubmit,
     handleLogin,
     handleLogout,
+    access,
+    name,
+    lastname,
+    email,
+    dni,
+    cellphone,
+    direction,
   };
 };
 export default useUser;
