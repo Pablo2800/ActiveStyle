@@ -7,6 +7,7 @@ export default function Products() {
     handleProductsByActivity,
     handleProductsByIndumentaria,
     allIndumentarias,
+    renderAllProducts,
   } = useProducts();
 
   const generoItems = [
@@ -76,7 +77,12 @@ export default function Products() {
       }
       className="text-black mx-5 text-lg p-2 font-myfont"
     >
-      <Space>Productos</Space>
+      <Space
+        className="cursor-pointer hover:text-white"
+        onClick={() => renderAllProducts("allProducts")}
+      >
+        Productos
+      </Space>
     </Dropdown>
   );
 }

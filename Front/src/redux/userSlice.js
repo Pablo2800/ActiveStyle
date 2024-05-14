@@ -11,6 +11,7 @@ const initialState = {
   cellphone: "",
   address: "",
   dni: "",
+  rol: "",
 };
 
 const userSlice = createSlice({
@@ -44,6 +45,9 @@ const userSlice = createSlice({
     setDni: (state, action) => {
       state.dni = action.payload;
     },
+    setRol: (state, action) => {
+      state.rol = action.payload;
+    },
     logout: (state) => {
       state.access = false;
     },
@@ -63,7 +67,7 @@ export const getAddress = (state) => state.user.address;
 export const getCellPhone = (state) => state.user.cellphone;
 export const getDni = (state) => state.user.dni;
 export const getToken = (state) => state.user.token;
-
+export const getRol = (state) => state.user.rol;
 export const {
   setUsername,
   setPassword,
@@ -74,6 +78,7 @@ export const {
   setCellPhone,
   setDni,
   setEmail,
+  setRol,
   logout,
   login,
 } = userSlice.actions;

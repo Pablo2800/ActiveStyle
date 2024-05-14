@@ -11,7 +11,7 @@ export default function Navbar() {
   const [openCart, setOpenCart] = useState(false);
   const { goToHome } = useNavigation();
   return (
-    <div className="flex items-center bg-gray-200 h-20 w-full p-2 sticky top-0 z-50">
+    <div className="flex items-center bg-gray-300 h-20 w-full p-2 sticky top-0 z-50">
       {/* Contenido del menu en desktop */}
       <div className="w-full flex items-center justify-center">
         {openCart === true ? <CartComponent setOpenCart={setOpenCart} /> : ""}

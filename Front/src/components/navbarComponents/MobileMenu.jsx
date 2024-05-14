@@ -1,10 +1,5 @@
-import React, { useState } from "react";
-import { Button } from "antd";
-import {
-  SearchOutlined,
-  ShoppingCartOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { Avatar, Badge, Button, Input } from "antd";
+import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { getAccess } from "../../redux/userSlice";
 import AccountMenu from "../MenuDesplegabel";
@@ -13,30 +8,32 @@ import Carrito from "../Carrito";
 import Promos from "./Promos";
 import Marcas from "./Marcas";
 import Products from "./Products";
-
+import useCart from "../../hooks/useCart";
+import useProducts from "../../hooks/useProducts";
+const { Search } = Input;
 export default function MobileMenu({ setOpenCart, openCart }) {
   const access = useSelector(getAccess);
   const { goToLogin } = useNavigation;
-
+  const { cart } = useCart();
+  const { onSearch } = useProducts();
   return (
     <div className="absolute flex right-0 top-20 bg-gray-300 w-full lg:hidden">
       <div className="flex flex-col items-center justify-center w-full">
-        <div className="flex w-full justify-center p-2 bg-gray-400">
-          <Button
-            className="text-xl bg-transparent mx-2"
-            size="large"
-            type="text"
-            icon={<SearchOutlined className="p-2" />}
+        <div className="flex w-full justify-center items-center p-2 bg-gray-400">
+          <Search
+            placeholder="Buscar..."
+            allowClear
+            onSearch={onSearch}
+            className="flex w-60 items-center justify-center mr-2"
           />
-          <Button
-            className="text-xl bg-transparent mx-2"
-            size="large"
-            type="text"
-            icon={<ShoppingCartOutlined className="p-2 w-full h-full" />}
-            onClick={() => {
-              setOpenCart(true);
-            }}
-          />
+          <Badge
+            count={cart.length}
+            showZero
+            onClick={() => setOpenCart(!openCart)}
+            className="cursor-pointer"
+          >
+            <Avatar icon={<ShoppingCartOutlined />} size="default" />
+          </Badge>
           {openCart === true ? <Carrito /> : ""}
           {access === true ? (
             <AccountMenu />

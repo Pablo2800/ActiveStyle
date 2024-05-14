@@ -8,7 +8,7 @@ import NewProducts from "../components/NewProducts";
 import FilterByDeporte from "../components/FilterByDeporte";
 import Footer from "../components/Footer";
 import useProducts from "../hooks/useProducts";
-
+import { Toaster } from "sonner";
 export default function Home() {
   const { handleAllProducts, newProducts, discountPrice } = useProducts();
   useEffect(() => {
@@ -26,6 +26,7 @@ export default function Home() {
       <Genero />
       <FilterByDeporte />
       <Footer />
+      <Toaster position="bottom-right" richColors expand={true} />
     </div>
   );
 }

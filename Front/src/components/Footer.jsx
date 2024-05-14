@@ -194,10 +194,10 @@ export default function Footer() {
         <Collapse
           accordion
           items={items}
-          className="w-full lg:hidden bg-black flex flex-col justify-center-center"
+          className="w-full lg:hidden bg-black flex flex-col justify-center-center mx-1"
         />
       </ConfigProvider>
-      <div className="w-full flex justify-between items-start lg:items-center flex-col lg:flex-row mt-4 lg:mt-0 py-5">
+      <div className="w-full flex justify-between items-start lg:items-center flex-col lg:flex-row mt-2 lg:mt-0 py-5">
         <div className="flex ml-3 justify-center items-center text-sm my-1 lg:my-0">
           <FaMapMarkerAlt /> Mendoza, Argentina
         </div>

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { MdComputer } from "react-icons/md";
+import { Tooltip } from "antd";
 export default function AboutUs() {
   const creadores = [
     {
@@ -30,18 +31,21 @@ export default function AboutUs() {
       rol: "Se supone q Backend",
     },
   ];
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full  flex flex-col">
       <Navbar />
-      <div className="w-full flex items-center flex-col justify-center my-2">
+      <div className="w-full lg:h-[calc(100vh-5rem)] flex items-center flex-col justify-center my-2">
         <h1 className="text-2xl font-myfont mb-8 mt-3">
           Creadores de la aplicacion
         </h1>
-        <div className="w-full flex">
+        <div className="w-full flex lg:flex-row flex-col">
           {creadores.map((creador) => (
             <div
               key={creador.name}
-              className="w-1/2 flex flex-col items-center justify-center"
+              className="w-full lg:w-1/2 flex flex-col items-center justify-center"
             >
               <img
                 src={creador.img}
@@ -53,25 +57,31 @@ export default function AboutUs() {
               </p>
               <p className="text-xl font-serif">{creador.rol}</p>
               <p className="w-72">{creador.description}</p>
-              <div className="flex lg:w-full flex-row justify-center items-center">
-                <button
-                  onClick={() => window.open(creador.github)}
-                  className="rounded-full my-2 bg-black p-2 text-white hover:bg-gray-300 hover:text-black mx-3"
-                >
-                  <FaGithub />
-                </button>
-                <button
-                  onClick={() => window.open(creador.linkedin)}
-                  className="rounded-full my-2 bg-black p-2 text-white hover:bg-gray-300 hover:text-black mx-3"
-                >
-                  <FaLinkedin />
-                </button>
-                <button
-                  onClick={() => window.open(creador.portfolio)}
-                  className="rounded-full my-2 bg-black p-2 text-white hover:bg-gray-300 hover:text-black mx-3"
-                >
-                  <MdComputer />
-                </button>
+              <div className="flex lg:w-full flex-row justify-center items-center my-3">
+                <Tooltip title="Perfil de Github">
+                  <button
+                    onClick={() => window.open(creador.github)}
+                    className="rounded-full my-2 bg-black p-2 text-white hover:bg-gray-300 hover:text-black mx-3"
+                  >
+                    <FaGithub />
+                  </button>
+                </Tooltip>
+                <Tooltip title="Perfil de Linkedin">
+                  <button
+                    onClick={() => window.open(creador.linkedin)}
+                    className="rounded-full my-2 bg-black p-2 text-white hover:bg-gray-300 hover:text-black mx-3"
+                  >
+                    <FaLinkedin />
+                  </button>
+                </Tooltip>
+                <Tooltip title="Portfolio">
+                  <button
+                    onClick={() => window.open(creador.portfolio)}
+                    className="rounded-full my-2 bg-black p-2 text-white hover:bg-gray-300 hover:text-black mx-3"
+                  >
+                    <MdComputer />
+                  </button>
+                </Tooltip>
               </div>
             </div>
           ))}
