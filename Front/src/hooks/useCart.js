@@ -23,8 +23,9 @@ const useCart = () => {
   const dispatch = useDispatch();
   const select = useSelector(getSelectProduct);
   const product = useSelector(getFilteredProducts);
-  // const cantTalles =
-  //   product !== null ? product.talles.filter((talle) => talle === select) : "";
+  const cantTalles =
+    product !== null ? product.talles.filter((talle) => talle === select) : [];
+  console.log(cantTalles);
   const tallesDisp = product.talles;
   const contador = useSelector(getCantidadSelect);
   const allTalles = useSelector(getAllTallesCalzado);
@@ -107,7 +108,7 @@ const useCart = () => {
     aumentarContador,
     disminuirContador,
     handleRemoveToCart,
-    // cantTalles,
+    cantTalles,
     select,
     allTalles,
     contador,

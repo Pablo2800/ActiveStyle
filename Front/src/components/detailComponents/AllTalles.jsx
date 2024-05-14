@@ -23,7 +23,7 @@ export default function Talles() {
     allTalles,
     contador,
     tallesDisp,
-    // cantTalles,
+    cantTalles,
     handleSelect,
     aumentarContador,
     disminuirContador,
@@ -43,7 +43,9 @@ export default function Talles() {
                 talle={talle}
                 onClick={() => handleSelect(talle)}
                 isSelected={talle === select}
-                isDisabled={!tallesDisp.includes(talle)}
+                isDisabled={
+                  !tallesDisp.includes(talle) || !cantTalles.length === 0
+                }
               />
             ))
           : allTallesIndumentaria.map((talle) => (
@@ -52,7 +54,9 @@ export default function Talles() {
                 talle={talle}
                 onClick={() => handleSelect(talle)}
                 isSelected={talle === select}
-                isDisabled={!tallesDisp.includes(talle)}
+                isDisabled={
+                  !tallesDisp.includes(talle) || !cantTalles.length === 0
+                }
               />
             ))}
       </div>
@@ -89,7 +93,7 @@ export default function Talles() {
             </button>
           )}
           <p>{contador}</p>
-          {select ? (
+          {select && contador < cantTalles.length ? (
             <button
               className="rounded-full p-1 flex items-center justify-center"
               onClick={aumentarContador}
