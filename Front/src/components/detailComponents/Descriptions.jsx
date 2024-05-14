@@ -3,7 +3,7 @@ import useCart from "../../hooks/useCart";
 
 export default function Descriptions() {
   const { product, cantTalles, cuotas, discountPrice } = useCart();
-  console.log(product);
+
   return (
     <div className="w-full h-full bg-white p-3 text-gray-600 pt-10 pb-6 ">
       <h1 className="text-3xl font-bold font-myfont text-black my-3">

@@ -6,13 +6,13 @@ import Talles from "../components/detailComponents/AllTalles";
 import Images from "../components/detailComponents/Images";
 import NewProducts from "../components/NewProducts";
 import Footer from "../components/Footer";
-import { setSelectProduct } from "../redux/productSlice";
+import { setCantidadSelect } from "../redux/productSlice";
 import { useDispatch } from "react-redux";
 export default function DetailProduct() {
   const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(setSelectProduct(0));
+    dispatch(setCantidadSelect(1));
   }, []);
   return (
     <div className="bg-white w-full min-h-screen h-full flex flex-col text-white">
