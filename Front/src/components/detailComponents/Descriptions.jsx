@@ -2,7 +2,7 @@ import React from "react";
 import useCart from "../../hooks/useCart";
 
 export default function Descriptions() {
-  const { product, cuotas, discountPrice } = useCart();
+  const { product, cantTalles, cuotas, discountPrice } = useCart();
 
   return (
     <div className="w-full h-full bg-white p-3 text-gray-600 pt-10 pb-6 ">
@@ -38,7 +38,7 @@ export default function Descriptions() {
         </div>
       )}
       <p className="my-3">Producto en stock: {product.talles.length}</p>
-      {/* {cantTalles.length > 0 ? <p>Talle en stock: {cantTalles.length}</p> : ""} */}
+      {cantTalles.length > 0 ? <p>Talle en stock: {cantTalles.length}</p> : ""}
     </div>
   );
 }
