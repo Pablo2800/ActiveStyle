@@ -107,7 +107,7 @@ const useCart = () => {
     aumentarContador,
     disminuirContador,
     handleRemoveToCart,
-    cantTalles,
+    // cantTalles,
     select,
     allTalles,
     contador,
