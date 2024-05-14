@@ -24,17 +24,17 @@ export default function Filters({
   const dispatch = useDispatch();
   const [priceRange, setPriceRange] = useState([20000, 500000]);
 
-  // const handleIndumentariaChange = (indumentaria) => {
-  //   setSelectedIndumentarias((prevSelectedIndumentarias) => {
-  //     if (prevSelectedIndumentarias.includes(indumentaria)) {
-  //       return prevSelectedIndumentarias.filter(
-  //         (item) => item !== indumentaria
-  //       );
-  //     } else {
-  //       return [...prevSelectedIndumentarias, indumentaria];
-  //     }
-  //   });
-  // };
+  const handleIndumentariaChange = (indumentaria) => {
+    setSelectedIndumentarias((prevSelectedIndumentarias) => {
+      if (prevSelectedIndumentarias.includes(indumentaria)) {
+        return prevSelectedIndumentarias.filter(
+          (item) => item !== indumentaria
+        );
+      } else {
+        return [...prevSelectedIndumentarias, indumentaria];
+      }
+    });
+  };
   const handleActividadChange = (actividad) => {
     setSelectedActividad(
       selectedActividad.includes(actividad)
@@ -130,7 +130,7 @@ export default function Filters({
                     key={index}
                     className="text-black text-xl font-myfont py-2"
                     checked={selectedIndumentarias.includes(indumentaria)}
-                    onChange={() => handleGeneroChange(genero)}
+                    onChange={() => handleIndumentariaChange(indumentaria)}
                   >
                     {indumentaria}
                   </Checkbox>

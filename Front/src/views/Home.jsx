@@ -11,7 +11,6 @@ import useProducts from "../hooks/useProducts";
 
 export default function Home() {
   const { handleAllProducts, newProducts, discountPrice } = useProducts();
-  console.log(handleAllProducts());
   useEffect(() => {
     handleAllProducts({ priceDiscount: discountPrice });
     newProducts();
