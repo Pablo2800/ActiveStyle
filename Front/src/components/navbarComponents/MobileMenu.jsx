@@ -10,6 +10,7 @@ import Marcas from "./Marcas";
 import Products from "./Products";
 import useCart from "../../hooks/useCart";
 import useProducts from "../../hooks/useProducts";
+import Contactos from "./Contactos";
 const { Search } = Input;
 export default function MobileMenu({ setOpenCart, openCart }) {
   const access = useSelector(getAccess);
@@ -56,12 +57,7 @@ export default function MobileMenu({ setOpenCart, openCart }) {
           </div>
           <div className="w-1/2 flex flex-col items-center justify-center">
             <Promos />
-            <button
-              type="text"
-              className="text-black my-3 text-lg flex items-center p-2 "
-            >
-              Contacto
-            </button>
+            <Contactos />
           </div>
         </div>
         <div className="bg-gray-400 w-full flex items-center justify-center p-2 font-myfont text-lg">

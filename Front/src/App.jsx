@@ -6,6 +6,7 @@ import DetailProduct from "./views/DetailProduct";
 import ProductsByCategory from "./views/ProductsByCategory";
 import AboutUs from "./views/AboutUs";
 import Perfil from "./views/Perfil";
+import Dashbord from "./components/dashbordAdmin/Dashbord";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route path="/:category/products" element={<ProductsByCategory />} />
       <Route path="/aboutUs" element={<AboutUs />} />
       <Route path="/miPerfil" element={<Perfil />} />
+      <Route path="/dashAdm" element={<Dashbord />} />
     </Routes>
   );
 }
