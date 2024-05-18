@@ -3,7 +3,7 @@ import { Checkbox, Collapse, ConfigProvider, Slider } from "antd";
 import useProducts from "../hooks/useProducts";
 import { useDispatch } from "react-redux";
 import { setFilteredProductsByCategory } from "../redux/productSlice";
-
+import { FaFilter } from "react-icons/fa";
 export default function Filters({
   selectedIndumentarias,
   setSelectedIndumentarias,
@@ -96,7 +96,7 @@ export default function Filters({
     priceRange,
   ]);
   return (
-    <div className="w-full sm:w-1/5 bg-gray-500 flex flex-col sticky top-10 z-10">
+    <div className="w-full sm:w-1/5 bg-gray-500 flex flex-col">
       <ConfigProvider
         theme={{
           token: {
@@ -121,7 +121,10 @@ export default function Filters({
           },
         }}
       >
-        <Collapse className="flex flex-col lg:mt-10 bg-transparent">
+        <h1 className="text-white text-3xl self-center font-myfont pt-10 flex items-center justify-center">
+          Filtros <FaFilter />
+        </h1>
+        <Collapse className="flex flex-col mt-3 lg:mt-5 bg-transparent">
           {uniqueIndumentarias && (
             <Collapse.Panel key="1" header="Tipo de Producto" className="mb-2">
               <div className="flex flex-col text-black pl-8 py-1 ">

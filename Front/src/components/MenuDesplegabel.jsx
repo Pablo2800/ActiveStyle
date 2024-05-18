@@ -7,9 +7,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { IoLogOutOutline, IoSettingsSharp } from "react-icons/io5";
+import { IoLogOutOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
-import { getFirstName, getLastName } from "../redux/userSlice";
+import { getFirstName, getLastName, getRol } from "../redux/userSlice";
 import useUser from "../hooks/useUser";
 import useNavigation from "../hooks/useNavigate";
 
@@ -22,7 +22,8 @@ export default function AccountMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const { goToPerfil } = useNavigation();
+  const rol = useSelector(getRol);
+  const { goToPerfil, goToDashAdm } = useNavigation();
   const { handleLogout } = useUser();
   const name = useSelector(getFirstName);
   const lastname = useSelector(getLastName);
@@ -84,6 +85,11 @@ export default function AccountMenu() {
         <MenuItem onClick={goToPerfil}>
           <Avatar /> Mi Perfil
         </MenuItem>
+        {rol === "Admin" && (
+          <MenuItem onClick={goToDashAdm}>
+            <Avatar /> Dashbord Admin
+          </MenuItem>
+        )}
         <Divider />
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>

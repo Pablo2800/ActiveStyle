@@ -40,7 +40,6 @@ const useCart = () => {
     const maxCantidad = 3;
     let cantidadToAdd = contador > maxCantidad ? maxCantidad : contador;
 
-    // Verificar si ya hay productos de este tipo en el carrito
     const totalCantidadInCart = cart.reduce((total, item) => {
       if (item.id === product.id && item.talle === select) {
         return total + item.cantidad;
@@ -48,7 +47,6 @@ const useCart = () => {
       return total;
     }, 0);
 
-    // Verificar si la cantidad a agregar excede el máximo permitido
     if (totalCantidadInCart + cantidadToAdd > maxCantidad) {
       cantidadToAdd = maxCantidad - totalCantidadInCart;
       console.log(
@@ -85,14 +83,6 @@ const useCart = () => {
     dispatch(resetProductTalles({ id: product.id }));
   };
 
-  // const handleSelect = useCallback(
-  //   (value) => {
-  //     dispatch(setCantidadSelect(0));
-  //     const newSelect = select === value ? 0 : value;
-  //     dispatch(setSelectProduct(newSelect));
-  //   },
-  //   [dispatch, select, contador, cantTalles]
-  // );
   const handleSelect = useCallback(
     (value) => {
       dispatch(setCantidadSelect(1));
