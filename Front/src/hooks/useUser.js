@@ -78,7 +78,7 @@ const useUser = () => {
         goToHome();
       }
       if (username === "PabloP") {
-        dispatch(setRol("Admin"));
+        dispatch(setRol("ADMIN"));
       }
     } catch (error) {
       dispatch(logout());

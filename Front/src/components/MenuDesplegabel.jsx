@@ -85,7 +85,7 @@ export default function AccountMenu() {
         <MenuItem onClick={goToPerfil}>
           <Avatar /> Mi Perfil
         </MenuItem>
-        {rol === "Admin" && (
+        {rol === "ADMIN" && (
           <MenuItem onClick={goToDashAdm}>
             <Avatar /> Dashbord Admin
           </MenuItem>
