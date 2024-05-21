@@ -29,8 +29,7 @@ public class Producto {
     @ElementCollection
     @CollectionTable(name = "producto_talles", joinColumns = @JoinColumn(name = "producto_id"))
     @Column(name = "talle")
-    private int[] talles;
-    private String imageUrl;
+    private String[] talles;
     @ElementCollection
     @CollectionTable(name = "producto_images", joinColumns = @JoinColumn(name = "producto_id"))
     @Column(name = "image_url")

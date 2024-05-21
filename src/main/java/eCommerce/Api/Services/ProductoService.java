@@ -2,6 +2,7 @@ package eCommerce.Api.Services;
 
 import com.cloudinary.Cloudinary;
 import eCommerce.Api.Entitys.Producto;
+import eCommerce.Api.Entitys.ProductoUpdateRequest;
 import eCommerce.Api.Repositories.ProductoRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -33,31 +34,35 @@ public class ProductoService {
         return productoRepository.findById(id);
     }
     @Transactional
-    public Producto createProducto(Producto producto, List<MultipartFile> imageFiles, int[] talles) throws Exception {
-        // Verificar si ya existe un producto con el mismo nombre
+    public Producto createProducto(Producto producto, List<MultipartFile> imageFiles, String[] talles) throws Exception {
+        // Verificar si el producto ya existe
         Producto productoExistente = productoRepository.nameProduct(producto.getNameProduct());
         if (productoExistente != null) {
-            throw new Exception("Ya existe un producto con ese nombre");
-        } else {
-            // Subir los archivos a Cloudinary y obtener las URLs de las imágenes
-            List<String> imageUrls = new ArrayList<>();
-            int maxImages = 6; // Límite máximo de imágenes
-            for (int i = 0; i < Math.min(imageFiles.size(), maxImages); i++) {
-                MultipartFile file = imageFiles.get(i);
+            throw new IllegalArgumentException("Ya existe un producto con ese nombre");
+        }
+
+        int numImages = imageFiles.size();
+        if (numImages != 4 && numImages != 6) {
+            throw new IllegalArgumentException("Debe proporcionar exactamente 4 o 6 imágenes");
+        }
+
+        List<String> imageUrls = new ArrayList<>();
+        for (MultipartFile file : imageFiles) {
+            try {
                 String imageUrl = uploadFile(file);
                 imageUrls.add(imageUrl);
+            } catch (IOException e) {
+                throw new RuntimeException("Error al subir la imagen: " + file.getOriginalFilename(), e);
             }
-
-            // Establecer las URLs de las imágenes en el producto
-            producto.setImageUrls(imageUrls);
-
-            // Establecer los talles del producto
-            producto.setTalles(talles);
-
-            // Guardar el producto en la base de datos
-            return productoRepository.save(producto);
         }
+
+        producto.setImageUrls(imageUrls);
+        producto.setTalles(talles);
+
+        // Guardar el producto en la base de datos
+        return productoRepository.save(producto);
     }
+
 
     private String uploadFile(MultipartFile multipartFile) throws IOException {
         // Subir el archivo a Cloudinary y devolver la URL de la imagen
@@ -85,7 +90,7 @@ public class ProductoService {
         return productoRepository.findByMarcaIgnoreCase(marca);
     }
 
-    public List<Producto> buscarPorTalle(int talle) {
+    public List<Producto> buscarPorTalle(String talle) {
         return productoRepository.findByTallesContains(talle);
     }
     public List<Producto> searchProductosByName(String nameProduct) {
@@ -94,17 +99,52 @@ public class ProductoService {
 
 
 
-    public Producto updatePorducto(Long id){
-        try{
-            Optional<Producto> productoOptional = productoRepository.findById(id);
-            if (productoOptional.isPresent()){
-                return productoOptional.get();
-            }else{
-                throw new RuntimeException("No se encontró un producto para actualizar con el id igual a " +id);
+    public Producto actualizarProducto(Long id, ProductoUpdateRequest updateRequest) {
+        Producto producto = productoRepository.findById(id).orElse(null);
+        if (producto != null) {
+            if (updateRequest.getNombre() != null) {
+                producto.setNameProduct(updateRequest.getNombre());
             }
-        }catch (Exception e){
-            throw new RuntimeException("Error al procesar la solicitud en el servidor, vuelva a intenrar más tarde");
+            if (updateRequest.getDescripcion() != null) {
+                producto.setDescription(updateRequest.getDescripcion());
+            }
+            if (updateRequest.getPrecio() != null) {
+                producto.setPrice(updateRequest.getPrecio());
+            }
+            if (updateRequest.getMarca() != null) {
+                producto.setMarca(updateRequest.getMarca());
+            }
+            if (updateRequest.getStock() != null) {
+                producto.setStock(updateRequest.getStock());
+            }
+            if (updateRequest.getDiscount() != null) {
+                producto.setDiscount(updateRequest.getDiscount());
+            }
+            if (updateRequest.getPorcentaje() != null) {
+                producto.setPorcentaje(updateRequest.getPorcentaje());
+            }
+            if (updateRequest.getIndumentaria() != null) {
+                producto.setIndumentaria(updateRequest.getIndumentaria());
+            }
+            if (updateRequest.getGenero() != null) {
+                producto.setGenero(updateRequest.getGenero());
+            }
+            if (updateRequest.getActividad() != null) {
+                producto.setActividad(updateRequest.getActividad());
+            }
+            if (updateRequest.getTalles() != null) {
+                String[] nuevosTalles = updateRequest.getTalles();
+                String[] tallesExistentes = producto.getTalles();
+                List<String> tallesActualizados = new ArrayList<>(Arrays.asList(tallesExistentes));
+                tallesActualizados.addAll(Arrays.asList(nuevosTalles));
+                producto.setTalles(tallesActualizados.toArray(new String[0]));
+            }
+            if (updateRequest.getImageUrls() != null) {
+                producto.setImageUrls(updateRequest.getImageUrls());
+            }
+            return productoRepository.save(producto);
         }
+        return null; // O podrías lanzar una excepción indicando que el producto no se encontró
     }
     public void deleteProducto(Long id) {
         try {

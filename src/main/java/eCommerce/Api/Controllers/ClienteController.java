@@ -2,7 +2,12 @@ package eCommerce.Api.Controllers;
 
 
 import eCommerce.Api.Entitys.Producto;
+import eCommerce.Api.Entitys.Usuario.UsuarioDTO;
+import eCommerce.Api.Entitys.Usuario.UsuarioRequest;
+import eCommerce.Api.Entitys.Usuario.UsuarioResponse;
+import eCommerce.Api.Repositories.UsuarioRepository;
 import eCommerce.Api.Services.ProductoService;
+import eCommerce.Api.Services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +23,17 @@ public class ClienteController {
 
     @Autowired
     private ProductoService productoService;
-
+    @Autowired
+    private UsuarioService usuarioService;
 
 
     @GetMapping("/producto/buscarPorTalle")
-    public ResponseEntity<List<Producto>> buscarProductosPorTalle(@RequestParam int talle) {
+    public ResponseEntity<List<Producto>> buscarProductosPorTalle(@RequestParam String talle) {
         try {
             List<Producto> productos = productoService.buscarPorTalle(talle);
+            if (productos.isEmpty()) {
+                throw new Exception("No se encontraron productos con el talle: " + talle);
+            }
             return ResponseEntity.ok(productos);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -72,5 +81,10 @@ public class ClienteController {
     @GetMapping("/productos")
     public List<Producto> searchProductosByName(@RequestParam("nameProduct") String nameProduct) {
         return productoService.searchProductosByName(nameProduct);
+    }
+    @PutMapping("/updateUsuario/{id}")
+    public ResponseEntity<UsuarioResponse> updateUsuario(@PathVariable Long id, @RequestBody UsuarioRequest usuarioRequest) {
+        UsuarioResponse response = usuarioService.updateUsuario(id, usuarioRequest);
+        return ResponseEntity.ok(response);
     }
 }

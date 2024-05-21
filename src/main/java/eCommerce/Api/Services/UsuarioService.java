@@ -18,20 +18,37 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
-    @Transactional
-    public UsuarioResponse updateUsuario(UsuarioRequest usuarioRequest){
-        Usuario usuario = Usuario.builder()
-                .id(usuarioRequest.getId())
-                .firstname(usuarioRequest.getFirstname())
-                .lastname(usuarioRequest.getLastname())
-                .username(usuarioRequest.getUsername())
-                .dni(usuarioRequest.getDni())
-                .cellphone(usuarioRequest.getCellphone())
-                .address(usuarioRequest.getAddress())
-                .email(usuarioRequest.getEmail())
-                .role(Role.USUARIO)
-                .build();
-        usuarioRepository.updateUsuario(usuario.getId(), usuario.getFirstname(), usuario.getLastname(),usuario.getDni(), usuario.getCellphone(),  usuario.getAddress(), usuario.getEmail());
+    public UsuarioResponse updateUsuario(Long id, UsuarioRequest usuarioRequest) {
+        Optional<Usuario> existingUsuarioOpt = usuarioRepository.findById(id);
+        if (!existingUsuarioOpt.isPresent()) {
+            return new UsuarioResponse("El usuario no existe");
+        }
+
+        Usuario existingUsuario = existingUsuarioOpt.get();
+
+        if (usuarioRequest.getFirstname() != null) {
+            existingUsuario.setFirstname(usuarioRequest.getFirstname());
+        }
+        if (usuarioRequest.getLastname() != null) {
+            existingUsuario.setLastname(usuarioRequest.getLastname());
+        }
+        // Ignoramos usuarioRequest.getUsername() para que no se pueda actualizar
+        if (usuarioRequest.getDni() != null) {
+            existingUsuario.setDni(usuarioRequest.getDni());
+        }
+        if (usuarioRequest.getCellphone() != null) {
+            existingUsuario.setCellphone(usuarioRequest.getCellphone());
+        }
+        if (usuarioRequest.getAddress() != null) {
+            existingUsuario.setAddress(usuarioRequest.getAddress());
+        }
+        if (usuarioRequest.getEmail() != null) {
+            existingUsuario.setEmail(usuarioRequest.getEmail());
+        }
+        // No actualizamos el rol aquí si no es necesario
+
+        usuarioRepository.save(existingUsuario);
+
         return new UsuarioResponse("El usuario se modificó satisfactoriamente");
     }
     public UsuarioDTO getUsuario(Long id){

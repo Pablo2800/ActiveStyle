@@ -12,7 +12,13 @@ import java.util.Optional;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByUsername(String username);
-    @Modifying()
-    @Query("update Usuario u set u.firstname=:firstname, u.lastname=:lastname,  u.dni=:dni, u.cellphone=:cellphone,  u.address=:address, u.email=:email where u.id =:id")
-    void updateUsuario(@Param(value = "id") Long id, @Param(value = "firstname") String firstname, @Param(value = "lastname") String lastname,  @Param(value = "dni") Long dni, @Param(value = "cellphone") Long cellphone, @Param(value = "address") String address, @Param(value = "email") String email);
+    @Modifying
+    @Query("UPDATE Usuario u SET u.firstname = :firstname, u.lastname = :lastname, u.dni = :dni, u.cellphone = :cellphone, u.address = :address, u.email = :email WHERE u.id = :id")
+    void updateUsuario(@Param("id") Long id,
+                       @Param("firstname") String firstname,
+                       @Param("lastname") String lastname,
+                       @Param("dni") String dni,
+                       @Param("cellphone") String cellphone,
+                       @Param("address") String address,
+                       @Param("email") String email);
 }
