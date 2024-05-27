@@ -1,6 +1,7 @@
 package eCommerce.Api.Services;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import eCommerce.Api.Entitys.Producto;
 import eCommerce.Api.Entitys.ProductoUpdateRequest;
 import eCommerce.Api.Repositories.ProductoRepository;
@@ -41,10 +42,24 @@ public class ProductoService {
             throw new IllegalArgumentException("Ya existe un producto con ese nombre");
         }
 
+        // Validar imágenes
         int numImages = imageFiles.size();
         if (numImages != 4 && numImages != 6) {
             throw new IllegalArgumentException("Debe proporcionar exactamente 4 o 6 imágenes");
         }
+
+        // Validar talles
+        if (talles == null || talles.length == 0) {
+            throw new IllegalArgumentException("Debe proporcionar al menos un talle");
+        }
+        for (String talle : talles) {
+            if (!isValidTalle(talle)) {
+                throw new IllegalArgumentException("Talle inválido: " + talle);
+            }
+        }
+
+        // Validar otros atributos del producto
+        validateProductAttributes(producto);
 
         List<String> imageUrls = new ArrayList<>();
         for (MultipartFile file : imageFiles) {
@@ -63,15 +78,49 @@ public class ProductoService {
         return productoRepository.save(producto);
     }
 
+    private boolean isValidTalle(String talle) {
+        // Aquí puedes añadir la lógica específica para validar un talle.
+        return talle != null && !talle.trim().isEmpty();
+    }
+
+    private void validateProductAttributes(Producto producto) {
+        if (producto.getNameProduct() == null || producto.getNameProduct().trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del producto es obligatorio");
+        }
+        if (producto.getDescription() == null || producto.getDescription().trim().isEmpty()) {
+            throw new IllegalArgumentException("La descripción del producto es obligatoria");
+        }
+        if (producto.getPrice() <= 0) {
+            throw new IllegalArgumentException("El precio del producto debe ser mayor a cero");
+        }
+        if (producto.getMarca() == null || producto.getMarca().trim().isEmpty()) {
+            throw new IllegalArgumentException("La marca del producto es obligatoria");
+        }
+        if (producto.getStock() < 0) {
+            throw new IllegalArgumentException("El stock del producto no puede ser negativo");
+        }
+        if (producto.getIndumentaria() == null || producto.getIndumentaria().trim().isEmpty()) {
+            throw new IllegalArgumentException("La indumentaria del producto es obligatoria");
+        }
+        if (producto.getGenero() == null || producto.getGenero().trim().isEmpty()) {
+            throw new IllegalArgumentException("El género del producto es obligatorio");
+        }
+        if (producto.getActividad() == null || producto.getActividad().trim().isEmpty()) {
+            throw new IllegalArgumentException("La actividad del producto es obligatoria");
+        }
+    }
 
     private String uploadFile(MultipartFile multipartFile) throws IOException {
-        // Subir el archivo a Cloudinary y devolver la URL de la imagen
-        return cloudinary.uploader()
-                .upload(multipartFile.getBytes(),
-                        Map.of("public_id",
-                                UUID.randomUUID().toString()))
-                .get("url")
-                .toString();
+        try {
+            Map uploadResult = cloudinary.uploader()
+                    .upload(multipartFile.getBytes(),
+                            Map.of("public_id", UUID.randomUUID().toString()));
+            return uploadResult.get("url").toString();
+        } catch (IOException e) {
+            System.err.println("Error subiendo la imagen: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public List<Producto> buscarProductosPorNombre(String nombre) {
