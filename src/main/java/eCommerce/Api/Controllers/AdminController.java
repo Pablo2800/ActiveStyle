@@ -71,23 +71,9 @@ public class AdminController {
     public ResponseEntity<?> crearProducto(
             @RequestHeader(name = "Authorization", required = true) String token,
             @ModelAttribute Producto producto,
-            @RequestParam("imagen") List<MultipartFile> imagen,
+            /*@RequestParam("imagen") List<MultipartFile> imagen,*/
             @RequestParam("talles") String[] talles) {
         try {
-            // Validar el token JWT
-            if (token == null || !token.startsWith("Bearer ")) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token JWT no proporcionado o no válido");
-            }
-
-            // Extraer el token JWT
-            String jwtToken = token.substring(7); // Quita el prefijo "Bearer "
-
-            // Validar que haya exactamente 4 o 6 imágenes
-            int numImages = imagen.size();
-            if (numImages != 4 && numImages != 6) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Debe proporcionar exactamente 4 o 6 imágenes");
-            }
-
             // Validar talles
             if (talles == null || talles.length == 0) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Debe proporcionar al menos un talle");
@@ -99,7 +85,7 @@ public class AdminController {
             }
 
             // Crear el producto
-            Producto productoCreado = productoService.createProducto(producto, imagen, talles);
+            Producto productoCreado = productoService.createProducto(producto,/* imagen,*/ talles);
             return ResponseEntity.status(HttpStatus.CREATED).body(productoCreado);
 
         } catch (IllegalArgumentException e) {

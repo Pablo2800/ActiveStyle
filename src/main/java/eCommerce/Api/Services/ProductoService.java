@@ -35,18 +35,17 @@ public class ProductoService {
         return productoRepository.findById(id);
     }
     @Transactional
-    public Producto createProducto(Producto producto, List<MultipartFile> imageFiles, String[] talles) throws Exception {
+    public Producto createProducto(Producto producto, /*List<MultipartFile> imageFiles,*/ String[] talles) throws Exception {
         // Verificar si el producto ya existe
         Producto productoExistente = productoRepository.nameProduct(producto.getNameProduct());
         if (productoExistente != null) {
             throw new IllegalArgumentException("Ya existe un producto con ese nombre");
         }
 
-        // Validar imágenes
-        int numImages = imageFiles.size();
-        if (numImages != 4 && numImages != 6) {
-            throw new IllegalArgumentException("Debe proporcionar exactamente 4 o 6 imágenes");
-        }
+//        int numImages = imageFiles.size();
+//        if (numImages != 4 && numImages != 6) {
+//            throw new IllegalArgumentException("Debe proporcionar exactamente 4 o 6 imágenes");
+//        }
 
         // Validar talles
         if (talles == null || talles.length == 0) {
@@ -61,17 +60,17 @@ public class ProductoService {
         // Validar otros atributos del producto
         validateProductAttributes(producto);
 
-        List<String> imageUrls = new ArrayList<>();
-        for (MultipartFile file : imageFiles) {
-            try {
-                String imageUrl = uploadFile(file);
-                imageUrls.add(imageUrl);
-            } catch (IOException e) {
-                throw new RuntimeException("Error al subir la imagen: " + file.getOriginalFilename(), e);
-            }
-        }
+//        List<String> imageUrls = new ArrayList<>();
+//        for (MultipartFile file : imageFiles) {
+//            try {
+//                String imageUrl = uploadFile(file);
+//                imageUrls.add(imageUrl);
+//            } catch (IOException e) {
+//                throw new RuntimeException("Error al subir la imagen: " + file.getOriginalFilename(), e);
+//            }
+//        }
 
-        producto.setImageUrls(imageUrls);
+//        producto.setImageUrls(imageUrls);
         producto.setTalles(talles);
 
         // Guardar el producto en la base de datos
@@ -110,18 +109,18 @@ public class ProductoService {
         }
     }
 
-    private String uploadFile(MultipartFile multipartFile) throws IOException {
-        try {
-            Map uploadResult = cloudinary.uploader()
-                    .upload(multipartFile.getBytes(),
-                            Map.of("public_id", UUID.randomUUID().toString()));
-            return uploadResult.get("url").toString();
-        } catch (IOException e) {
-            System.err.println("Error subiendo la imagen: " + e.getMessage());
-            e.printStackTrace();
-            throw e;
-        }
-    }
+//    private String uploadFile(MultipartFile multipartFile) throws IOException {
+//        try {
+//            Map uploadResult = cloudinary.uploader()
+//                    .upload(multipartFile.getBytes(),
+//                            Map.of("public_id", UUID.randomUUID().toString()));
+//            return uploadResult.get("url").toString();
+//        } catch (IOException e) {
+//            System.err.println("Error subiendo la imagen: " + e.getMessage());
+//            e.printStackTrace();
+//            throw e;
+//        }
+//    }
 
     public List<Producto> buscarProductosPorNombre(String nombre) {
         return productoRepository.findByNombreContainingIgnoreCase(nombre);

@@ -7,8 +7,6 @@ import eCommerce.Api.RegisterRequest.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,11 +14,9 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RequestMapping("/auth")
 public class AuthController {
-
-    private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
     private final AuthService authService;
+
+
     @PostMapping("/login")
     public ResponseEntity<AuthResponseLogin> login(@RequestBody LoginRequest request){
         return ResponseEntity.ok(authService.login(request));
