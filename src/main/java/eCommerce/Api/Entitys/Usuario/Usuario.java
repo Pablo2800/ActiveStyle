@@ -2,6 +2,7 @@ package eCommerce.Api.Entitys.Usuario;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import eCommerce.Api.Entitys.CarritoCompras;
 import eCommerce.Api.Entitys.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,8 +36,10 @@ public class Usuario implements UserDetails {
     private Long dni;
     String password;
     @Enumerated(EnumType.STRING)
-    Role role;
-
+    private Role role;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "carrito_compras_id", referencedColumnName = "id")
+    private CarritoCompras carritoCompras;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

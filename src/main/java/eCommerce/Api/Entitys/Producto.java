@@ -1,9 +1,11 @@
 package eCommerce.Api.Entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Data
@@ -20,7 +22,6 @@ public class Producto {
     private String description;
     private double price;
     private String marca;
-    private int stock;
     private boolean discount;
     private int porcentaje;
     private String indumentaria;
@@ -28,10 +29,14 @@ public class Producto {
     private String actividad;
     @ElementCollection
     @CollectionTable(name = "producto_talles", joinColumns = @JoinColumn(name = "producto_id"))
-    @Column(name = "talle")
-    private String[] talles;
+    @MapKeyColumn(name = "talle")
+    @Column(name = "cantidad")
+    private Map<String, Integer> talles;
     @ElementCollection
     @CollectionTable(name = "producto_images", joinColumns = @JoinColumn(name = "producto_id"))
     @Column(name = "image_url")
     private List<String> imageUrls;
+    @OneToMany(mappedBy = "producto")
+    @JsonIgnore
+    private List<ItemCarrito> itemCarritos;
 }

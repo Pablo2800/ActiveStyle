@@ -1,11 +1,9 @@
-package eCommerce.Api.Controllers;
+package eCommerce.Api.Controllers.Usuarios;
 
 
 import eCommerce.Api.Entitys.Producto;
-import eCommerce.Api.Entitys.Usuario.UsuarioDTO;
 import eCommerce.Api.Entitys.Usuario.UsuarioRequest;
 import eCommerce.Api.Entitys.Usuario.UsuarioResponse;
-import eCommerce.Api.Repositories.UsuarioRepository;
 import eCommerce.Api.Services.ProductoService;
 import eCommerce.Api.Services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +75,6 @@ public class ClienteController {
             throw new RuntimeException("No se encontró ningún producto con el Id igual a "+id);
         }
     }
-    //http://tudominio.com/productos?nameProduct=nombre_del_producto
     @GetMapping("/productos")
     public List<Producto> searchProductosByName(@RequestParam("nameProduct") String nameProduct) {
         return productoService.searchProductosByName(nameProduct);

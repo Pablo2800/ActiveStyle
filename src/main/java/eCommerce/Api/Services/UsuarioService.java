@@ -63,6 +63,7 @@ public class UsuarioService {
                     .cellphone(usuario.getCellphone())
                     .address(usuario.getAddress())
                     .email(usuario.getEmail())
+                    .carritoCompras(usuario.getCarritoCompras())
                     .build();
             return usuarioDTO;
         }
@@ -82,6 +83,9 @@ public class UsuarioService {
                         .email(usuario.getEmail())
                         .build())
                 .collect(Collectors.toList());
+    }
+    public boolean isFirstAdmin() {
+        return !usuarioRepository.existsByRole(Role.ADMIN);
     }
     public boolean deleteUsuario(Long id) {
         // Verificar si el usuario existe

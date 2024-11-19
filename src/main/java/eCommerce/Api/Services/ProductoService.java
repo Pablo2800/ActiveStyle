@@ -1,7 +1,6 @@
 package eCommerce.Api.Services;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import eCommerce.Api.Entitys.Producto;
 import eCommerce.Api.Entitys.ProductoUpdateRequest;
 import eCommerce.Api.Repositories.ProductoRepository;
@@ -10,9 +9,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -21,8 +18,8 @@ public class ProductoService {
     private ProductoRepository productoRepository;
     @PersistenceContext
     private EntityManager entityManager;
-    @Autowired
-    private Cloudinary cloudinary;
+//    @Autowired
+//    private Cloudinary cloudinary;
 
     public List<Producto> findAllProductos(){
         try {
@@ -35,7 +32,7 @@ public class ProductoService {
         return productoRepository.findById(id);
     }
     @Transactional
-    public Producto createProducto(Producto producto, /*List<MultipartFile> imageFiles,*/ String[] talles) throws Exception {
+    public Producto createProducto(Producto producto, /*List<MultipartFile> imageFiles,*/ Map<String, Integer> talles) throws Exception {
         // Verificar si el producto ya existe
         Producto productoExistente = productoRepository.nameProduct(producto.getNameProduct());
         if (productoExistente != null) {
@@ -48,12 +45,21 @@ public class ProductoService {
 //        }
 
         // Validar talles
-        if (talles == null || talles.length == 0) {
-            throw new IllegalArgumentException("Debe proporcionar al menos un talle");
+        if (talles == null || talles.isEmpty()) {
+            throw new IllegalArgumentException("Debe proporcionar al menos un talle y su cantidad");
         }
-        for (String talle : talles) {
+        for (Map.Entry<String, Integer> entry : talles.entrySet()) {
+            String talle = entry.getKey();
+            Integer cantidad = entry.getValue();
+
+            // Validar que el talle no sea nulo o vacío
             if (!isValidTalle(talle)) {
                 throw new IllegalArgumentException("Talle inválido: " + talle);
+            }
+
+            // Validar que la cantidad sea mayor a 0
+            if (cantidad == null || cantidad <= 0) {
+                throw new IllegalArgumentException("La cantidad para el talle " + talle + " debe ser mayor a 0");
             }
         }
 
@@ -94,9 +100,6 @@ public class ProductoService {
         }
         if (producto.getMarca() == null || producto.getMarca().trim().isEmpty()) {
             throw new IllegalArgumentException("La marca del producto es obligatoria");
-        }
-        if (producto.getStock() < 0) {
-            throw new IllegalArgumentException("El stock del producto no puede ser negativo");
         }
         if (producto.getIndumentaria() == null || producto.getIndumentaria().trim().isEmpty()) {
             throw new IllegalArgumentException("La indumentaria del producto es obligatoria");
@@ -139,10 +142,16 @@ public class ProductoService {
     }
 
     public List<Producto> buscarPorTalle(String talle) {
-        return productoRepository.findByTallesContains(talle);
+        return productoRepository.findByTalleKey(talle);
     }
     public List<Producto> searchProductosByName(String nameProduct) {
         return productoRepository.findByNameProduct(nameProduct);
+    }
+    public Integer obtenerCantidadTotalPorProducto(Long productoId) {
+        return productoRepository.findTotalCantidadByProductoId(productoId);
+    }
+    public Integer obtenerCantidadTotalPorTalleProducto(Long productoId, String talle){
+        return productoRepository.findCantidadByProductoIdAndTalle(productoId, talle);
     }
 
 
@@ -162,9 +171,6 @@ public class ProductoService {
             if (updateRequest.getMarca() != null) {
                 producto.setMarca(updateRequest.getMarca());
             }
-            if (updateRequest.getStock() != null) {
-                producto.setStock(updateRequest.getStock());
-            }
             if (updateRequest.getDiscount() != null) {
                 producto.setDiscount(updateRequest.getDiscount());
             }
@@ -181,24 +187,35 @@ public class ProductoService {
                 producto.setActividad(updateRequest.getActividad());
             }
             if (updateRequest.getTalles() != null) {
-                String[] nuevosTalles = updateRequest.getTalles();
-                String[] tallesExistentes = producto.getTalles();
-                List<String> tallesActualizados = new ArrayList<>(Arrays.asList(tallesExistentes));
-                tallesActualizados.addAll(Arrays.asList(nuevosTalles));
-                producto.setTalles(tallesActualizados.toArray(new String[0]));
+                Map<String, Integer> nuevosTallesConCantidad = updateRequest.getTalles();
+                Map<String, Integer> tallesExistentesConCantidad = producto.getTalles();
+
+                // Actualiza o agrega las nuevas cantidades de tallas
+                for (Map.Entry<String, Integer> entry : nuevosTallesConCantidad.entrySet()) {
+                    String talle = entry.getKey();
+                    Integer cantidad = entry.getValue();
+
+                    // Si el talle ya existe, suma las cantidades; si no, agrega el nuevo talle
+                    tallesExistentesConCantidad.merge(talle, cantidad, Integer::sum);
+                }
+
+                // Actualiza el mapa de talles del producto
+                producto.setTalles(tallesExistentesConCantidad);
+                if (updateRequest.getImageUrls() != null) {
+                    producto.setImageUrls(updateRequest.getImageUrls());
+                }
+                return productoRepository.save(producto);
             }
-            if (updateRequest.getImageUrls() != null) {
-                producto.setImageUrls(updateRequest.getImageUrls());
+            throw new RuntimeException("No se encontro el producto con ID: "+id); // O podrías lanzar una excepción indicando que el producto no se encontró
+        }
+        return producto;
+    }
+        public void deleteProducto (Long id){
+            try {
+                productoRepository.deleteById(id);
+            } catch (Exception e) {
+                throw new RuntimeException("No se encontró ningun producto con el id igual a " + id);
             }
-            return productoRepository.save(producto);
-        }
-        return null; // O podrías lanzar una excepción indicando que el producto no se encontró
-    }
-    public void deleteProducto(Long id) {
-        try {
-            productoRepository.deleteById(id);
-        }catch (Exception e){
-            throw new RuntimeException("No se encontró ningun producto con el id igual a "+id);
         }
     }
-}
+

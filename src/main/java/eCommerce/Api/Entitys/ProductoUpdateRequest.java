@@ -3,6 +3,8 @@ package eCommerce.Api.Entitys;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
+
 @Data
 public class ProductoUpdateRequest {
     private String nombre;
@@ -15,6 +17,6 @@ public class ProductoUpdateRequest {
     private String indumentaria;
     private String genero;
     private String actividad;
-    private String[] talles;
+    private Map<String, Integer> talles;
     private List<String> imageUrls;
 }

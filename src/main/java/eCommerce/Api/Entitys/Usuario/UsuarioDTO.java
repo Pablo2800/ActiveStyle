@@ -1,5 +1,6 @@
 package eCommerce.Api.Entitys.Usuario;
 
+import eCommerce.Api.Entitys.CarritoCompras;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +19,5 @@ public class UsuarioDTO {
     private String email;
     private Long cellphone;
     private Long dni;
+    private CarritoCompras carritoCompras;
 }

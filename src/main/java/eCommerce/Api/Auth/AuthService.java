@@ -1,11 +1,13 @@
 package eCommerce.Api.Auth;
 
+import eCommerce.Api.Entitys.CarritoCompras;
 import eCommerce.Api.Entitys.Role;
 import eCommerce.Api.Entitys.Usuario.Usuario;
 import eCommerce.Api.Jwt.JwtService;
 import eCommerce.Api.Login.LoginRequest;
 import eCommerce.Api.RegisterRequest.AdminRegisterRequest;
 import eCommerce.Api.RegisterRequest.RegisterRequest;
+import eCommerce.Api.Repositories.CarritoComprasRepository;
 import eCommerce.Api.Repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -20,6 +24,8 @@ public class AuthService {
         private final JwtService jwtService;
         private final PasswordEncoder passwordEncoder;
         private final AuthenticationManager authenticationManager;
+        private final CarritoComprasRepository carritoComprasRepository;
+        @Transactional
         public AuthResponseLogin login(LoginRequest request) {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
             Usuario usuario = usuarioRepository.findByUsername(request.getUsername()).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
@@ -59,10 +65,19 @@ public class AuthService {
                     .cellphone(request.getCellphone())
                     .address(request.getAddress())
                     .email(request.getEmail())
-                    .role(Role.USUARIO) // Establecer el rol como usuario normal
+                    .role(Role.USER) // Establecer el rol como usuario normal
                     .build();
-
             usuarioRepository.save(usuario);
+            CarritoCompras carritoCompras = new CarritoCompras();
+            carritoCompras.setUsuario(usuario);
+
+            // Guardar el carrito de compras
+            CarritoCompras savedCarritoCompras = carritoComprasRepository.save(carritoCompras);
+
+            // Asociar el carrito de compras con el cliente y actualizar el cliente
+            usuario.setCarritoCompras(savedCarritoCompras);
+            usuarioRepository.save(usuario);  // Actualizar el cliente con el carrito de compras
+
 
             return AuthResponseRegister.builder()
                     .token(jwtService.getToken(usuario))
