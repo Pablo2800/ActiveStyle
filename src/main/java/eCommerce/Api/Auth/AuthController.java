@@ -1,5 +1,6 @@
 package eCommerce.Api.Auth;
 
+import eCommerce.Api.Entitys.Role;
 import eCommerce.Api.Jwt.JwtService;
 import eCommerce.Api.Login.LoginRequest;
 import eCommerce.Api.RegisterRequest.AdminRegisterRequest;
@@ -30,18 +31,19 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(request));
     }
     @PostMapping("/admin/register")
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<AuthResponseRegister> registerAdmin(@RequestBody AdminRegisterRequest request) {
         // Verifica si ya hay al menos un administrador en el sistema
         if (usuarioService.isFirstAdmin()) {
             // Si es el primer administrador, lo permitimos sin validación de rol
             return ResponseEntity.ok(authService.registerAdmin(request));
         } else {
-            // Si ya existe un administrador, restringir la creación a solo administradores
+            // Si ya existe un administrador, se requiere que el usuario autenticado tenga el rol ADMIN
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            // Verificar si el usuario está autenticado y tiene el rol ADMIN
             if (authentication != null && authentication.getAuthorities().stream()
-                    .anyMatch(authority -> authority.getAuthority().equals("ADMIN"))) {
-                // Si el usuario autenticado tiene el rol ADMIN, permitimos la creación de un nuevo ADMIN
+                    .anyMatch(authority -> authority.getAuthority().equals(Role.ADMIN.getRoleName()))) {
+                // Si el usuario tiene el rol ADMIN, permitimos la creación de un nuevo ADMIN
                 return ResponseEntity.ok(authService.registerAdmin(request));
             } else {
                 // Si el usuario no tiene rol ADMIN, lo bloqueamos

@@ -1,8 +1,8 @@
 package eCommerce.Api.Entitys;
 
 public enum Role {
-    ADMIN("ROLE_ADMIN"),
-    USER("ROLE_USER");
+    ADMIN("ADMIN"),
+    USER("USER");
 
     private final String roleName;
 
@@ -14,3 +14,4 @@ public enum Role {
         return roleName;
     }
 }
+

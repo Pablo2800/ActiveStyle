@@ -21,7 +21,7 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/activeStyle/admin")
-//@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
     @Autowired
