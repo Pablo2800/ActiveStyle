@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -50,29 +51,34 @@ public class CarritoComprasServiceImpl implements CarritoComprasService{
         Producto producto = productoRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        // Verificar disponibilidad del talle seleccionado
+        // Verificar disponibilidad del talle seleccionado (solo en memoria, sin actualizar la base de datos)
         Map<String, Integer> talles = producto.getTalles();
         Integer cantidadTalle = talles.get(talleSeleccionado);
 
         if (cantidadTalle == null || cantidadTalle <= 0) {
-            throw new RuntimeException("El talle seleccionado no está disponible o no tiene stock suficiente");
+            // Si no hay stock disponible para el talle seleccionado
+            throw new RuntimeException("No hay stock disponible para el talle seleccionado.");
         }
 
-        // Actualizar el stock del talle seleccionado
-        talles.put(talleSeleccionado, cantidadTalle - 1);
-        producto.setTalles(talles);
-        productoRepository.save(producto);
-
-        // Verificar si ya existe un ítem con el mismo producto y talle en el carrito
+        // Aquí restamos en memoria (sin afectar la base de datos)
         Optional<ItemCarrito> optionalItemCarrito = itemCarritoRepository.findByCarritoComprasIdAndProductoIdAndTalle(carrito.getId(), productId, talleSeleccionado);
 
-        // Si el ítem ya existe, solo incrementar la cantidad
         if (optionalItemCarrito.isPresent()) {
+            // Si el item ya existe en el carrito, obtener la cantidad actual
             ItemCarrito itemCarritoExistente = optionalItemCarrito.get();
-            itemCarritoExistente.setCantidad(itemCarritoExistente.getCantidad() + 1);
+            int cantidadActual = itemCarritoExistente.getCantidad();
+
+            // Limitar la cantidad a lo que hay en stock
+            if (cantidadActual >= cantidadTalle) {
+                // Aquí se lanza un mensaje específico si se intenta agregar más productos de los que hay en stock
+                throw new RuntimeException("Ya se alcanzó el límite máximo de stock disponible para el talle seleccionado.");
+            }
+
+            // Si hay stock suficiente, incrementar la cantidad del item en el carrito
+            itemCarritoExistente.setCantidad(cantidadActual + 1); // Solo se puede agregar una unidad más
             return itemCarritoRepository.save(itemCarritoExistente);
         } else {
-            // Si el ítem no existe, crear uno nuevo
+            // Si el ítem no existe, crear uno nuevo con cantidad 1
             ItemCarrito itemCarrito = new ItemCarrito();
             itemCarrito.setProducto(producto);
             itemCarrito.setCantidad(1);  // Asumimos que el ítem se añade con cantidad 1
@@ -82,6 +88,10 @@ public class CarritoComprasServiceImpl implements CarritoComprasService{
             return itemCarritoRepository.save(itemCarrito);
         }
     }
+
+
+
+
 
     @Override
     public ItemCarrito substractQuantityFromCarrito(Long clienteId, Long itemId) {
