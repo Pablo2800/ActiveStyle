@@ -1,7 +1,7 @@
 package eCommerce.Api.Auth;
 
 import eCommerce.Api.Entitys.CarritoCompras;
-import eCommerce.Api.Entitys.Role;
+import eCommerce.Api.Entitys.Enums.Role;
 import eCommerce.Api.Entitys.Usuario.Usuario;
 import eCommerce.Api.Jwt.JwtService;
 import eCommerce.Api.Login.LoginRequest;

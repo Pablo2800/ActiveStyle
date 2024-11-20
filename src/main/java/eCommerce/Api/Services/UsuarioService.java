@@ -1,12 +1,11 @@
 package eCommerce.Api.Services;
 
-import eCommerce.Api.Entitys.Role;
+import eCommerce.Api.Entitys.Enums.Role;
 import eCommerce.Api.Entitys.Usuario.Usuario;
 import eCommerce.Api.Entitys.Usuario.UsuarioDTO;
 import eCommerce.Api.Entitys.Usuario.UsuarioRequest;
 import eCommerce.Api.Entitys.Usuario.UsuarioResponse;
 import eCommerce.Api.Repositories.UsuarioRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

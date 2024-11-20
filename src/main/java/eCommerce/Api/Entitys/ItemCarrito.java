@@ -1,5 +1,6 @@
 package eCommerce.Api.Entitys;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,5 +26,6 @@ public class ItemCarrito {
     @ManyToOne
     @JoinColumn(name = "carrito_compras_id", nullable = false)
     @JsonIgnore
+    @JsonBackReference
     private CarritoCompras carritoCompras;
 }

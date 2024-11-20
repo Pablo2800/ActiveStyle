@@ -1,14 +1,11 @@
 package eCommerce.Api.Entitys.Usuario;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import eCommerce.Api.Entitys.CarritoCompras;
-import eCommerce.Api.Entitys.Role;
+import eCommerce.Api.Entitys.Enums.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +19,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "usuario", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})} )
+@EqualsAndHashCode(exclude = "carritoCompras")
 public class Usuario implements UserDetails {
     @Id
     @GeneratedValue
@@ -39,6 +37,7 @@ public class Usuario implements UserDetails {
     private Role role;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "carrito_compras_id", referencedColumnName = "id")
+    @JsonManagedReference
     private CarritoCompras carritoCompras;
 
     @Override

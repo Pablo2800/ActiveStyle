@@ -1,6 +1,6 @@
 package eCommerce.Api.Auth;
 
-import eCommerce.Api.Entitys.Role;
+import eCommerce.Api.Entitys.Enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,7 +1,6 @@
 package eCommerce.Api.Auth;
 
-import eCommerce.Api.Entitys.Role;
-import eCommerce.Api.Jwt.JwtService;
+import eCommerce.Api.Entitys.Enums.Role;
 import eCommerce.Api.Login.LoginRequest;
 import eCommerce.Api.RegisterRequest.AdminRegisterRequest;
 import eCommerce.Api.RegisterRequest.RegisterRequest;
@@ -9,7 +8,6 @@ import eCommerce.Api.Services.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
