@@ -2,14 +2,16 @@ package eCommerce.Api.Services;
 
 import com.cloudinary.Cloudinary;
 import eCommerce.Api.Entitys.Producto;
-import eCommerce.Api.Entitys.ProductoUpdateRequest;
+import eCommerce.Api.DTOs.ProductoUpdateRequest;
 import eCommerce.Api.Repositories.ProductoRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -18,8 +20,8 @@ public class ProductoService {
     private ProductoRepository productoRepository;
     @PersistenceContext
     private EntityManager entityManager;
-//    @Autowired
-//    private Cloudinary cloudinary;
+    @Autowired
+    private Cloudinary cloudinary;
 
     public List<Producto> findAllProductos(){
         try {
@@ -32,17 +34,17 @@ public class ProductoService {
         return productoRepository.findById(id);
     }
     @Transactional
-    public Producto createProducto(Producto producto, /*List<MultipartFile> imageFiles,*/ Map<String, Integer> talles) throws Exception {
+    public Producto createProducto(Producto producto, List<MultipartFile> imageFiles, Map<String, Integer> talles) throws Exception {
         // Verificar si el producto ya existe
         Producto productoExistente = productoRepository.nameProduct(producto.getNameProduct());
         if (productoExistente != null) {
             throw new IllegalArgumentException("Ya existe un producto con ese nombre");
         }
 
-//        int numImages = imageFiles.size();
-//        if (numImages != 4 && numImages != 6) {
-//            throw new IllegalArgumentException("Debe proporcionar exactamente 4 o 6 imágenes");
-//        }
+        int numImages = imageFiles.size();
+        if (numImages != 4 && numImages !=6) {
+            throw new IllegalArgumentException("Debe proporcionar exactamente 4 o 6 imágenes");
+        }
 
         // Validar talles
         if (talles == null || talles.isEmpty()) {
@@ -66,22 +68,42 @@ public class ProductoService {
         // Validar otros atributos del producto
         validateProductAttributes(producto);
 
-//        List<String> imageUrls = new ArrayList<>();
-//        for (MultipartFile file : imageFiles) {
-//            try {
-//                String imageUrl = uploadFile(file);
-//                imageUrls.add(imageUrl);
-//            } catch (IOException e) {
-//                throw new RuntimeException("Error al subir la imagen: " + file.getOriginalFilename(), e);
-//            }
-//        }
+        List<String> imageUrls = new ArrayList<>();
+        for (MultipartFile file : imageFiles) {
+            try {
+                String imageUrl = uploadFile(file);
+                imageUrls.add(imageUrl);
+            } catch (IOException e) {
+                throw new RuntimeException("Error al subir la imagen: " + file.getOriginalFilename(), e);
+            }
+        }
 
-//        producto.setImageUrls(imageUrls);
+        producto.setImageUrls(imageUrls);
         producto.setTalles(talles);
 
         // Guardar el producto en la base de datos
         return productoRepository.save(producto);
     }
+//    public Producto addImagesToProducto(Long productoId, List<MultipartFile> imageFiles) throws Exception {
+//        Producto producto = productoRepository.findById(productoId)
+//                .orElseThrow(() -> new IllegalArgumentException("No se encontró un producto con el ID proporcionado"));
+//
+//        if (imageFiles == null || imageFiles.isEmpty()) {
+//            throw new IllegalArgumentException("Debe proporcionar al menos una imagen");
+//        }
+//        List<String> existingImageUrls = producto.getImageUrls() != null ? producto.getImageUrls() : new ArrayList<>();
+//        for (MultipartFile file : imageFiles) {
+//            try {
+//                String imageUrl = uploadFile(file);
+//                existingImageUrls.add(imageUrl);
+//            } catch (IOException e) {
+//                throw new RuntimeException("Error al subir la imagen: " + file.getOriginalFilename(), e);
+//            }
+//        }
+//        producto.setImageUrls(existingImageUrls);
+//        return productoRepository.save(producto);
+//    }
+
 
     private boolean isValidTalle(String talle) {
         // Aquí puedes añadir la lógica específica para validar un talle.
@@ -112,18 +134,18 @@ public class ProductoService {
         }
     }
 
-//    private String uploadFile(MultipartFile multipartFile) throws IOException {
-//        try {
-//            Map uploadResult = cloudinary.uploader()
-//                    .upload(multipartFile.getBytes(),
-//                            Map.of("public_id", UUID.randomUUID().toString()));
-//            return uploadResult.get("url").toString();
-//        } catch (IOException e) {
-//            System.err.println("Error subiendo la imagen: " + e.getMessage());
-//            e.printStackTrace();
-//            throw e;
-//        }
-//    }
+    private String uploadFile(MultipartFile multipartFile) throws IOException {
+        try {
+            Map uploadResult = cloudinary.uploader()
+                    .upload(multipartFile.getBytes(),
+                            Map.of("public_id", UUID.randomUUID().toString()));
+            return uploadResult.get("url").toString();
+        } catch (IOException e) {
+            System.err.println("Error subiendo la imagen: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+    }
 
     public List<Producto> buscarProductosPorNombre(String nombre) {
         return productoRepository.findByNombreContainingIgnoreCase(nombre);

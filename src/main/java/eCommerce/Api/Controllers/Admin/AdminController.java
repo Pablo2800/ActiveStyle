@@ -1,8 +1,11 @@
 package eCommerce.Api.Controllers.Admin;
 
-import eCommerce.Api.Entitys.CrearProductoRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import eCommerce.Api.DTOs.DTOProducto;
 import eCommerce.Api.Entitys.Producto;
-import eCommerce.Api.Entitys.ProductoUpdateRequest;
+import eCommerce.Api.DTOs.ProductoUpdateRequest;
 import eCommerce.Api.Entitys.Usuario.UsuarioDTO;
 import eCommerce.Api.Entitys.Usuario.UsuarioRequest;
 import eCommerce.Api.Entitys.Usuario.UsuarioResponse;
@@ -13,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -67,78 +71,64 @@ public class AdminController {
             throw new RuntimeException("No se encontró ningún producto con el Id igual a " + id);
         }
     }
+    @PostMapping("/crearProducto")
+    public ResponseEntity<?> crearProducto(
+            @RequestHeader(name = "Authorization", required = true) String token,
+            @ModelAttribute DTOProducto productoDTO,
+            @RequestParam("talles") String tallesJson) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Integer> talles = mapper.readValue(tallesJson, new TypeReference<Map<String, Integer>>() {});
 
-//    @PostMapping("/crearProducto")
-//    public ResponseEntity<?> crearProducto(
+            // Crear nuevo producto con Builder
+            Producto producto = Producto.builder()
+                    .nameProduct(productoDTO.getNameProduct())
+                    .description(productoDTO.getDescription())
+                    .price(productoDTO.getPrice())
+                    .marca(productoDTO.getMarca())
+                    .discount(productoDTO.isDiscount())
+                    .porcentaje(productoDTO.getPorcentaje())
+                    .indumentaria(productoDTO.getIndumentaria())
+                    .genero(productoDTO.getGenero())
+                    .actividad(productoDTO.getActividad())
+                    .talles(talles)  // Aquí usamos el Map convertido
+                    .build();
+
+            Producto productoCreado = productoService.createProducto(
+                    producto,
+                    productoDTO.getImagen(),
+                    talles
+            );
+            return ResponseEntity.status(HttpStatus.CREATED).body(productoCreado);
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.badRequest().body("Error al procesar los talles: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al crear el producto: " + e.getMessage());
+        }
+    }
+//    @PutMapping("/addImagen/{productoId}")
+//    public ResponseEntity<?> addImageToProducto(
 //            @RequestHeader(name = "Authorization", required = true) String token,
-//            @ModelAttribute Producto producto,
-//            /*@RequestParam("imagen") List<MultipartFile> imagen,*/
-//            @RequestParam("talles") Map<String, Integer> talles) {
+//            @PathVariable Long productoId,
+//            @RequestParam("imagen") List<MultipartFile> imagen) {
 //        try {
-//            // Validar talles
-//            if (talles == null || talles.isEmpty()) {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Debe proporcionar al menos un talle con su cantidad");
+//            // Validar las imágenes proporcionadas
+//            if (imagen == null || imagen.isEmpty()) {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Debe proporcionar al menos una imagen");
 //            }
-//            for (Map.Entry<String, Integer> entry : talles.entrySet()) {
-//                String talle = entry.getKey();
-//                Integer cantidad = entry.getValue();
+//            Producto productoActualizado = productoService.addImagesToProducto(productoId, imagen);
 //
-//                if (!isValidTalle(talle)) {
-//                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Talle inválido: " + talle);
-//                }
-//                if (cantidad == null || cantidad <= 0) {
-//                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La cantidad para el talle " + talle + " debe ser mayor a 0");
-//                }
-//            }
-//
-//            // Crear el producto
-//            Producto productoCreado = productoService.createProducto(producto,/* imagen,*/ talles);
-//            return ResponseEntity.status(HttpStatus.CREATED).body(productoCreado);
-//
+//            return ResponseEntity.ok(productoActualizado);
 //        } catch (IllegalArgumentException e) {
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error de validación: " + e.getMessage());
 //        } catch (RuntimeException e) {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno: " + e.getMessage());
 //        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el producto: " + e.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al agregar imágenes: " + e.getMessage());
 //        }
 //    }
-@PostMapping("/crearProducto")
-public ResponseEntity<?> crearProducto(
-        @RequestHeader(name = "Authorization", required = true) String token,
-        @RequestBody CrearProductoRequest request) {
-    try {
-        Producto producto = request.getProducto();
-        Map<String, Integer> talles = request.getTalles();
 
-        // Validar talles
-        if (talles == null || talles.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Debe proporcionar al menos un talle con su cantidad");
-        }
-        for (Map.Entry<String, Integer> entry : talles.entrySet()) {
-            String talle = entry.getKey();
-            Integer cantidad = entry.getValue();
-
-            if (!isValidTalle(talle)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Talle inválido: " + talle);
-            }
-            if (cantidad == null || cantidad <= 0) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La cantidad para el talle " + talle + " debe ser mayor a 0");
-            }
-        }
-
-        // Crear el producto
-        Producto productoCreado = productoService.createProducto(producto, talles);
-        return ResponseEntity.status(HttpStatus.CREATED).body(productoCreado);
-
-    } catch (IllegalArgumentException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error de validación: " + e.getMessage());
-    } catch (RuntimeException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno: " + e.getMessage());
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el producto: " + e.getMessage());
-    }
-}
 
     private boolean isValidTalle(String talle) {
         return talle != null && !talle.trim().isEmpty();

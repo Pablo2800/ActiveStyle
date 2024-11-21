@@ -25,11 +25,10 @@ public class PedidoService {
         return pedidoRepository.findById(pedidoId);
     }
     public Pedido crearPedido(Long usuarioId) {
-        // Obtener el carrito del usuario
+
         CarritoCompras carrito = carritoComprasRepository.findByUsuarioId(usuarioId)
                 .orElseThrow(() -> new IllegalArgumentException("Carrito no encontrado para el usuario con ID: " + usuarioId));
 
-        // Crear el pedido
         Pedido pedido = new Pedido();
         pedido.setUsuario(carrito.getUsuario());
         pedido.setFechaCreacion(new Date());
@@ -47,7 +46,6 @@ public class PedidoService {
                     : itemCarrito.getProducto().getPrice();
             double subtotal = precio * itemCarrito.getCantidad();
 
-            // Crear el ítem del pedido
             ItemPedido itemPedido = new ItemPedido();
             itemPedido.setPedido(pedido);
             itemPedido.setProducto(itemCarrito.getProducto());
@@ -66,21 +64,17 @@ public class PedidoService {
             // Restar el stock del talle correspondiente
             if (cantidadTalle != null && cantidadTalle >= itemCarrito.getCantidad()) {
                 talles.put(itemCarrito.getTalle(), cantidadTalle - itemCarrito.getCantidad());  // Restamos la cantidad
-                producto.setTalles(talles);  // Actualizamos el producto con el nuevo stock
-                productoRepository.save(producto);  // Guardamos el producto actualizado en la base de datos
+                producto.setTalles(talles);
+                productoRepository.save(producto);
             } else {
                 throw new RuntimeException("No hay suficiente stock para el producto " + producto.getNameProduct() + " con el talle " + itemCarrito.getTalle());
             }
         }
 
-        // Configurar los ítems y el total en el pedido
         pedido.setItems(itemsPedido);
         pedido.setTotal(total);
 
-        // Guardar el pedido en la base de datos
         Pedido pedidoGuardado = pedidoRepository.save(pedido);
-
-        // Limpiar el carrito después de realizar el pedido
         carrito.getItemCarritos().clear();
         carritoComprasRepository.save(carrito);
 
@@ -92,12 +86,29 @@ public class PedidoService {
         Pedido pedido = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado con ID: " + pedidoId));
 
-        // Validar la transición del estado
         if (pedido.getEstado() == EstadoPedido.CONFIRMADO || pedido.getEstado() == EstadoPedido.CANCELADO) {
             throw new IllegalStateException("No se puede cambiar el estado de un pedido ya entregado o cancelado.");
         }
 
-        // Actualizar el estado
+        if (nuevoEstado == EstadoPedido.CANCELADO) {
+            for (ItemPedido item : pedido.getItems()) {
+                Producto producto = item.getProducto();
+
+                // Actualizar el stock según el talle
+                String talle = item.getTalle();
+                int cantidadDevolver = item.getCantidad();
+
+                // Validar existencia del talle en el producto
+                Map<String, Integer> talles = producto.getTalles();
+                if (talles.containsKey(talle)) {
+                    talles.put(talle, talles.get(talle) + cantidadDevolver); // Devolver stock
+                } else {
+                    throw new IllegalStateException("El producto no contiene el talle especificado: " + talle);
+                }
+
+                productoRepository.save(producto); // Guardar cambios en el producto
+            }
+        }
         pedido.setEstado(nuevoEstado);
         return pedidoRepository.save(pedido);
     }
