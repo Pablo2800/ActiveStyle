@@ -34,7 +34,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET).permitAll()
                                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
                                 .requestMatchers("/auth/**").permitAll()
-                                .requestMatchers("/admin/**").hasAuthority(Role.ADMIN.getRoleName())
+                                .requestMatchers("/activeStyle/admin/**").hasAuthority(Role.ADMIN.getRoleName())
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager->
