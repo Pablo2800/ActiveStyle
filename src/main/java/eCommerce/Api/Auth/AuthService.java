@@ -29,6 +29,7 @@ public class AuthService {
         public AuthResponseLogin login(LoginRequest request) {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
             Usuario usuario = usuarioRepository.findByUsername(request.getUsername()).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+            Long id = usuario.getId();
             String username = usuario.getUsername();
             String firstname = usuario.getFirstname(); // Suponiendo que UserDetails no tiene un método getFirstname() y que User es la clase que implementa UserDetails y tiene un método getFirstname()
             String lastname = usuario.getLastname(); // Suponiendo lo mismo para el apellido
@@ -39,6 +40,7 @@ public class AuthService {
             Role role = usuario.getRole();
             String token= jwtService.getToken(usuario);
             return AuthResponseLogin.builder()
+                    .id(id)
                     .username(username)
                     .firstname(firstname)
                     .lastname(lastname)
