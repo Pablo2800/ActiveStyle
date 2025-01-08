@@ -8,6 +8,7 @@ import {
   getDni,
   getEmail,
   getFirstName,
+  getID,
   getLastName,
   getUsername,
   login,
@@ -17,12 +18,14 @@ import {
   setDni,
   setEmail,
   setFirstName,
+  setID,
   setLastName,
   setPassword,
   setRol,
   setToken,
   setUsername,
 } from "../redux/userSlice";
+const apiKey = import.meta.env.VITE_API_KEY;
 
 const useUser = () => {
   const { goToLogin, goToHome } = useNavigation();
@@ -34,30 +37,50 @@ const useUser = () => {
   const dni = useSelector(getDni);
   const cellphone = useSelector(getCellPhone);
   const direction = useSelector(getAddress);
+  const createAdmin = `${apiKey}auth/admin/register`;
+  const id = useSelector(getID);
 
   const handleSubmit = async (values) => {
-    const { dni, cellphone, ...rest } = values;
+    const { dni, cellphone, username, password, ...rest } = values;
     const numericDNI = parseInt(dni);
     const numericCellphone = parseInt(cellphone);
-    try {
-      const response = await axios.post(
-        "https://activestyle.onrender.com/auth/register",
-        { ...rest, dni: numericDNI, cellphone: numericCellphone }
-      );
-      if (response.data) {
-        goToLogin();
+    if (username === "Admin24" && password === "24Admin24") {
+      try {
+        const response = await axios.post(createAdmin, {
+          ...rest,
+          username,
+          password,
+          dni: numericDNI,
+          cellphone: numericCellphone,
+        });
+        if (response.data) {
+          goToLogin();
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      try {
+        const response = await axios.post(`${apiKey}auth/register`, {
+          ...rest,
+          username,
+          password,
+          dni: numericDNI,
+          cellphone: numericCellphone,
+        });
+        if (response.data) {
+          goToLogin();
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+
   const handleLogin = async (values) => {
     try {
-      const response = await axios.post(
-        "https://activestyle.onrender.com/auth/login",
-        values
-      );
-      console.log(response);
+      const response = await axios.post(`${apiKey}auth/login`, values);
+      console.log(response.data);
       const { token, username } = response.data;
 
       if (token) {
@@ -75,6 +98,7 @@ const useUser = () => {
         dispatch(setToken(response.data.token));
         dispatch(setRol(response.data.role));
         dispatch(login());
+        dispatch(setID(response.data.id));
         goToHome();
       }
       if (username === "PabloP") {
@@ -108,6 +132,7 @@ const useUser = () => {
     dni,
     cellphone,
     direction,
+    id,
   };
 };
 export default useUser;

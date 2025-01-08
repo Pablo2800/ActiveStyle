@@ -1,4 +1,4 @@
-import { useEffect, memo } from "react";
+import { useEffect, memo, useState } from "react";
 import { Link } from "react-router-dom";
 import useProducts from "../hooks/useProducts";
 
@@ -9,8 +9,12 @@ const RenderProducts = memo(
     selectedGeneros,
     selectedActividad,
   }) => {
-    const { productsByCategory, filterProduct, filteredProducts } =
+    const { productsByCategory, filterProduct, filteredProducts, allProducts } =
       useProducts();
+    const [renderProducts, setRenderProducts] = useState(
+      allProducts ? productsByCategory : filteredProducts
+    );
+    console.log(renderProducts);
     useEffect(() => {
       window.scrollTo(0, 0);
     });
@@ -18,21 +22,10 @@ const RenderProducts = memo(
     return (
       <div className="w-full sm:w-4/5 bg-white text-black flex flex-col flex-wrap py-5 min-h-screen">
         <p className="w-full items-center flex justify-center my-10">
-          {selectedIndumentarias.length === 0 &&
-          selectedMarcas.length === 0 &&
-          selectedGeneros.length === 0 &&
-          selectedActividad === 0
-            ? productsByCategory.length
-            : filteredProducts.length + " Resultados"}
+          {renderProducts.length + " Resultados"}
         </p>
         <div className="flex flex-wrap w-full justify-center items-center">
-          {(selectedIndumentarias.length === 0 &&
-          selectedMarcas.length === 0 &&
-          selectedGeneros.length === 0 &&
-          selectedActividad === 0
-            ? productsByCategory
-            : filteredProducts
-          ).map((product) => {
+          {renderProducts.map((product) => {
             const transformPorcentage = product.porcentaje / 100;
             const discountPrice = Math.round(
               product.price - product.price * transformPorcentage
@@ -45,7 +38,10 @@ const RenderProducts = memo(
                 <div className="w-full flex flex-col justify-center items-center">
                   <img
                     alt="example"
-                    src="https://nikearprod.vtexassets.com/arquivos/ids/794168-1000-1000?v=638379227989030000&width=1000&height=1000&aspect=true"
+                    src={
+                      product.imageUrls[0] ||
+                      "https://nikearprod.vtexassets.com/arquivos/ids/794168-1000-1000?v=638379227989030000&width=1000&height=1000&aspect=true"
+                    }
                     className="w-full h-full"
                   />
                   {product.discount === true && (

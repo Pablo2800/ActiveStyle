@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form, Input, Select } from "antd";
+
 const { Option } = Select;
 
 export default function FormNewObject() {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
+  const [formValues, setFormValues] = useState({
+    nameProduct: "",
+    description: "",
+    price: "",
+    marca: "",
+    discount: false,
+    porcentaje: 0,
+    indumentaria: "",
+    genero: "",
+    actividad: "",
+  });
+  const [imagenes, setImagenes] = useState([]);
+  const [talles, setTalles] = useState("");
+  const [cantidadTalle, setCantidadTalle] = useState(0);
+  const [talleFinal, setTalleFinal] = useState([]);
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+  const handleTalleChange = (talle) => {
+    setTalles(talle);
+    setCantidadTalle(0);
   };
 
   const campos = [
@@ -23,10 +37,10 @@ export default function FormNewObject() {
     {
       id: 2,
       name: "description",
-      label: "Descripcion",
+      label: "Descripción",
       type: "text",
       required: true,
-      message: "Ingrese la descripcion del producto",
+      message: "Ingrese la descripción del producto",
     },
     {
       id: 3,
@@ -45,110 +59,134 @@ export default function FormNewObject() {
       message: "Ingrese la marca del producto",
     },
     {
-      id: 5,
-      name: "stock",
-      label: "Stock",
-      type: "number",
+      id: 6,
+      name: "discount",
+      label: "¿Tiene descuento?",
+      type: "boolean",
       required: true,
-      message: "Ingrese el stock del producto",
+      message: "Ingrese si el producto tiene descuento o no",
     },
     {
       id: 7,
       name: "indumentaria",
       label: "Indumentaria",
-      type: "boolean",
+      type: "select",
       required: true,
-      message: "Ingrese el tipo de indumentaria que es el producto",
+      message: "Seleccione el tipo de indumentaria",
+      options: [
+        "zapatilla",
+        "botines",
+        "remera",
+        "camiseta",
+        "campera",
+        "pantalon",
+        "short",
+        "abrigo",
+        "mochila",
+        "gorra",
+      ],
     },
     {
       id: 8,
       name: "genero",
-      label: "Genero",
-      type: "text",
+      label: "Género",
+      type: "select",
       required: true,
-      message: "Ingrese el genero del producto",
+      message: "Seleccione el género",
+      options: ["hombre", "mujer", "niño"],
     },
     {
       id: 9,
       name: "actividad",
       label: "Actividad",
-      type: "text",
+      type: "select",
       required: true,
-      message: "Ingrese la actividad del producto",
-    },
-    {
-      id: 6,
-      name: "discount",
-      label: "Tiene descuento?",
-      type: "boolean",
-      required: true,
-      message: "Ingrese si el producto tiene descuento o no",
+      message: "Seleccione la actividad",
+      options: [
+        "futbol",
+        "basquet",
+        "running",
+        "entrenamiento",
+        "tenis",
+        "skate",
+      ],
     },
   ];
+
+  const handleImageChange = (e) => {
+    if (e.target.files) {
+      setImagenes(Array.from(e.target.files));
+    }
+  };
+
+  const onFinish = (values) => {
+    const formData = new FormData();
+    Object.entries(values).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    imagenes.forEach((imagen) => formData.append("imagenes", imagen));
+
+    console.log("Datos enviados:", values);
+    console.log("Imágenes:", imagenes);
+  };
+
+  const handleCantidadTotalTalle = (e, talle1, cantidad1) => {
+    e.preventDefault();
+    setTalleFinal((prev) => [...prev, { talle: talle1, cantidad: cantidad1 }]);
+  };
+
+  // console.log({ arrayFinal: talleFinal });
+  // talleFinal.forEach((talle) => {
+  //   console.log(Object.values(talle));
+  // });
+
+  const onFinishFailed = (errorInfo) => {
+    console.error("Error:", errorInfo);
+  };
+  console.log(Object.values(talleFinal).forEach((a) => console.log(a.talle)));
+  const allTalles = ["XS", "S", "M", "L", "XL", "XXL"];
 
   return (
     <Form
       name="basic"
       className="bg-blue-200 flex flex-col items-center justify-center p-3 rounded-xl w-2/4 mt-10 h-full"
-      initialValues={{
-        remember: true,
-      }}
+      initialValues={formValues}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
-      {campos.map((campo) => {
-        return (
-          <Form.Item
-            className="w-1/2 my-3"
-            key={campo.id}
-            name={campo.name}
-            rules={[
-              {
-                required: true,
-                message: campo.message,
-              },
-            ]}
-          >
-            {campo.id === 6 ? (
-              <Select placeholder={campo.label} allowClear>
-                <Option value={true}>Sí</Option>
-                <Option value={false}>No</Option>
-              </Select>
-            ) : campo.id === 7 ? (
-              <Select placeholder={campo.label} allowClear>
-                <Option value={"zapatilla"}>zapatilla</Option>
-                <Option value={"botines"}>botines</Option>
-                <Option value={"remera"}>remera</Option>
-                <Option value={"camiseta"}>camiseta</Option>
-                <Option value={"campera"}>campera</Option>
-                <Option value={"pantalon"}>pantalon</Option>
-                <Option value={"short"}>short</Option>
-                <Option value={"abrigo"}>abrigo</Option>
-                <Option value={"mochila"}>mochila</Option>
-                <Option value={"gorra"}>gorra</Option>
-              </Select>
-            ) : campo.id === 8 ? (
-              <Select placeholder={campo.label} allowClear>
-                <Option value={"hombre"}>Hombre</Option>
-                <Option value={"mujer"}>Mujer</Option>
-                <Option value={"niño"}>Niño</Option>
-              </Select>
-            ) : campo.id === 9 ? (
-              <Select placeholder={campo.label} allowClear>
-                <Option value={"futbol"}>Futbol</Option>
-                <Option value={"basquet"}>Basquet</Option>
-                <Option value={"running"}>Running</Option>
-                <Option value={"entrenamiento"}>Entrenamiento</Option>
-                <Option value={"tenis"}>Tenis</Option>
-                <Option value={"skate"}>Skate</Option>
-              </Select>
-            ) : (
-              <Input type={campo.type} placeholder={campo.label} />
-            )}
-          </Form.Item>
-        );
-      })}
+      {campos.map((campo) => (
+        <Form.Item
+          className="w-1/2 my-3"
+          key={campo.id}
+          name={campo.name}
+          label={campo.label}
+          rules={[
+            {
+              required: campo.required,
+              message: campo.message,
+            },
+          ]}
+        >
+          {campo.type === "select" ? (
+            <Select placeholder={`Seleccione ${campo.label}`} allowClear>
+              {campo.options?.map((option) => (
+                <Option key={option} value={option}>
+                  {option}
+                </Option>
+              ))}
+            </Select>
+          ) : campo.type === "boolean" ? (
+            <Select placeholder={`Seleccione ${campo.label}`} allowClear>
+              <Option value={true}>Sí</Option>
+              <Option value={false}>No</Option>
+            </Select>
+          ) : (
+            <Input type={campo.type} placeholder={`Ingrese ${campo.label}`} />
+          )}
+        </Form.Item>
+      ))}
 
       <Form.Item
         noStyle
@@ -168,14 +206,70 @@ export default function FormNewObject() {
                 },
               ]}
             >
-              <Input placeholder="Ingrese cantidad de descuento" />
+              <Input
+                type="number"
+                placeholder="Ingrese cantidad de descuento"
+              />
             </Form.Item>
           ) : null
         }
       </Form.Item>
+      <Form.Item className="w-1/2 my-3">
+        <Select
+          placeholder={`Seleccione un talle`}
+          onChange={handleTalleChange}
+        >
+          {allTalles.map((talle) => (
+            <Option
+              value={talle}
+              disabled={
+                Object.values(talleFinal).forEach((a) => a.talle) === talle
+              }
+            >
+              {talle}
+            </Option>
+          ))}
+        </Select>
+      </Form.Item>
+      {talles && (
+        <>
+          <Form.Item className="w-1/2 my-3">
+            <Input
+              type="number"
+              placeholder="Ingrese cantidad de talles en stock"
+              value={cantidadTalle}
+              onChange={(e) => setCantidadTalle(Number(e.target.value))}
+            />
+          </Form.Item>
+          <Button
+            type="primary"
+            onClick={(e) => handleCantidadTotalTalle(e, talles, cantidadTalle)}
+            className="bg-primary-3 text-background text-xs mt-2 disabled:opacity-50"
+          >
+            Confirmar
+          </Button>
+          <p>
+            Talles acumulados:
+            {talleFinal.map(({ talle, cantidad }, index) => (
+              <span key={index}>
+                {talle}: {cantidad},{" "}
+              </span>
+            ))}
+          </p>
+        </>
+      )}
+      <Form.Item className="w-1/2 my-3">
+        <label className="block mb-2">Imágenes:</label>
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+      </Form.Item>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" className="bg-primary-3">
           Submit
         </Button>
       </Form.Item>

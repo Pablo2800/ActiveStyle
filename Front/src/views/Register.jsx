@@ -33,108 +33,93 @@ export default function Register() {
           onFinish={handleSubmit}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
-          className="flex sm:flex-row flex-col items-center justify-center p-2 w-full"
+          className="flex flex-col items-center justify-center p-2 w-full"
         >
-          <div className="flex flex-col w-full sm:w-1/2 sm:p-2 px-2">
-            <Form.Item
-              name="username"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor ingrese su usuario",
-                },
-              ]}
-            >
-              <Input
-                prefix={<FaUserCircle />}
-                type="text"
-                className="rounded-xl font-myfont font-semibold p-2 w-full"
-                placeholder="Nombre de usuario"
-              ></Input>
-            </Form.Item>
-            <Form.Item
-              name="firstname"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor ingrese su nombre",
-                },
-              ]}
-            >
-              <Input
-                type="text"
-                className="rounded-xl p-2 w-full"
-                placeholder="Nombre"
-                prefix={<FaUser />}
-              ></Input>
-            </Form.Item>
-            <Form.Item
-              name="lastname"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor ingrese su apellido",
-                },
-              ]}
-            >
-              <Input
-                type="text"
-                className="rounded-xl p-2 w-full"
-                placeholder="Apellido"
-                prefix={<FaRegUser />}
-              ></Input>
-            </Form.Item>
-            <Form.Item
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor ingrese su email",
-                },
-              ]}
-            >
-              <Input
-                prefix={<IoIosMail />}
-                type="email"
-                className="rounded-xl p-2 w-full"
-                placeholder="Mail"
-              ></Input>
-            </Form.Item>
-            <Form.Item
-              name="address"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor ingrese su Direccion",
-                },
-              ]}
-            >
-              <Input
-                prefix={<FaHouse />}
-                type="text"
-                className="rounded-xl p-2 w-full"
-                placeholder="Direccion"
-              ></Input>
-            </Form.Item>
-          </div>
-          <div className="border border-white border-t-0 border-b-0 h-72 mx-2 border-l-0 hidden sm:flex items-center"></div>
-          <div className="flex flex-col w-full sm:w-1/2 sm:p-2 px-2">
-            <Form.Item
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor ingrese su Contraseña",
-                },
-              ]}
-            >
-              <Input.Password
-                className="rounded-xl p-2 w-full"
-                placeholder="Contraseña"
-                prefix={<RiLockPasswordFill />}
-              ></Input.Password>
-            </Form.Item>
-            {/* <Form.Item
+          <div className="flex w-full">
+            <div className="flex flex-col w-full sm:w-1/2 sm:p-2 px-2">
+              <Form.Item
+                name="username"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingrese su usuario",
+                  },
+                ]}
+              >
+                <Input
+                  prefix={<FaUserCircle />}
+                  type="text"
+                  className="rounded-xl font-myfont font-semibold p-2 w-full"
+                  placeholder="Nombre de usuario"
+                />
+              </Form.Item>
+              <Form.Item
+                name="firstname"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingrese su nombre",
+                  },
+                ]}
+              >
+                <Input
+                  type="text"
+                  className="rounded-xl p-2 w-full"
+                  placeholder="Nombre"
+                  prefix={<FaUser />}
+                />
+              </Form.Item>
+              <Form.Item
+                name="lastname"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingrese su apellido",
+                  },
+                ]}
+              >
+                <Input
+                  type="text"
+                  className="rounded-xl p-2 w-full"
+                  placeholder="Apellido"
+                  prefix={<FaRegUser />}
+                ></Input>
+              </Form.Item>
+              <Form.Item
+                name="email"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingrese su email",
+                  },
+                ]}
+              >
+                <Input
+                  prefix={<IoIosMail />}
+                  type="email"
+                  className="rounded-xl p-2 w-full"
+                  placeholder="Mail"
+                ></Input>
+              </Form.Item>
+            </div>
+            <div className="border border-white border-t-0 border-b-0 h-72 mx-2 border-l-0 hidden sm:flex items-center"></div>
+            <div className="flex flex-col w-full sm:w-1/2 sm:p-2 px-2">
+              <Form.Item
+                name="password"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingrese su Contraseña",
+                  },
+                ]}
+              >
+                <Input.Password
+                  className="rounded-xl p-2 w-full"
+                  placeholder="Contraseña"
+                  prefix={<RiLockPasswordFill />}
+                ></Input.Password>
+              </Form.Item>
+              {/* <Form.Item
               name="confirmPassword"
               rules={[
                 {
@@ -149,49 +134,66 @@ export default function Register() {
                 placeholder="Repetir contraseña"
               ></Input.Password>
             </Form.Item> */}
-            <Form.Item
-              name="cellphone"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor ingrese su Celular",
-                },
-              ]}
-            >
-              <InputNumber
-                maxLength={13}
-                minLength={10}
-                prefix={<IoIosPhonePortrait />}
-                className="rounded-xl p-2 w-full"
-                placeholder="Celular"
-              ></InputNumber>
-            </Form.Item>
-            <Form.Item
-              name="dni"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor ingrese su Dni",
-                },
-              ]}
-            >
-              <InputNumber
-                prefix={<HiMiniIdentification />}
-                maxLength={8}
-                minLength={8}
-                className="rounded-xl p-2 w-full"
-                placeholder="Dni"
-              ></InputNumber>
-            </Form.Item>
-            <Form.Item>
-              <button
-                type="submit"
-                className="p-2 bg-primary-3 text-white rounded-xl w-full"
+              <Form.Item
+                name="cellphone"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingrese su Celular",
+                  },
+                ]}
               >
-                Registrarse
-              </button>
-            </Form.Item>
+                <InputNumber
+                  maxLength={13}
+                  minLength={10}
+                  prefix={<IoIosPhonePortrait />}
+                  className="rounded-xl p-2 w-full h-10 flex items-center justify-center"
+                  placeholder="Celular"
+                />
+              </Form.Item>
+              <Form.Item
+                name="dni"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingrese su Dni",
+                  },
+                ]}
+              >
+                <InputNumber
+                  prefix={<HiMiniIdentification />}
+                  maxLength={8}
+                  minLength={8}
+                  className="rounded-xl p-2 w-full h-10 flex items-center justify-center"
+                  placeholder="Dni"
+                />
+              </Form.Item>
+              <Form.Item
+                name="address"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingrese su Direccion",
+                  },
+                ]}
+              >
+                <Input
+                  prefix={<FaHouse />}
+                  type="text"
+                  className="rounded-xl p-2 w-full"
+                  placeholder="Direccion"
+                />
+              </Form.Item>
+            </div>
           </div>
+          <Form.Item>
+            <button
+              type="submit"
+              className="p-2 bg-primary-3 text-white rounded-xl w-60"
+            >
+              Registrarse
+            </button>
+          </Form.Item>
         </Form>
       </div>
     </div>

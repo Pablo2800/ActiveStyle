@@ -17,63 +17,36 @@ import {
   removeFromCart,
 } from "../redux/cartSlice";
 import useProducts from "./useProducts";
+import axios from "axios";
+
+const apiKey = import.meta.env.VITE_API_KEY;
 
 const useCart = () => {
   const cart = useSelector(getCart);
   const dispatch = useDispatch();
   const select = useSelector(getSelectProduct);
   const product = useSelector(getFilteredProducts);
-  const cantTalles =
-    product.length !== 0
-      ? product.talles.filter((talle) => talle === select)
-      : [];
+  // const cantTalles =
+  //   product.length !== 0
+  //     ? product.talles.filter((talle) => talle === select)
+  //     : [];
   const tallesDisp = product.talles;
   const contador = useSelector(getCantidadSelect);
   const allTalles = useSelector(getAllTallesCalzado);
   const { cuotas, discountPrice } = useProducts();
 
-  const handleAddToCart = () => {
-    if (!product || !product.talles) {
-      return;
-    }
-
-    const maxCantidad = 3;
-    let cantidadToAdd = contador > maxCantidad ? maxCantidad : contador;
-
-    const totalCantidadInCart = cart.reduce((total, item) => {
-      if (item.id === product.id && item.talle === select) {
-        return total + item.cantidad;
-      }
-      return total;
-    }, 0);
-
-    if (totalCantidadInCart + cantidadToAdd > maxCantidad) {
-      cantidadToAdd = maxCantidad - totalCantidadInCart;
-      console.log(
-        `Solo puedes agregar ${cantidadToAdd} unidades de este producto al carrito`
+  const handleAddToCart = async (clienteId, productId, talleSeleccionado) => {
+    console.log(talleSeleccionado);
+    try {
+      const response = await axios.post(
+        `${apiKey}carrito/add/${clienteId}/${productId}/${talleSeleccionado}`
       );
-    }
-
-    for (let i = 0; i < cantidadToAdd; i++) {
-      dispatch(
-        addToCart({
-          ...product,
-          talle: select,
-          priceDiscount: discountPrice,
-          cantidad: 1, // Agregar una unidad del producto por iteración
-        })
-      );
-    }
-
-    const indexToRemove = product.talles.indexOf(select);
-
-    if (indexToRemove !== -1) {
-      const updatedTalles = [...product.talles];
-      updatedTalles.splice(indexToRemove, cantidadToAdd);
-
-      dispatch(updateProductTalles({ id: product.id, talles: updatedTalles }));
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     }
   };
+
   const handleRemoveToCart = (id, talle) => {
     dispatch(removeFromCart({ id, talle }));
   };
@@ -89,7 +62,7 @@ const useCart = () => {
       const newSelect = select === value ? 1 : value;
       dispatch(setSelectProduct(newSelect));
     },
-    [dispatch, select, contador, cantTalles]
+    [dispatch, select, contador]
   );
 
   const aumentarContador = () => {
@@ -107,7 +80,7 @@ const useCart = () => {
     aumentarContador,
     disminuirContador,
     handleRemoveToCart,
-    cantTalles,
+    // cantTalles,
     select,
     allTalles,
     contador,

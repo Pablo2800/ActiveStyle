@@ -12,6 +12,7 @@ const initialState = {
   address: "",
   dni: "",
   rol: "",
+  id: "",
 };
 
 const userSlice = createSlice({
@@ -54,6 +55,9 @@ const userSlice = createSlice({
     login: (state) => {
       state.access = true;
     },
+    setID: (state, action) => {
+      state.id = action.payload;
+    },
   },
 });
 
@@ -68,6 +72,7 @@ export const getCellPhone = (state) => state.user.cellphone;
 export const getDni = (state) => state.user.dni;
 export const getToken = (state) => state.user.token;
 export const getRol = (state) => state.user.rol;
+export const getID = (state) => state.user.id;
 export const {
   setUsername,
   setPassword,
@@ -81,6 +86,7 @@ export const {
   setRol,
   logout,
   login,
+  setID,
 } = userSlice.actions;
 
 export default userSlice.reducer;

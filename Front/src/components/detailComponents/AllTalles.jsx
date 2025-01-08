@@ -8,9 +8,13 @@ import {
 import { PiRuler } from "react-icons/pi";
 import TallesButton from "./TallesButton";
 import ModalTablaTalles from "./ModalTablaTalles";
-import useCart from "../../hooks/useCart";
 import useProducts from "../../hooks/useProducts";
-export default function Talles() {
+export default function Talles({
+  talleSelected,
+  setTalleSelected,
+  count,
+  setCount,
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -18,47 +22,25 @@ export default function Talles() {
   const handleOk = () => {
     setIsModalOpen(false);
   };
-  const {
-    select,
-    allTalles,
-    contador,
-    tallesDisp,
-    cantTalles,
-    handleSelect,
-    aumentarContador,
-    disminuirContador,
-  } = useCart();
-  const { product, allTallesIndumentaria } = useProducts();
+  const { product } = useProducts();
+
   return (
     <div className="w-full h-full bg-white flex items-center justify-center flex-col">
       <h1 className="text-black text-xl mb-4 font-myfont">
         Seleccionar talle argentino
       </h1>
       <div className="flex flex-wrap w-[90%] self-center items-center justify-center">
-        {product.indumentaria === "Zapatillas" ||
-        product.indumentaria === "Botines"
-          ? allTalles.map((talle) => (
-              <TallesButton
-                key={talle}
-                talle={talle}
-                onClick={() => handleSelect(talle)}
-                isSelected={talle === select}
-                isDisabled={
-                  !tallesDisp.includes(talle) || !cantTalles.length === 0
-                }
-              />
-            ))
-          : allTallesIndumentaria.map((talle) => (
-              <TallesButton
-                key={talle}
-                talle={talle}
-                onClick={() => handleSelect(talle)}
-                isSelected={talle === select}
-                isDisabled={
-                  !tallesDisp.includes(talle) || !cantTalles.length === 0
-                }
-              />
-            ))}
+        {Object.keys(product.talles).map((talle) => (
+          <TallesButton
+            key={talle}
+            talle={talle}
+            onClick={() => {
+              setTalleSelected(talle);
+              setCount(1);
+            }}
+            isSelected={talle === talleSelected}
+          />
+        ))}
       </div>
 
       <button
@@ -73,13 +55,15 @@ export default function Talles() {
         <p className="px-2 text-xl ml-6 text-black">Cantidad: </p>
         <div
           className={`w-24 h-12 border-2 rounded-full flex items-center justify-around ${
-            select ? "border-black text-black" : "border-gray-500 text-gray-500"
+            talleSelected
+              ? "border-black text-black"
+              : "border-gray-500 text-gray-500"
           }`}
         >
-          {contador > 1 ? (
+          {count > 1 ? (
             <button
               className="rounded-full p-1 flex items-center justify-center text-black"
-              onClick={disminuirContador}
+              onClick={() => setCount(count - 1)}
             >
               <IoMdRemoveCircle className="w-7 h-7" />
             </button>
@@ -87,16 +71,16 @@ export default function Talles() {
             <button
               disabled={true}
               className="rounded-full p-1 flex items-center justify-center text-gray-500"
-              onClick={disminuirContador}
+              onClick={() => setCount(count - 1)}
             >
               <IoIosRemoveCircleOutline className="w-7 h-7" />
             </button>
           )}
-          <p>{contador}</p>
-          {select && contador < cantTalles.length ? (
+          <p className="text-black">{count}</p>
+          {talleSelected && count < product.talles[talleSelected] ? (
             <button
-              className="rounded-full p-1 flex items-center justify-center"
-              onClick={aumentarContador}
+              className="rounded-full p-1 flex items-center justify-center text-black"
+              onClick={() => setCount(count + 1)}
             >
               <IoIosAddCircle className="w-7 h-7" />
             </button>
@@ -104,7 +88,7 @@ export default function Talles() {
             <button
               disabled={true}
               className="rounded-full p-1 flex items-center justify-center text-gray-500"
-              onClick={aumentarContador}
+              onClick={() => setCount(count + 1)}
             >
               <IoIosAddCircleOutline className="w-7 h-7" />
             </button>

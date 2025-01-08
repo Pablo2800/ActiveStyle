@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Descriptions from "../components/detailComponents/Descriptions";
 import Navbar from "../components/Navbar";
 import Compra from "../components/detailComponents/Compra";
@@ -9,11 +9,14 @@ import Footer from "../components/Footer";
 import { setSelectProduct } from "../redux/productSlice";
 import { useDispatch } from "react-redux";
 export default function DetailProduct() {
+  const [talleSelected, setTalleSelected] = useState(null);
+  const [count, setCount] = useState(1);
   const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(setSelectProduct(0));
   }, []);
+
   return (
     <div className="bg-white w-full min-h-screen h-full flex flex-col text-white">
       <div className="hidden lg:flex lg:flex-col">
@@ -24,8 +27,13 @@ export default function DetailProduct() {
           </div>
           <div className="flex flex-col h-full w-full lg:w-4/12">
             <Descriptions />
-            <Talles />
-            <Compra />
+            <Talles
+              talleSelected={talleSelected}
+              setTalleSelected={setTalleSelected}
+              count={count}
+              setCount={setCount}
+            />
+            <Compra talleSelected={talleSelected} count={count} />
           </div>
         </div>
         <div className="mt-10">
@@ -44,8 +52,13 @@ export default function DetailProduct() {
           </div>
           <div className="flex flex-col h-full w-full">
             <Images />
-            <Talles />
-            <Compra />
+            <Talles
+              talleSelected={talleSelected}
+              setTalleSelected={setTalleSelected}
+              count={count}
+              setCount={setCount}
+            />
+            <Compra talleSelected={talleSelected} count={count} />
           </div>
         </div>
         <div className="mt-10">

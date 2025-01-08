@@ -15,18 +15,18 @@ const useNavigation = () => {
   const goToAboutUs = () => navigate("/aboutUs");
   const goToPerfil = () => navigate("/miPerfil");
   const access = useSelector(getAccess);
-const goToDashAdm = () => navigate("/dashAdm");
-return {
-  goToProduct,
-  goToLogin,
-  goToHome,
-  goToRegister,
-  handleGoBack,
-  goToProductsByCategory,
-  goToAboutUs,
-  goToPerfil,
-  goToDashAdm,
-  access,
-};
+  const goToDashAdm = () => navigate("/dashAdm");
+  return {
+    goToProduct,
+    goToLogin,
+    goToHome,
+    goToRegister,
+    handleGoBack,
+    goToProductsByCategory,
+    goToAboutUs,
+    goToPerfil,
+    goToDashAdm,
+    access,
+  };
 };
 export default useNavigation;

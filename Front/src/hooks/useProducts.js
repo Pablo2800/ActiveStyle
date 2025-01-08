@@ -15,7 +15,10 @@ import axios from "axios";
 import { useMemo } from "react";
 import useNavigation from "./useNavigate";
 import { toast } from "sonner";
+
 const useProducts = () => {
+  const apiKey = import.meta.env.VITE_API_KEY;
+
   const { goToProductsByCategory } = useNavigation();
   const dispatch = useDispatch();
   const notifyWarning = (value) => {
@@ -29,7 +32,6 @@ const useProducts = () => {
   const product = useSelector(getFilteredProducts);
   const allProducts = useSelector(getAllProducts);
   const discountProducts = useSelector(getFilteredProductsByDiscount);
-  const allTallesIndumentaria = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
   const filtered = allProducts.slice(-10);
   const cuotas = Math.ceil(((product.price / 3) * 1.05) / 5000) * 5000;
   const transformPorcentage = product.porcentaje / 100;
@@ -52,7 +54,7 @@ const useProducts = () => {
   );
   const allIndumentarias = useMemo(
     () =>
-      Array.from(new Set(allProducts.map((product) => product.indumentaria))),
+      Array.from(new Set(allProducts?.map((product) => product.indumentaria))),
     [allProducts]
   );
   const uniqueGeneros = useMemo(
@@ -85,9 +87,7 @@ const useProducts = () => {
   );
   const handleAllProducts = async () => {
     try {
-      const response = await axios.get(
-        "https://activestyle.onrender.com/activeStyle/cliente/getProductos"
-      );
+      const response = await axios.get(`${apiKey}cliente/getProductos`);
       if (response) {
         dispatch(setAllProducts(response.data));
       }
@@ -97,10 +97,9 @@ const useProducts = () => {
   };
   const filterProduct = async (value) => {
     try {
-      const response = await axios.get(
-        "https://activestyle.onrender.com/activeStyle/cliente/producto/" + value
-      );
+      const response = await axios.get(`${apiKey}cliente/producto/` + value);
       if (response) {
+        console.log({ ApiResponse: response.data });
         dispatch(setFilteredProducts(response.data));
       }
     } catch (error) {
@@ -110,8 +109,7 @@ const useProducts = () => {
   const handleProductsByGenre = async (value) => {
     try {
       const response = await axios.get(
-        "https://activestyle.onrender.com/activeStyle/cliente/buscarPorGenero?genero=" +
-          value
+        `${apiKey}/cliente/buscarPorGenero?genero=` + value
       );
       if (response) {
         dispatch(setProductsByCategory(response.data));
@@ -125,8 +123,7 @@ const useProducts = () => {
   const handleProductsByActivity = async (value) => {
     try {
       const response = await axios.get(
-        "https://activestyle.onrender.com/activeStyle/cliente/buscarPorActividad?actividad=" +
-          value
+        `${apiKey}/cliente/buscarPorActividad?actividad=` + value
       );
       if (response) {
         dispatch(setProductsByCategory(response.data));
@@ -140,8 +137,7 @@ const useProducts = () => {
   const handleProductsByIndumentaria = async (value) => {
     try {
       const response = await axios.get(
-        "https://activestyle.onrender.com/activeStyle/cliente/buscarPorIndumentaria?indumentaria=" +
-          value
+        `${apiKey}/cliente/buscarPorIndumentaria?indumentaria=` + value
       );
       if (response) {
         dispatch(setProductsByCategory(response.data));
@@ -155,8 +151,7 @@ const useProducts = () => {
   const handleProductsByMarca = async (value) => {
     try {
       const response = await axios.get(
-        "https://activestyle.onrender.com/activeStyle/cliente/buscarPorMarca?marca=" +
-          value
+        `${apiKey}/cliente/buscarPorMarca?marca=` + value
       );
       if (response) {
         dispatch(setProductsByCategory(response.data));
@@ -184,8 +179,7 @@ const useProducts = () => {
     } else {
       try {
         const response = await axios.get(
-          "https://activestyle.onrender.com/activeStyle/cliente/buscarProducto?nombre=" +
-            value
+          `${apiKey}/cliente/buscarProducto?nombre=` + value
         );
         if (response.data.length === 0) {
           notifyWarning("No se encontro un producto con la busqueda " + value);
@@ -202,6 +196,7 @@ const useProducts = () => {
       }
     }
   };
+  const createProduct = async (values) => {};
   return {
     handleAllProducts,
     filterProduct,
@@ -224,9 +219,9 @@ const useProducts = () => {
     allIndumentarias,
     cuotas,
     discountPrice,
-    allTallesIndumentaria,
     product,
     discountProducts,
+    allProducts,
   };
 };
 
