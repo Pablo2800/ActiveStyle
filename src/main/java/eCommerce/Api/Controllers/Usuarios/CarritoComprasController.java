@@ -23,7 +23,22 @@ public class CarritoComprasController {
         }
         return ResponseEntity.ok(carrito);
     }
-
+    @PostMapping("/addQuantity/{clienteId}/{productId}/{talleSeleccionado}/{cantidad}")
+    public ResponseEntity<ItemCarrito> addItemToCarrito(
+            @PathVariable Long clienteId,
+            @PathVariable Long productId,
+            @PathVariable String talleSeleccionado,
+            @PathVariable int cantidad
+    ) {
+        try {
+            ItemCarrito itemCarrito = carritoComprasService.addItemCarritoCantidad(clienteId, productId, talleSeleccionado, cantidad);
+            return ResponseEntity.ok(itemCarrito);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
     @PostMapping("/add/{clienteId}/{productId}/{talleSeleccionado}")
     public ResponseEntity<ItemCarrito> addItemToCarrito(
             @PathVariable Long clienteId,

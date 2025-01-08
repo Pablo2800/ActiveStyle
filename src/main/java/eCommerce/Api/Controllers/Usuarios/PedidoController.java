@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/activeStyle/pedidos")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class PedidoController {
 

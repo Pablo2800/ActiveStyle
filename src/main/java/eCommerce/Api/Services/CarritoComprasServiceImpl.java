@@ -34,6 +34,66 @@ public class CarritoComprasServiceImpl implements CarritoComprasService{
         return carritoComprasRepository.findByUsuarioId(clienteId).orElse(null);
     }
     @Transactional
+    public ItemCarrito addItemCarritoCantidad(Long clienteId, Long productId, String talleSeleccionado, int cantidad) throws Exception {
+        // Obtener el cliente por su ID
+        Usuario usuario = usuarioRepository.findById(clienteId)
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+
+        // Obtener el carrito de compras del cliente, si existe
+        CarritoCompras carrito = usuario.getCarritoCompras();
+
+        // Si el cliente no tiene un carrito asignado, lanzar una excepción
+        if (carrito == null) {
+            throw new RuntimeException("El cliente no tiene un carrito de compras asignado.");
+        }
+
+        // Buscar el producto por su ID
+        Producto producto = productoRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        // Verificar disponibilidad del talle seleccionado (solo en memoria, sin actualizar la base de datos)
+        Map<String, Integer> talles = producto.getTalles();
+        Integer cantidadTalle = talles.get(talleSeleccionado);
+
+        if (cantidadTalle == null || cantidadTalle <= 0) {
+            // Si no hay stock disponible para el talle seleccionado
+            throw new RuntimeException("No hay stock disponible para el talle seleccionado.");
+        }
+
+        // Verificar que la cantidad solicitada no supere el stock disponible
+        if (cantidad > cantidadTalle) {
+            throw new RuntimeException("No hay suficiente stock para la cantidad solicitada.");
+        }
+
+        // Aquí restamos en memoria (sin afectar la base de datos)
+        Optional<ItemCarrito> optionalItemCarrito = itemCarritoRepository.findByCarritoComprasIdAndProductoIdAndTalle(carrito.getId(), productId, talleSeleccionado);
+
+        if (optionalItemCarrito.isPresent()) {
+            // Si el item ya existe en el carrito, obtener la cantidad actual
+            ItemCarrito itemCarritoExistente = optionalItemCarrito.get();
+            int cantidadActual = itemCarritoExistente.getCantidad();
+
+            // Limitar la cantidad a lo que hay en stock
+            if (cantidadActual + cantidad > cantidadTalle) {
+                // Aquí se lanza un mensaje específico si se intenta agregar más productos de los que hay en stock
+                throw new RuntimeException("Ya se alcanzó el límite máximo de stock disponible para el talle seleccionado.");
+            }
+
+            // Si hay stock suficiente, incrementar la cantidad del item en el carrito
+            itemCarritoExistente.setCantidad(cantidadActual + cantidad); // Se suma la cantidad solicitada
+            return itemCarritoRepository.save(itemCarritoExistente);
+        } else {
+            // Si el ítem no existe, crear uno nuevo con la cantidad proporcionada
+            ItemCarrito itemCarrito = new ItemCarrito();
+            itemCarrito.setProducto(producto);
+            itemCarrito.setCantidad(cantidad);  // Se añade la cantidad proporcionada
+            itemCarrito.setCarritoCompras(carrito);
+            itemCarrito.setTalle(talleSeleccionado);
+
+            return itemCarritoRepository.save(itemCarrito);
+        }
+    }
+    @Transactional
     public ItemCarrito addItemCarrito(Long clienteId, Long productId, String talleSeleccionado) throws Exception {
         // Obtener el cliente por su ID
         Usuario usuario = usuarioRepository.findById(clienteId)
