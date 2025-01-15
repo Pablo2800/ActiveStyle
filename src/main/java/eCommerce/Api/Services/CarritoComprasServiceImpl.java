@@ -185,11 +185,18 @@ public class CarritoComprasServiceImpl implements CarritoComprasService{
             producto.setTalles(talles);
             productoRepository.save(producto);
 
+            if (nuevaCantidad == 0) {
+                // Eliminar el item del carrito si la cantidad es 0
+                itemCarritoRepository.delete(itemCarrito);
+                return null; // Puedes devolver null o lanzar una excepción, según lo que desees manejar.
+            }
+
             return itemCarritoRepository.save(itemCarrito);
         } else {
             throw new RuntimeException("No se puede disminuir más la cantidad.");
         }
     }
+
 
     @Override
     public void removeAllItemsFromCarrito(Long carritoId) {
