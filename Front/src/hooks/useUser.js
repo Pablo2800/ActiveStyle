@@ -25,6 +25,7 @@ import {
   setToken,
   setUsername,
 } from "../redux/userSlice";
+import { clearCart } from "../redux/cartSlice";
 const apiKey = import.meta.env.VITE_API_KEY;
 
 const useUser = () => {
@@ -80,7 +81,6 @@ const useUser = () => {
   const handleLogin = async (values) => {
     try {
       const response = await axios.post(`${apiKey}auth/login`, values);
-      console.log(response.data);
       const { token, username } = response.data;
 
       if (token) {
@@ -120,6 +120,7 @@ const useUser = () => {
     dispatch(setAddress(""));
     dispatch(setToken(null));
     dispatch(logout());
+    dispatch(clearCart());
   };
   return {
     handleSubmit,

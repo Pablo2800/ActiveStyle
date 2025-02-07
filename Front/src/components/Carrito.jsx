@@ -1,32 +1,51 @@
 import React, { useState, useEffect } from "react";
 import useCart from "../hooks/useCart";
-import { IoMdClose } from "react-icons/io";
+import {
+  IoIosAddCircle,
+  IoIosRemoveCircleOutline,
+  IoMdClose,
+} from "react-icons/io";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { TbTruckDelivery } from "react-icons/tb";
+import { useSelector } from "react-redux";
+import { getID } from "../redux/userSlice";
+import { getCart } from "../redux/cartSlice";
 
 export default function CartComponent({ setOpenCart }) {
-  const { cart, handleClearCart, handleRemoveToCart } = useCart();
+  const {
+    handleClearCart,
+    handleRemoveToCart,
+    cartID,
+    handleOneProduct,
+    handleRemoveOneProductToCart,
+  } = useCart();
   const [subTotal, setSubTotal] = useState(0);
   const [envio, setEnvio] = useState(0);
   const [codigoPostal, setCodigoPostal] = useState("");
   const [inputCompleto, setInputCompleto] = useState(false);
+  const clientID = useSelector(getID);
+  const cart = useSelector(getCart);
 
   const envioRandom = () => {
     const aleatorio = Math.round(Math.random() * (7000 - 3000) + 3000);
     setEnvio(aleatorio);
   };
-
+  console.log(cart);
   useEffect(() => {
     let total = 0;
     cart.forEach((product) => {
-      total += product.priceDiscount;
+      if (product.producto.porcentaje > 0) {
+        total +=
+          (product.producto.price -
+            (product.producto.price * product.producto.porcentaje) / 100) *
+          product.cantidad;
+      } else {
+        total += product.producto.price * product.cantidad;
+      }
     });
-    setSubTotal(total);
-  }, [cart]);
-
-  useEffect(() => {
+    setSubTotal(total.toFixed(2));
     setInputCompleto(codigoPostal.trim() !== "");
-  }, [codigoPostal]);
+  }, [cart, codigoPostal]);
 
   return (
     <div className="fixed top-0 right-0 h-full w-full flex z-20 text-black">
@@ -48,27 +67,50 @@ export default function CartComponent({ setOpenCart }) {
               className="flex items-center py-4 border-b w-[90%]"
             >
               <img
-                src="https://nikearprod.vtexassets.com/arquivos/ids/793832-1000-1000?v=638379223305770000&width=1000&height=1000&aspect=true"
+                src={product.producto.imageUrls[0]}
                 alt=""
                 className="w-20 h-20 object-cover"
               />
               <div className="ml-2 flex-1">
                 <p className="font-bold text-xl font-myfont">
-                  {product.nameProduct}
+                  {product.producto.nameProduct}
                 </p>
                 <p className="text-sm text-gray-500">Talle: {product.talle}</p>
                 <div className="flex justify-between items-center">
                   <p className="font-bold text-xl">
-                    ${product.priceDiscount.toLocaleString()}
+                    ${product.producto.price.toLocaleString()}
                   </p>
-                  <button
-                    className="text-red-500"
-                    onClick={() =>
-                      handleRemoveToCart(product.id, product.talle)
-                    }
-                  >
-                    <FaRegTrashAlt className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center justify-center">
+                    <p>Cantidad:</p>
+                    <button
+                      className="rounded-full p-1 flex items-center justify-center text-black"
+                      onClick={() => handleRemoveToCart(clientID, product.id)}
+                    >
+                      <IoIosRemoveCircleOutline className="w-7 h-7" />
+                    </button>
+                    <p>{product.cantidad}</p>
+                    <button
+                      className="rounded-full p-1 flex items-center justify-center text-black bg-white"
+                      onClick={() =>
+                        handleOneProduct(
+                          clientID,
+                          product.producto.id,
+                          product.talle,
+                          cart
+                        )
+                      }
+                    >
+                      <IoIosAddCircle className="w-7 h-7" />
+                    </button>
+                    <button
+                      className="text-red-500 ml-1"
+                      onClick={() =>
+                        handleRemoveOneProductToCart(cartID, product.id)
+                      }
+                    >
+                      <FaRegTrashAlt className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -78,6 +120,7 @@ export default function CartComponent({ setOpenCart }) {
           <div className="flex items-center">
             <TbTruckDelivery className="w-6 h-6 mr-2" />
             <p className="text-lg">Calculá el costo de envío.</p>
+            <span className="text-red-500">*</span>
           </div>
           <div className="flex mt-2">
             <input
@@ -109,7 +152,7 @@ export default function CartComponent({ setOpenCart }) {
           </div>
           <div className="flex justify-between">
             <p className="font-bold">Total:</p>
-            <p>${(subTotal + envio).toLocaleString()}</p>
+            <p>${(Number(subTotal) + Number(envio)).toFixed(2)}</p>
           </div>
         </div>
         <div className="px-4 py-2 border-t">
@@ -118,7 +161,7 @@ export default function CartComponent({ setOpenCart }) {
               envio !== 0 ? "" : "pointer-events-none opacity-50"
             }`}
           >
-            Iniciar Compra
+            Finalizar Compra
           </button>
           <div className="flex justify-between">
             <button
@@ -127,7 +170,7 @@ export default function CartComponent({ setOpenCart }) {
             >
               Seguir comprando
             </button>
-            <button onClick={handleClearCart}>Vaciar</button>
+            <button onClick={() => handleClearCart(cartID)}>Vaciar</button>
           </div>
         </div>
       </div>

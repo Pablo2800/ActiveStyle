@@ -9,11 +9,15 @@ import FilterByDeporte from "../components/FilterByDeporte";
 import Footer from "../components/Footer";
 import useProducts from "../hooks/useProducts";
 import { Toaster } from "sonner";
+import useCart from "../hooks/useCart";
 export default function Home() {
   const { handleAllProducts, newProducts, discountPrice } = useProducts();
+  const { handleGetCart } = useCart();
+
   useEffect(() => {
     handleAllProducts({ priceDiscount: discountPrice });
     newProducts();
+    handleGetCart();
   }, []);
 
   return (

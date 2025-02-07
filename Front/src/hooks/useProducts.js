@@ -109,7 +109,7 @@ const useProducts = () => {
   const handleProductsByGenre = async (value) => {
     try {
       const response = await axios.get(
-        `${apiKey}/cliente/buscarPorGenero?genero=` + value
+        `${apiKey}cliente/buscarPorGenero?genero=` + value
       );
       if (response) {
         dispatch(setProductsByCategory(response.data));
@@ -123,7 +123,7 @@ const useProducts = () => {
   const handleProductsByActivity = async (value) => {
     try {
       const response = await axios.get(
-        `${apiKey}/cliente/buscarPorActividad?actividad=` + value
+        `${apiKey}cliente/buscarPorActividad?actividad=` + value
       );
       if (response) {
         dispatch(setProductsByCategory(response.data));
@@ -137,7 +137,7 @@ const useProducts = () => {
   const handleProductsByIndumentaria = async (value) => {
     try {
       const response = await axios.get(
-        `${apiKey}/cliente/buscarPorIndumentaria?indumentaria=` + value
+        `${apiKey}cliente/buscarPorIndumentaria?indumentaria=` + value
       );
       if (response) {
         dispatch(setProductsByCategory(response.data));
@@ -151,7 +151,7 @@ const useProducts = () => {
   const handleProductsByMarca = async (value) => {
     try {
       const response = await axios.get(
-        `${apiKey}/cliente/buscarPorMarca?marca=` + value
+        `${apiKey}cliente/buscarPorMarca?marca=` + value
       );
       if (response) {
         dispatch(setProductsByCategory(response.data));
@@ -179,7 +179,7 @@ const useProducts = () => {
     } else {
       try {
         const response = await axios.get(
-          `${apiKey}/cliente/buscarProducto?nombre=` + value
+          `${apiKey}cliente/buscarProducto?nombre=` + value
         );
         if (response.data.length === 0) {
           notifyWarning("No se encontro un producto con la busqueda " + value);

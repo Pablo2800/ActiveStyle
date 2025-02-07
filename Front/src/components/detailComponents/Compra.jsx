@@ -21,7 +21,7 @@ export default function Compra({ talleSelected, count }) {
     <div className="bg-white w-full text-black flex py-5 items-center justify-center">
       <button
         onClick={() =>
-          handleAddToCart(clientID, productSended.id, productSended.talles)
+          handleAddToCart(clientID, productSended.id, talleSelected, count)
         }
         disabled={!talleSelected}
         className={`${
