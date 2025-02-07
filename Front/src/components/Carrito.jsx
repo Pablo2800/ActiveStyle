@@ -30,7 +30,6 @@ export default function CartComponent({ setOpenCart }) {
     const aleatorio = Math.round(Math.random() * (7000 - 3000) + 3000);
     setEnvio(aleatorio);
   };
-  console.log(cart);
   useEffect(() => {
     let total = 0;
     cart.forEach((product) => {
@@ -67,7 +66,7 @@ export default function CartComponent({ setOpenCart }) {
               className="flex items-center py-4 border-b w-[90%]"
             >
               <img
-                src={product.producto.imageUrls[0]}
+                src={product?.producto?.imageUrls[0] || ""}
                 alt=""
                 className="w-20 h-20 object-cover"
               />

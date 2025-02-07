@@ -126,9 +126,6 @@ export default function FormNewObject() {
     });
 
     imagenes.forEach((imagen) => formData.append("imagenes", imagen));
-
-    console.log("Datos enviados:", values);
-    console.log("Imágenes:", imagenes);
   };
 
   const handleCantidadTotalTalle = (e, talle1, cantidad1) => {
@@ -136,15 +133,10 @@ export default function FormNewObject() {
     setTalleFinal((prev) => [...prev, { talle: talle1, cantidad: cantidad1 }]);
   };
 
-  // console.log({ arrayFinal: talleFinal });
-  // talleFinal.forEach((talle) => {
-  //   console.log(Object.values(talle));
-  // });
-
   const onFinishFailed = (errorInfo) => {
     console.error("Error:", errorInfo);
   };
-  console.log(Object.values(talleFinal).forEach((a) => console.log(a.talle)));
+
   const allTalles = ["XS", "S", "M", "L", "XL", "XXL"];
 
   return (

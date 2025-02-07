@@ -11,7 +11,7 @@ export default function Images() {
         <div className="flex w-1/2 overflow-hidden">
           <img
             src={
-              product.imageUrls[1] ||
+              product?.imageUrls[1] ||
               "https://nikearprod.vtexassets.com/arquivos/ids/793392-800-800?width=800&height=800&aspect=true"
             }
             className="w-full h-full ml-1 border-[1px] border-gray-400"
@@ -21,7 +21,7 @@ export default function Images() {
         <div className="flex w-1/2 overflow-hidden">
           <img
             src={
-              product.imageUrls[5] ||
+              product?.imageUrls[5] ||
               "https://nikearprod.vtexassets.com/arquivos/ids/796524-800-800?width=800&height=800&aspect=true"
             }
             className="w-full h-full mr-1 border-[1px] border-gray-400"
@@ -33,7 +33,7 @@ export default function Images() {
         <div className="flex w-1/2">
           <img
             src={
-              product.imageUrls[3] ||
+              product?.imageUrls[3] ||
               "https://nikearprod.vtexassets.com/arquivos/ids/797856-800-800?width=800&height=800&aspect=true"
             }
             className="w-full h-full ml-1 border-[1px] border-gray-400"
@@ -43,7 +43,7 @@ export default function Images() {
         <div className="flex w-1/2">
           <img
             src={
-              product.imageUrls[4] ||
+              product?.imageUrls[4] ||
               "https://nikearprod.vtexassets.com/arquivos/ids/800968-800-800?width=800&height=800&aspect=true"
             }
             className="w-full h-full mr-1 border-[1px] border-gray-400"
@@ -66,7 +66,7 @@ export default function Images() {
           <div className="flex w-9/12 ">
             <div className="flex w-1/2 ml-1">
               <img
-                src={product.imageUrls[0]}
+                src={product?.imageUrls[0]}
                 // src="https://nikearprod.vtexassets.com/arquivos/ids/804070-800-800?width=800&height=800&aspect=true"
                 className="w-full h-full ml-1 border-[1px] border-gray-400"
                 alt=""
@@ -74,7 +74,7 @@ export default function Images() {
             </div>
             <div className="flex w-1/2 mr-1">
               <img
-                src={product.imageUrls[2]}
+                src={product?.imageUrls[2]}
                 // src="https://nikearprod.vtexassets.com/arquivos/ids/805340-800-800?width=800&height=800&aspect=true"
                 className="w-full h-full mr-1 border-[1px] border-gray-400"
                 alt=""

@@ -99,7 +99,6 @@ const useProducts = () => {
     try {
       const response = await axios.get(`${apiKey}cliente/producto/` + value);
       if (response) {
-        console.log({ ApiResponse: response.data });
         dispatch(setFilteredProducts(response.data));
       }
     } catch (error) {

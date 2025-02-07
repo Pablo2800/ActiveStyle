@@ -14,12 +14,9 @@ const cartSlice = createSlice({
     },
     removeFromCart: (state, action) => {
       const { id } = action.payload;
-      console.log("Eliminando producto con id:", id);
       state.cart = state.cart.filter((item) => {
-        console.log("Item actual:", item.producto.id);
         return item.id !== id;
       });
-      console.log("Carrito actualizado:", state.cart);
     },
     clearCart: (state) => {
       state.cart = [];

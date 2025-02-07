@@ -62,7 +62,7 @@ export default function NewProducts() {
                 >
                   <div className="flex items-center justify-center w-full h-full z-10 relative duration-300">
                     <img
-                      src={product.imageUrls[1]}
+                      src={product.imageUrls[1] || ""}
                       // src="https://nikearprod.vtexassets.com/arquivos/ids/794168-1000-1000?v=638379227989030000&width=1000&height=1000&aspect=true"
                       className="object-cover rounded-xl w-full h-full"
                       alt=""

@@ -21,7 +21,6 @@ const productsSlice = createSlice({
       state.allProducts = action.payload;
     },
     setFilteredProducts: (state, action) => {
-      console.log("Payload recibido:", action.payload);
       state.filteredProducts = action.payload;
     },
     setProductsByCategory: (state, action) => {

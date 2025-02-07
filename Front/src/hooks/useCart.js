@@ -137,19 +137,14 @@ const useCart = () => {
 
   const handleRemoveOneProductToCart = async (carritoId, productId) => {
     try {
-      console.log("Eliminando producto de la base de datos...");
       await axios.delete(`${apiKey}carrito/${carritoId}/items/${productId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Producto eliminado de la base de datos.");
 
-      console.log("Eliminando producto del carrito en Redux...");
       dispatch(removeFromCart({ id: productId }));
-      console.log("Producto eliminado del carrito en Redux.");
     } catch (error) {
-      console.error("Error al eliminar el producto:", error);
       alert("No se pudo eliminar el producto. Inténtalo de nuevo.");
     }
   };
@@ -165,7 +160,6 @@ const useCart = () => {
         }
       );
       dispatch(clearCart());
-      console.log(response);
     } catch (error) {
       console.error(error);
     }
