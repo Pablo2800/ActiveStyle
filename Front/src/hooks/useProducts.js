@@ -19,7 +19,6 @@ import { toast } from "sonner";
 const useProducts = () => {
   const apiKey = import.meta.env.VITE_API_KEY;
   const token = localStorage.getItem("token");
-
   const { goToProductsByCategory } = useNavigation();
   const dispatch = useDispatch();
   const notifyWarning = (value) => {

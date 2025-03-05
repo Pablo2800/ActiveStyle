@@ -15,7 +15,6 @@ const getBase64 = (file) =>
 
 export default function FormNewObject() {
   const { createProduct } = useProducts();
-  const [imagenes, setImagenes] = useState([]);
   const [talleFinal, setTalleFinal] = useState([]);
   const [selectedIndumentaria, setSelectedIndumentaria] = useState("");
   const [selectedTalle, setSelectedTalle] = useState("");
@@ -28,12 +27,6 @@ export default function FormNewObject() {
 
   const handleTalleChange = (talle) => {
     setSelectedTalle(talle);
-  };
-
-  const handleImageChange = (e) => {
-    if (e.target.files) {
-      setImagenes(Array.from(e.target.files));
-    }
   };
 
   const handleCantidadTotalTalle = () => {
@@ -103,7 +96,7 @@ export default function FormNewObject() {
     formData.append("talles", JSON.stringify(tallesObject));
 
     // Agregar las imágenes al FormData
-    imagenes.forEach((imagen) => formData.append("imagenes", imagen));
+    fileList.forEach((imagen) => formData.append("imagen", imagen.originFileObj));
 
     createProduct(formData);
   };
