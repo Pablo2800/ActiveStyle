@@ -306,6 +306,7 @@ export default function FormNewObject() {
         fileList={fileList}
         onPreview={handlePreview}
         onChange={handleChange}
+        disabled={fileList.length === 6}
       >
         {fileList.length >= 8 ? null : uploadButton}
       </Upload>
@@ -324,7 +325,7 @@ export default function FormNewObject() {
       )}
 
       <div className="col-span-2 flex justify-center">
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" disabled={fileList.length < 4}>
           Enviar
         </Button>
       </div>
