@@ -18,6 +18,7 @@ import { toast } from "sonner";
 
 const useProducts = () => {
   const apiKey = import.meta.env.VITE_API_KEY;
+  const token = localStorage.getItem("token");
 
   const { goToProductsByCategory } = useNavigation();
   const dispatch = useDispatch();
@@ -195,7 +196,26 @@ const useProducts = () => {
       }
     }
   };
-  const createProduct = async (values) => {};
+
+  const createProduct = async (formData) => {
+    try {
+      const response = await axios.post(
+        `${apiKey}admin/crearProducto`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Producto creado:", response.data);
+    } catch (error) {
+      console.error("Error al crear producto:", error);
+    }
+  };
+
   return {
     handleAllProducts,
     filterProduct,
@@ -207,6 +227,7 @@ const useProducts = () => {
     handleDiscountProducts,
     renderAllProducts,
     onSearch,
+    createProduct,
     productsByCategory,
     filteredProducts,
     filtered,
