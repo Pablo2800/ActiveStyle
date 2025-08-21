@@ -185,7 +185,7 @@ export default function FormNewObject() {
           style={{ width: "100%" }}
           required
         >
-          {["Zapatilla", "Botines", "Remera", "Camiseta"].map((option) => (
+          {["Zapatilla", "Botines", "Remera", "Camiseta","Shorts","Pantalones"].map((option) => (
             <Option key={option} value={option}>
               {option}
             </Option>
@@ -274,7 +274,7 @@ export default function FormNewObject() {
           style={{ width: "100%" }}
           required
         >
-          {["Futbol", "Basquet", "Running"].map((option) => (
+          {["Futbol", "Basquet", "Running","Entrenamiento","Tenis","Skate"].map((option) => (
             <Option key={option} value={option}>
               {option}
             </Option>
