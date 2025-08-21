@@ -27,8 +27,8 @@ export default function AccountMenu() {
   const { handleLogout } = useUser();
   const name = useSelector(getFirstName);
   const lastname = useSelector(getLastName);
-  const firstLetterName = name.slice(0, 1);
-  const fisrtLetterLastname = lastname.slice(0, 1);
+  const firstLetterName = name?.slice(0, 1);
+  const fisrtLetterLastname = lastname?.slice(0, 1);
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
