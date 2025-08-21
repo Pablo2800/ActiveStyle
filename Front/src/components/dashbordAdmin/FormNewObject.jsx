@@ -185,7 +185,7 @@ export default function FormNewObject() {
           style={{ width: "100%" }}
           required
         >
-          {["Zapatilla", "Botines", "Remera", "Camiseta","Shorts","Pantalones"].map((option) => (
+          {["Zapatillas", "Botines", "Remera", "Camiseta","Shorts","Pantalones"].map((option) => (
             <Option key={option} value={option}>
               {option}
             </Option>
