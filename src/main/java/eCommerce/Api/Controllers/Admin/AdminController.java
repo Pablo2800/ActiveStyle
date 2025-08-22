@@ -74,13 +74,20 @@ public class AdminController {
     @PostMapping("/crearProducto")
     public ResponseEntity<?> crearProducto(
             @RequestHeader(name = "Authorization", required = true) String token,
-            @ModelAttribute DTOProducto productoDTO,
-            @RequestParam("talles") String tallesJson) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            Map<String, Integer> talles = mapper.readValue(tallesJson, new TypeReference<Map<String, Integer>>() {});
+            @ModelAttribute DTOProducto productoDTO) {
 
-            // Crear nuevo producto con Builder
+        System.out.println("=== DEBUG INFO ===");
+        System.out.println("NameProduct: " + productoDTO.getNameProduct());
+        System.out.println("Talles: " + productoDTO.getTalles());
+        System.out.println("Imagen is null: " + (productoDTO.getImagen() == null));
+        if (productoDTO.getImagen() != null) {
+            System.out.println("Imagen size: " + productoDTO.getImagen().size());
+        }
+        System.out.println("=================");
+
+        try {
+            Map<String, Integer> talles = productoDTO.getTalles();
+
             Producto producto = Producto.builder()
                     .nameProduct(productoDTO.getNameProduct())
                     .description(productoDTO.getDescription())
@@ -91,7 +98,7 @@ public class AdminController {
                     .indumentaria(productoDTO.getIndumentaria())
                     .genero(productoDTO.getGenero())
                     .actividad(productoDTO.getActividad())
-                    .talles(talles)  // Aquí usamos el Map convertido
+                    .talles(talles)
                     .build();
 
             Producto productoCreado = productoService.createProducto(
@@ -100,9 +107,8 @@ public class AdminController {
                     talles
             );
             return ResponseEntity.status(HttpStatus.CREATED).body(productoCreado);
-        } catch (JsonProcessingException e) {
-            return ResponseEntity.badRequest().body("Error al procesar los talles: " + e.getMessage());
         } catch (Exception e) {
+            e.printStackTrace(); // Para ver el stack trace completo
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al crear el producto: " + e.getMessage());
         }

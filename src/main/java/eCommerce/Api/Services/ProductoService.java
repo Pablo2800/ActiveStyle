@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductoService {
@@ -42,8 +43,8 @@ public class ProductoService {
         }
 
         int numImages = imageFiles.size();
-        if (numImages != 4 && numImages !=6) {
-            throw new IllegalArgumentException("Debe proporcionar exactamente 4 o 6 imágenes");
+        if (numImages < 1 || numImages > 6) {
+            throw new IllegalArgumentException("Debe proporcionar entre 1 y 6 imágenes");
         }
 
         // Validar talles
@@ -68,15 +69,15 @@ public class ProductoService {
         // Validar otros atributos del producto
         validateProductAttributes(producto);
 
-        List<String> imageUrls = new ArrayList<>();
-        for (MultipartFile file : imageFiles) {
-            try {
-                String imageUrl = uploadFile(file);
-                imageUrls.add(imageUrl);
-            } catch (IOException e) {
-                throw new RuntimeException("Error al subir la imagen: " + file.getOriginalFilename(), e);
-            }
-        }
+        List<String> imageUrls = imageFiles.parallelStream()
+                .map(file -> {
+                    try {
+                        return uploadFile(file);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Error al subir imagen: " + file.getOriginalFilename(), e);
+                    }
+                })
+                .collect(Collectors.toList());
 
         producto.setImageUrls(imageUrls);
         producto.setTalles(talles);

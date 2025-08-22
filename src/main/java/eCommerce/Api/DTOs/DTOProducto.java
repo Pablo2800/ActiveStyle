@@ -22,12 +22,12 @@ public class DTOProducto {
     private String indumentaria;
     private String genero;
     private String actividad;
-    private String tallesJson;
+    private String talles;
     private List<MultipartFile> imagen;
     public Map<String, Integer> getTalles() {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(tallesJson, new TypeReference<Map<String, Integer>>() {});
+            return mapper.readValue(talles, new TypeReference<Map<String, Integer>>() {});
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error al procesar talles: " + e.getMessage());
         }
