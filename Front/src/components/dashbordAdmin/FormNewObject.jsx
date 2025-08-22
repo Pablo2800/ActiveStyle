@@ -103,7 +103,7 @@ export default function FormNewObject() {
     formData.append("talles", JSON.stringify(tallesObject));
 
     // Agregar las imágenes al FormData
-    imagenes.forEach((imagen) => formData.append("imagenes", imagen));
+    imagenes.forEach((imagen) => formData.append("imageUrls", imagen));
 
     createProduct(formData);
   };
