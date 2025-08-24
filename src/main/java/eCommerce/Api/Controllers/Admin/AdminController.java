@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -76,14 +77,13 @@ public class AdminController {
             @RequestHeader(name = "Authorization", required = true) String token,
             @ModelAttribute DTOProducto productoDTO) {
 
-        System.out.println("=== DEBUG INFO ===");
-        System.out.println("NameProduct: " + productoDTO.getNameProduct());
-        System.out.println("Talles: " + productoDTO.getTalles());
-        System.out.println("Imagen is null: " + (productoDTO.getImagen() == null));
+        Map<String, Object> debugInfo = new HashMap<>();
+        debugInfo.put("NameProduct", productoDTO.getNameProduct());
+        debugInfo.put("Talles", productoDTO.getTalles());
+        debugInfo.put("Imagen is null", (productoDTO.getImagen() == null));
         if (productoDTO.getImagen() != null) {
-            System.out.println("Imagen size: " + productoDTO.getImagen().size());
+            debugInfo.put("Imagen size", productoDTO.getImagen().size());
         }
-        System.out.println("=================");
 
         try {
             Map<String, Integer> talles = productoDTO.getTalles();
@@ -106,13 +106,24 @@ public class AdminController {
                     productoDTO.getImagen(),
                     talles
             );
-            return ResponseEntity.status(HttpStatus.CREATED).body(productoCreado);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("producto", productoCreado);
+            response.put("debug", debugInfo);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
-            e.printStackTrace(); // Para ver el stack trace completo
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al crear el producto: " + e.getMessage());
+            e.printStackTrace();
+
+            debugInfo.put("error", e.getMessage());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("debug", debugInfo);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
 //    @PutMapping("/addImagen/{productoId}")
 //    public ResponseEntity<?> addImageToProducto(
 //            @RequestHeader(name = "Authorization", required = true) String token,
